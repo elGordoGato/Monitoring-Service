@@ -74,8 +74,8 @@ class ReadingServiceImplTest {
 
         verify(readingRepository, times(1)).save(argThat(r ->
                 r.getReading() == 100 &&
-                r.getOwner().equals(user) &&
-                r.getMeter().equals(meter)));
+                        r.getOwner().equals(user) &&
+                        r.getMeter().equals(meter)));
         assertThat(created).isNotNull();
         assertThat(created).isEqualTo(reading);
     }

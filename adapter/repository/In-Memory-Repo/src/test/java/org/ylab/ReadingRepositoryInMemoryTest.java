@@ -1,6 +1,10 @@
 package org.ylab;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.ylab.entity.Meter;
+import org.ylab.entity.Reading;
+import org.ylab.entity.User;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -8,11 +12,7 @@ import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.ylab.entity.Meter;
-import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ReadingRepositoryInMemoryTest {
 

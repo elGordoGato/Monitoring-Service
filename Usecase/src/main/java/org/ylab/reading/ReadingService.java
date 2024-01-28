@@ -1,7 +1,7 @@
 package org.ylab.reading;
 
-import org.ylab.entity.Reading;
 import org.ylab.entity.Meter;
+import org.ylab.entity.Reading;
 import org.ylab.entity.User;
 
 import java.time.LocalDate;
@@ -15,8 +15,8 @@ public interface ReadingService {
     List<Reading> getActual(User user);
 
     /**
-     * @param user User submitting new reading
-     * @param type type of meter for submitting reading
+     * @param user    User submitting new reading
+     * @param type    type of meter for submitting reading
      * @param reading Value of submitting reading
      * @return Reading that has been submitted
      */
@@ -24,7 +24,7 @@ public interface ReadingService {
 
     /**
      * @param currentUser User requesting data
-     * @param date Month when readings shall be found
+     * @param date        Month when readings shall be found
      * @return List of readings submitted in date
      */
     List<Reading> getForMonth(User currentUser, LocalDate date);

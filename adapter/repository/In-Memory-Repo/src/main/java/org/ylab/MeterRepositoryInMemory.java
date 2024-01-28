@@ -1,7 +1,6 @@
 package org.ylab;
 
 
-
 import org.ylab.entity.Meter;
 import org.ylab.port.MeterRepository;
 
@@ -20,13 +19,14 @@ public class MeterRepositoryInMemory implements MeterRepository {
         hotWater.setType("Hot water");
         meterTypes.put(2, hotWater);
     }
+
     @Override
     public List<Meter> getAll() {
         return new ArrayList<>(meterTypes.values());
     }
 
     @Override
-    public Optional<Meter> getById(int id){
+    public Optional<Meter> getById(int id) {
         return Optional.ofNullable(meterTypes.get(id));
     }
 }

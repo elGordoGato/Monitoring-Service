@@ -16,20 +16,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public User create(User user) {
         userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
-            throw new ConflictException(String.format("User with email: %s already exists", u.getEmail()));});
+            throw new ConflictException(String.format("User with email: %s already exists", u.getEmail()));
+        });
 
         return userRepository.save(user);
     }
 
-    /**
-     * @param email
-     * @param password
-     * @return
-     */
     @Override
     public User authenticate(String email, String password) {
         User loginUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(String.format("User with email: %s not found", email)));
-        if (!loginUser.getPassword().equals(password)){
+        if (!loginUser.getPassword().equals(password)) {
             throw new BadRequestException("Wrong password");
         }
         return loginUser;

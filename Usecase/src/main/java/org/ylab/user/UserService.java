@@ -10,7 +10,7 @@ public interface UserService {
     User create(User user);
 
     /**
-     * @param email email of user to authenticate
+     * @param email    email of user to authenticate
      * @param password password of user to authenticate
      * @return User that has been authenticated
      */

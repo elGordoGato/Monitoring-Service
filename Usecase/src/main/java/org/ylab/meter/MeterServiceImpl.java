@@ -4,7 +4,6 @@ import org.ylab.entity.Meter;
 import org.ylab.exception.NotFoundException;
 import org.ylab.port.MeterRepository;
 
-
 import java.util.List;
 
 public class MeterServiceImpl implements MeterService {
@@ -14,21 +13,14 @@ public class MeterServiceImpl implements MeterService {
         this.typeRepository = typeRepository;
     }
 
-    /**
-     * @return
-     */
     @Override
     public List<org.ylab.entity.Meter> getAll() {
         return typeRepository.getAll();
     }
 
-    /**
-     * @param id
-     * @return
-     */
     @Override
     public Meter getById(int id) {
-       return typeRepository.getById(id).orElseThrow(() ->
-               new NotFoundException("This type is not supported"));
+        return typeRepository.getById(id).orElseThrow(() ->
+                new NotFoundException("This type is not supported"));
     }
 }

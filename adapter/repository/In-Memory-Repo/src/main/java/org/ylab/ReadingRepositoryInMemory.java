@@ -1,7 +1,7 @@
 package org.ylab;
 
-import org.ylab.entity.Reading;
 import org.ylab.entity.Meter;
+import org.ylab.entity.Reading;
 import org.ylab.entity.User;
 import org.ylab.port.ReadingRepository;
 
@@ -26,7 +26,7 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
 
     @Override
     public Optional<Reading> findLastByUserAndType(User user, Meter type) {
-       List<Reading> readingsByUser = readingMap.get(user);
+        List<Reading> readingsByUser = readingMap.get(user);
         if (readingsByUser != null) {
             return readingsByUser.stream()
                     .filter(r -> r.getMeter().equals(type))
@@ -54,7 +54,7 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
             return readings.stream()
                     .filter(r ->
                             r.getCollectedDate().isAfter(start) &&
-                            r.getCollectedDate().isBefore(end))
+                                    r.getCollectedDate().isBefore(end))
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
@@ -73,7 +73,7 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
 
     @Override
     public List<Reading> findAllByOwner(User currentUser) {
-       return readingMap.getOrDefault(currentUser, new ArrayList<>());
+        return readingMap.getOrDefault(currentUser, new ArrayList<>());
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.ylab.entity.User;
  * Utils class for mapping user entity to it's dto and vice-versa
  */
 public class UserMapper {
-    public static User dtoToEntity(UserDto userDto){
+    public static User dtoToEntity(UserDto userDto) {
         User entity = new User();
         entity.setEmail(userDto.getEmail());
         entity.setPassword(userDto.getPassword());
@@ -16,7 +16,7 @@ public class UserMapper {
         return entity;
     }
 
-    public static UserDto entityToDto(User entity){
+    public static UserDto entityToDto(User entity) {
         return UserDto.builder()
                 .email(entity.getEmail())
                 .password(entity.getPassword())

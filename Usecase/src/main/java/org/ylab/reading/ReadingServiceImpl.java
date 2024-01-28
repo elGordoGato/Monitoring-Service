@@ -1,7 +1,7 @@
 package org.ylab.reading;
 
-import org.ylab.entity.Reading;
 import org.ylab.entity.Meter;
+import org.ylab.entity.Reading;
 import org.ylab.entity.User;
 import org.ylab.exception.ConflictException;
 import org.ylab.port.ReadingRepository;
@@ -18,10 +18,6 @@ public class ReadingServiceImpl implements ReadingService {
         this.readingRepository = readingRepository;
     }
 
-    /**
-     * @param user
-     * @return
-     */
     @Override
     public List<Reading> getActual(User user) {
         return readingRepository.findActualByUser(user);
@@ -43,11 +39,6 @@ public class ReadingServiceImpl implements ReadingService {
         return readingRepository.save(meterReading);
     }
 
-    /**
-     * @param currentUser
-     * @param date
-     * @return
-     */
     @Override
     public List<Reading> getForMonth(User currentUser, LocalDate date) {
         Instant start = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
@@ -55,10 +46,6 @@ public class ReadingServiceImpl implements ReadingService {
         return readingRepository.findAllByOwnerAndDateBetween(currentUser, start, end);
     }
 
-    /**
-     * @param currentUser
-     * @return
-     */
     @Override
     public List<Reading> getAllByUser(User currentUser) {
         return readingRepository.findAllByOwner(currentUser);

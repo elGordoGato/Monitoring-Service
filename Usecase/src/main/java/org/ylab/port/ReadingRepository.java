@@ -1,7 +1,7 @@
 package org.ylab.port;
 
-import org.ylab.entity.Reading;
 import org.ylab.entity.Meter;
+import org.ylab.entity.Reading;
 import org.ylab.entity.User;
 
 import java.time.Instant;
@@ -35,15 +35,15 @@ public interface ReadingRepository {
 
     /**
      * @param currentUser User for whom readings to find
-     * @param start first date of month for which need to find readings
-     * @param end last date of month for which need to find readings
+     * @param start       first date of month for which need to find readings
+     * @param end         last date of month for which need to find readings
      * @return A list of all readings submitted by user within selected month
      */
     List<Reading> findAllByOwnerAndDateBetween(User currentUser, Instant start, Instant end);
 
     /**
      * @param start first date of month for which need to find readings
-     * @param end last date of month for which need to find readings
+     * @param end   last date of month for which need to find readings
      * @return A list of all readings submitted within selected month
      */
     List<Reading> findAllByDateBetween(Instant start, Instant end);

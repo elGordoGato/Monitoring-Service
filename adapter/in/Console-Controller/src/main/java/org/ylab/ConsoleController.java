@@ -34,23 +34,14 @@ import static java.time.LocalDateTime.now;
 public class ConsoleController {
 
 
-    private final BufferedReader br;
     private final static DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
-
+    private final BufferedReader br;
     /**
      * @see UserService
      */
     private final UserService userService;
-
-    /**
-     * @see ReadingService
-     */
-    private ReadingService readingService;
-
     private final ReadingService readingServiceForUser;
     private final ReadingService readingServiceForAdmin;
-
-
     /**
      * @see MeterService
      */
@@ -59,6 +50,10 @@ public class ConsoleController {
      * Аудит действий пользователя (авторизация, завершение работы, подача показаний, получение истории подачи показаний и тд)
      */
     private final List<String> log = new ArrayList<>();
+    /**
+     * @see ReadingService
+     */
+    private ReadingService readingService;
 
     public ConsoleController(InputStream inputStream,
                              UserService userService,
@@ -264,7 +259,7 @@ public class ConsoleController {
 
     /**
      * @param isAdmin boolean that indicates if authorized user is admin
-     * Setting readingService to corresponding implementation
+     *                Setting readingService to corresponding implementation
      */
     private void setToAdmin(boolean isAdmin) {
         if (isAdmin) readingService = readingServiceForAdmin;

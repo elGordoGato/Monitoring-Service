@@ -16,13 +16,13 @@ public class ManualConfig {
     private static UserRepository userRepository;
     private static MeterRepository meterRepository;
 
-    public static void setInMemoryRepo(){
+    public static void setInMemoryRepo() {
         readingRepository = new ReadingRepositoryInMemory();
         userRepository = new UserRepositoryInMemory();
         meterRepository = new MeterRepositoryInMemory();
     }
 
-    public static UserService getUserService(){
+    public static UserService getUserService() {
         return new UserServiceImpl(userRepository);
     }
 

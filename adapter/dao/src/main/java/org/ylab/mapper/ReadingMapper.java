@@ -10,14 +10,14 @@ import java.util.stream.Collectors;
  * Utils class for mapping reading entity to it's dto and vice-versa
  */
 public class ReadingMapper {
-    public static ReadingDto dtoFromEntity(Reading entity){
+    public static ReadingDto dtoFromEntity(Reading entity) {
         return ReadingDto.builder()
                 .meterType(entity.getMeter().getId())
                 .reading(entity.getReading())
                 .build();
     }
 
-    public static List<ReadingDto> dtoListFromEntity(List<Reading> entityList){
+    public static List<ReadingDto> dtoListFromEntity(List<Reading> entityList) {
         return entityList.stream().map(ReadingMapper::dtoFromEntity).collect(Collectors.toList());
     }
 }

@@ -1,14 +1,14 @@
 package org.ylab;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.Optional;
-import java.util.UUID;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.ylab.entity.User;
 import org.ylab.enums.Role;
+
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class UserRepositoryInMemoryTest {
     private UserRepositoryInMemory userRepository;
