@@ -7,6 +7,16 @@
     <groupId>org.ylab</groupId>
     <artifactId>Monitoring-Service</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <modules>
+        <module>adapter/in/Console-Controller</module>
+        <module>adapter/repository/In-Memory-Repo</module>
+        <module>adapter/dao</module>
+        <module>application/ConsoleApp</module>
+        <module>Config</module>
+        <module>Domain</module>
+        <module>Usecase</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
