@@ -15,20 +15,11 @@ public class ReadingAdminServiceImpl extends ReadingServiceImpl {
         super(readingRepository);
     }
 
-    /**
-     * @param user
-     * @return
-     */
     @Override
     public List<Reading> getActual(User user) {
         return readingRepository.findActualByAdmin();
     }
 
-    /**
-     * @param currentUser
-     * @param date
-     * @return
-     */
     @Override
     public List<Reading> getForMonth(User currentUser, LocalDate date) {
         Instant start = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
@@ -36,10 +27,6 @@ public class ReadingAdminServiceImpl extends ReadingServiceImpl {
         return readingRepository.findAllByDateBetween(start, end);
     }
 
-    /**
-     * @param currentUser
-     * @return
-     */
     @Override
     public List<Reading> getAllByUser(User currentUser) {
         return readingRepository.findAll();
