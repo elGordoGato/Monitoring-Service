@@ -13,17 +13,13 @@ public class MeterRepositoryInMemory implements MeterRepository {
     public MeterRepositoryInMemory() {
         Meter coldWater = new Meter();
         coldWater.setId(1);
-        coldWater.setName("Cold water");
+        coldWater.setType("Cold water");
         meterTypes.put(1, coldWater);
         Meter hotWater = new Meter();
         hotWater.setId(2);
-        hotWater.setName("Hot water");
+        hotWater.setType("Hot water");
         meterTypes.put(2, hotWater);
     }
-
-    /**
-     * @return
-     */
     @Override
     public List<Meter> getAll() {
         return new ArrayList<>(meterTypes.values());

@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO for User entity
+ */
 @Data
 @Builder
 @NoArgsConstructor

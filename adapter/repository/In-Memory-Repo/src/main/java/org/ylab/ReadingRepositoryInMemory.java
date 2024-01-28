@@ -12,47 +12,6 @@ import java.util.stream.Collectors;
 public class ReadingRepositoryInMemory implements ReadingRepository {
     Map<User, List<Reading>> readingMap = new HashMap<>();
 
-
-    /**
-     * @param user User for whom readings to find
-     * @return A list of actual readings for user
-     */
-    @Override
-    public List<Reading> findActualByUser(User user) {
-        List<Reading> readingList = readingMap.getOrDefault(user, new ArrayList<>());
-        return findActualForList(readingList);
-    }
-
-    /**
-     * @return
-     */
-    @Override
-    public List<Reading> findActualByAdmin() {
-        List<Reading> readingList = findAll();
-        return findActualForList(readingList);
-    }
-
-
-    /**
-     * @param user User for whom readings to find
-     * @param type Type of meter of which readings should be found
-     * @return Optional of last MeterReading submitted by user of type
-     */
-    @Override
-    public Optional<Reading> getLastByUserAndType(User user, Meter type) {
-       List<Reading> readingsByUser = readingMap.get(user);
-        if (readingsByUser != null) {
-            return readingsByUser.stream()
-                    .filter(r -> r.getMeter().equals(type))
-                    .max(Comparator.comparing(Reading::getCollectedDate));
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * @param reading MeterReading to be saved
-     * @return MeterReading that was saved
-     */
     @Override
     public Reading save(Reading reading) {
         reading.setCollectedDate(Instant.now());
@@ -65,12 +24,29 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
         return reading;
     }
 
-    /**
-     * @param currentUser User for whom readings to find
-     * @param start first date of month for which need to find readings
-     * @param end last date of month for which need to find readings
-     * @return A list of all readings submitted by user within selected month
-     */
+    @Override
+    public Optional<Reading> findLastByUserAndType(User user, Meter type) {
+       List<Reading> readingsByUser = readingMap.get(user);
+        if (readingsByUser != null) {
+            return readingsByUser.stream()
+                    .filter(r -> r.getMeter().equals(type))
+                    .max(Comparator.comparing(Reading::getCollectedDate));
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<Reading> findActualByUser(User user) {
+        List<Reading> readingList = readingMap.getOrDefault(user, new ArrayList<>());
+        return findActualForList(readingList);
+    }
+
+    @Override
+    public List<Reading> findActualByAdmin() {
+        List<Reading> readingList = findAll();
+        return findActualForList(readingList);
+    }
+
     @Override
     public List<Reading> findAllByOwnerAndDateBetween(User currentUser, Instant start, Instant end) {
         List<Reading> readings = readingMap.get(currentUser);
@@ -84,11 +60,7 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
         return new ArrayList<>();
     }
 
-    /**
-     * @param start
-     * @param end
-     * @return
-     */
+
     @Override
     public List<Reading> findAllByDateBetween(Instant start, Instant end) {
         return findAll().stream()
@@ -98,18 +70,12 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * @param currentUser User for whom readings to find
-     * @return A list of all readings submitted by currentUser
-     */
+
     @Override
     public List<Reading> findAllByOwner(User currentUser) {
        return readingMap.getOrDefault(currentUser, new ArrayList<>());
     }
 
-    /**
-     * @return
-     */
     @Override
     public List<Reading> findAll() {
         List<Reading> readingList = new ArrayList<>();

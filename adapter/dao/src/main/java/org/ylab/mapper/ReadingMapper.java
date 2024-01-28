@@ -6,6 +6,9 @@ import org.ylab.entity.Reading;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Utils class for mapping reading entity to it's dto and vice-versa
+ */
 public class ReadingMapper {
     public static ReadingDto dtoFromEntity(Reading entity){
         return ReadingDto.builder()

@@ -31,7 +31,7 @@ public class UserRepositoryInMemory implements UserRepository {
     }
 
     @Override
-    public Optional<User> getByEmail(String email) {
+    public Optional<User> findByEmail(String email) {
         return Optional.ofNullable(userMap.get(email));
     }
 }

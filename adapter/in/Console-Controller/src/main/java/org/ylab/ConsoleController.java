@@ -47,8 +47,8 @@ public class ConsoleController {
      */
     private ReadingService readingService;
 
-    private final ReadingService readingServiceByUser;
-    private final ReadingService readingServiceByAdmin;
+    private final ReadingService readingServiceForUser;
+    private final ReadingService readingServiceForAdmin;
 
 
     /**
@@ -62,13 +62,13 @@ public class ConsoleController {
 
     public ConsoleController(InputStream inputStream,
                              UserService userService,
-                             ReadingService readingServiceByUser,
-                             ReadingService readingServiceByAdmin,
+                             ReadingService readingServiceForUser,
+                             ReadingService readingServiceForAdmin,
                              MeterService typeService) {
         br = new BufferedReader(new InputStreamReader(inputStream));
         this.userService = userService;
-        this.readingServiceByUser = readingServiceByUser;
-        this.readingServiceByAdmin = readingServiceByAdmin;
+        this.readingServiceForUser = readingServiceForUser;
+        this.readingServiceForAdmin = readingServiceForAdmin;
         this.typeService = typeService;
     }
 
@@ -162,11 +162,20 @@ public class ConsoleController {
         }
     }
 
+    /**
+     * @param currentUser user that has been authorized
+     * @return String of all submitted readings by currentUser
+     */
     private String getHistory(User currentUser) {
         log.add(now() + " - Received request to get all history of readings");
         return convertToString(readingService.getAllByUser(currentUser));
     }
 
+    /**
+     * @param currentUser user that has been authorized
+     * @return String of all readings submitted by currentUser for selected month
+     * @throws IOException exception produced by failed or interrupted I/O operations.
+     */
     private String getReadingsForMonth(User currentUser) throws IOException {
         System.out.println("Please enter the year:");
         int year = Integer.parseInt(br.readLine());
@@ -177,26 +186,39 @@ public class ConsoleController {
         return convertToString(readingService.getForMonth(currentUser, date));
     }
 
+    /**
+     * @param currentUser user that has been authorized
+     * @return String that the reading was successfully sent
+     * @throws IOException exception produced by failed or interrupted I/O operations.
+     */
     private String sendReading(User currentUser) throws IOException {
         List<Meter> availableTypes = typeService.getAll();
         System.out.println("Какой тип счетчика хотите подать?");
-        availableTypes.forEach(t -> System.out.printf("%s - %s%n", t.getId(), t.getName()));
+        availableTypes.forEach(t -> System.out.printf("%s - %s%n", t.getId(), t.getType()));
         int typeId = Integer.parseInt(br.readLine());
         Meter type = typeService.getById(typeId);
-        System.out.println("Введите показания для счетчика: " + type.getName());
+        System.out.println("Введите показания для счетчика: " + type.getType());
         long reading = Long.parseLong(br.readLine());
         log.add(String.format("%s - Received request to send readings: %s - %s",
-                now(), type.getName(), reading));
+                now(), type.getType(), reading));
         readingService.create(currentUser, type, reading);
         return "Readings successfully sent";
     }
 
+    /**
+     * @param currentUser user that has been authorized
+     * @return String of actual (last for each meter) readings submitted by currentUser
+     */
     private String getActualReadings(User currentUser) {
         log.add(now() + " - Received request to get actual readings");
         List<Reading> readings = readingService.getActual(currentUser);
         return convertToString(readings);
     }
 
+    /**
+     * @return User entity that has been authorized
+     * @throws IOException exception produced by failed or interrupted I/O operations.
+     */
     private User loginUser() throws IOException {
         System.out.println("Please enter your email:");
         String email = br.readLine();
@@ -207,6 +229,10 @@ public class ConsoleController {
         return userService.authenticate(email, password);
     }
 
+    /**
+     * @return User entity that has been registered
+     * @throws IOException exception produced by failed or interrupted I/O operations.
+     */
     private User registerUser() throws IOException {
         var userToCreate = new UserDto();
         System.out.println("Please enter your email:");
@@ -222,18 +248,26 @@ public class ConsoleController {
                 UserMapper.dtoToEntity(userToCreate));
     }
 
+    /**
+     * @param readings List of readings to convert in nice string
+     * @return nice string of the readings from list
+     */
     private String convertToString(List<Reading> readings) {
         StringBuilder sb = new StringBuilder();
         readings.forEach(r ->
                 sb.append(String.format("%s - %s: %s\n",
                         FORMATTER.format(r.getCollectedDate().atZone(ZoneId.systemDefault())),
-                        r.getMeter().getName(),
+                        r.getMeter().getType(),
                         r.getReading())));
         return sb.toString();
     }
 
+    /**
+     * @param isAdmin boolean that indicates if authorized user is admin
+     * Setting readingService to corresponding implementation
+     */
     private void setToAdmin(boolean isAdmin) {
-        if (isAdmin) readingService = readingServiceByAdmin;
-        else readingService = readingServiceByUser;
+        if (isAdmin) readingService = readingServiceForAdmin;
+        else readingService = readingServiceForUser;
     }
 }

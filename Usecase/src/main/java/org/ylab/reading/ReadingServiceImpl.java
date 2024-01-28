@@ -29,7 +29,7 @@ public class ReadingServiceImpl implements ReadingService {
 
     @Override
     public Reading create(User user, Meter type, long reading) {
-        readingRepository.getLastByUserAndType(user, type)
+        readingRepository.findLastByUserAndType(user, type)
                 .ifPresent(r -> {
                     if (LocalDate.ofInstant(r.getCollectedDate(), ZoneId.systemDefault()).getMonth()
                             .equals(LocalDate.now().getMonth())) {
