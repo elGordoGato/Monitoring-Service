@@ -10,11 +10,6 @@ import java.time.ZoneId;
 import java.util.List;
 
 public class ReadingAdminServiceImpl extends ReadingServiceImpl {
-
-    public ReadingAdminServiceImpl(ReadingRepository readingRepository) {
-        super(readingRepository);
-    }
-
     @Override
     public List<Reading> getActual(User user) {
         return readingRepository.findActualByAdmin();

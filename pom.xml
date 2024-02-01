@@ -12,6 +12,7 @@
     <modules>
         <module>adapter/in/Console-Controller</module>
         <module>adapter/repository/In-Memory-Repo</module>
+        <module>adapter/repository/JDBC-Repo</module>
         <module>adapter/dao</module>
         <module>application/ConsoleApp</module>
         <module>Config</module>
@@ -23,13 +24,26 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <console.controller.version>1.0-SNAPSHOT</console.controller.version>
+        <inmemory.repo.version>1.0-SNAPSHOT</inmemory.repo.version>
+        <dao.version>1.0-SNAPSHOT</dao.version>
+        <console.app.version>1.0-SNAPSHOT</console.app.version>
+        <config.version>1.0-SNAPSHOT</config.version>
+        <domain.version>1.0-SNAPSHOT</domain.version>
+        <usecase.version>1.0-SNAPSHOT</usecase.version>
+
+        <lombok.version>1.18.30</lombok.version>
+        <mockito.junit.jupiter.version>5.9.0</mockito.junit.jupiter.version>
+        <assertj.core.version>3.25.2</assertj.core.version>
+        <liquibase.version>4.8.0</liquibase.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.30</version>
+            <version>${lombok.version}</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

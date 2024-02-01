@@ -7,7 +7,7 @@ import org.ylab.port.MeterRepository;
 import java.util.List;
 
 public class MeterServiceImpl implements MeterService {
-    MeterRepository typeRepository;
+    private final MeterRepository typeRepository;
 
     public MeterServiceImpl(MeterRepository typeRepository) {
         this.typeRepository = typeRepository;

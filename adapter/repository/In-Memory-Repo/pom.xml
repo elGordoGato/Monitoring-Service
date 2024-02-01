@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>In-Memory-Repo</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -24,27 +24,27 @@
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>Domain</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${domain.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>Usecase</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${usecase.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.9.0</version>
+            <version>${mockito.junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.25.2</version>
+            <version>${assertj.core.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
