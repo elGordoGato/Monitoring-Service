@@ -15,10 +15,10 @@ public class UserRepositoryInMemory implements UserRepository {
     public UserRepositoryInMemory() {
         User admin = new User();
         admin.setId(UUID.randomUUID());
-        admin.setEmail("admin@monitoring-service.org");
+        admin.setEmail("admin");
         admin.setPassword("admin");
-        admin.setFirstName("Admin");
-        admin.setLastName("Adminov");
+        admin.setFirstName("Gospodin");
+        admin.setLastName("Intensiv");
         admin.setRole(Role.ADMIN);
         userMap.put(admin.getEmail(), admin);
     }

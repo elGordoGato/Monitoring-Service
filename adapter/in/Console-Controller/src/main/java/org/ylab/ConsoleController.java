@@ -121,21 +121,21 @@ public class ConsoleController {
      * @throws IOException exceptions produced by failed or interrupted I/O operations.
      */
     private boolean handleAuthorizedUser(User currentUser) throws IOException {
-        setToAdmin(currentUser.getRole().equals(Role.ADMIN));
+        boolean isAdmin = currentUser.getRole().equals(Role.ADMIN);
+        setToAdmin(isAdmin);
         while (true) {
             try {
                 System.out.println(
-                        """
-                                1 - Получить актуальные показания счетчиков
-                                2 - Подать показания
-                                3 - Просмотреть показания за конкретный месяц
-                                4 - Просмотреть историю подачи показаний
-                                5 - Выйти из учетной записи
-                                6 - Выйти из программы""");
+                        "1 - Получить актуальные показания счетчиков\n" +
+                                "2 - " + (isAdmin ? "Добавить новый тип счетчика" : "Подать показания") + "\n" +
+                                "3 - Просмотреть показания за конкретный месяц\n" +
+                                "4 - Просмотреть историю подачи показаний\n" +
+                                "5 - Выйти из учетной записи\n" +
+                                "6 - Выйти из программы");
                 int command = Integer.parseInt(br.readLine());
                 switch (command) {
                     case 1 -> System.out.println(getActualReadings(currentUser));
-                    case 2 -> System.out.println(sendReading(currentUser));
+                    case 2 -> System.out.println(isAdmin ? createMeter() : sendReading(currentUser));
                     case 3 -> System.out.println(getReadingsForMonth(currentUser));
                     case 4 -> System.out.println(getHistory(currentUser));
                     case 5 -> {
@@ -159,26 +159,12 @@ public class ConsoleController {
 
     /**
      * @param currentUser user that has been authorized
-     * @return String of all submitted readings by currentUser
+     * @return String of actual (last for each meter) readings submitted by currentUser
      */
-    private String getHistory(User currentUser) {
-        log.add(now() + " - Received request to get all history of readings");
-        return convertToString(readingService.getAllByUser(currentUser));
-    }
-
-    /**
-     * @param currentUser user that has been authorized
-     * @return String of all readings submitted by currentUser for selected month
-     * @throws IOException exception produced by failed or interrupted I/O operations.
-     */
-    private String getReadingsForMonth(User currentUser) throws IOException {
-        System.out.println("Please enter the year:");
-        int year = Integer.parseInt(br.readLine());
-        System.out.println("Please enter the month number:");
-        int month = Integer.parseInt(br.readLine());
-        LocalDate date = LocalDate.of(year, month, 1);
-        log.add(String.format("%s - Received request to get readings for %s.%s", now(), month, year));
-        return convertToString(readingService.getForMonth(currentUser, date));
+    private String getActualReadings(User currentUser) {
+        log.add(now() + " - Received request to get actual readings");
+        List<Reading> readings = readingService.getActual(currentUser);
+        return convertToString(readings);
     }
 
     /**
@@ -200,28 +186,36 @@ public class ConsoleController {
         return "Readings successfully sent";
     }
 
-    /**
-     * @param currentUser user that has been authorized
-     * @return String of actual (last for each meter) readings submitted by currentUser
-     */
-    private String getActualReadings(User currentUser) {
-        log.add(now() + " - Received request to get actual readings");
-        List<Reading> readings = readingService.getActual(currentUser);
-        return convertToString(readings);
+    private String createMeter() throws IOException {
+        var meterToCreate = new Meter();
+        System.out.println("Please enter type of new meter:");
+        meterToCreate.setType(br.readLine());
+        log.add(now() + " - Received request to create new type of meter: " + meterToCreate.getType());
+        return "Meter successfully created: " + typeService.create(meterToCreate);
     }
 
     /**
-     * @return User entity that has been authorized
+     * @param currentUser user that has been authorized
+     * @return String of all readings submitted by currentUser for selected month
      * @throws IOException exception produced by failed or interrupted I/O operations.
      */
-    private User loginUser() throws IOException {
-        System.out.println("Please enter your email:");
-        String email = br.readLine();
-        System.out.println("Please enter your password:");
-        String password = br.readLine();
-        log.add(String.format("%s - Received request to login user with email: %s and password: %s",
-                now(), email, password));
-        return userService.authenticate(email, password);
+    private String getReadingsForMonth(User currentUser) throws IOException {
+        System.out.println("Please enter the year:");
+        int year = Integer.parseInt(br.readLine());
+        System.out.println("Please enter the month number:");
+        int month = Integer.parseInt(br.readLine());
+        LocalDate date = LocalDate.of(year, month, 1);
+        log.add(String.format("%s - Received request to get readings for %s.%s", now(), month, year));
+        return convertToString(readingService.getForMonth(currentUser, date));
+    }
+
+    /**
+     * @param currentUser user that has been authorized
+     * @return String of all submitted readings by currentUser
+     */
+    private String getHistory(User currentUser) {
+        log.add(now() + " - Received request to get all history of readings");
+        return convertToString(readingService.getAllByUser(currentUser));
     }
 
     /**
@@ -241,6 +235,20 @@ public class ConsoleController {
         log.add(now() + " - Received request to register new user: " + userToCreate);
         return userService.create(
                 UserMapper.dtoToEntity(userToCreate));
+    }
+
+    /**
+     * @return User entity that has been authorized
+     * @throws IOException exception produced by failed or interrupted I/O operations.
+     */
+    private User loginUser() throws IOException {
+        System.out.println("Please enter your email:");
+        String email = br.readLine();
+        System.out.println("Please enter your password:");
+        String password = br.readLine();
+        log.add(String.format("%s - Received request to login user with email: %s and password: %s",
+                now(), email, password));
+        return userService.authenticate(email, password);
     }
 
     /**

@@ -18,4 +18,10 @@ public interface MeterRepository {
      * @return Meter with id
      */
     Optional<Meter> getById(int id);
+
+    /**
+     * @param meter new type of meter to be saved to db
+     * @return Mater that have been saved
+     */
+    Meter save(Meter meter);
 }

@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"org.ylab"},{"l":"org.ylab.dto"},{"l":"org.ylab.entity"},{"l":"org.ylab.enums"},{"l":"org.ylab.exception"},{"l":"org.ylab.mapper"},{"l":"org.ylab.meter"},{"l":"org.ylab.port"},{"l":"org.ylab.reading"},{"l":"org.ylab.user"}];updateSearchResults();

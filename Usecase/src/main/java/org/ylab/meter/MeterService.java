@@ -16,4 +16,10 @@ public interface MeterService {
      * @return Meter type with id
      */
     Meter getById(int id);
+
+    /**
+     * @param meter new type of meter to be created
+     * @return Mater that have been saved
+     */
+    Meter create(Meter meter);
 }

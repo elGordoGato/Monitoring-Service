@@ -23,4 +23,9 @@ public class MeterServiceImpl implements MeterService {
         return typeRepository.getById(id).orElseThrow(() ->
                 new NotFoundException("This type is not supported"));
     }
+
+    @Override
+    public Meter create(Meter meter) {
+        return typeRepository.save(meter);
+    }
 }
