@@ -1,17 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.ylab</groupId>
     <artifactId>Monitoring-Service</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>adapter/in/Console-Controller</module>
+        <module>adapter/repository/In-Memory-Repo</module>
+        <module>adapter/repository/JDBC-Repo</module>
+        <module>adapter/dao</module>
+        <module>application/ConsoleApp</module>
+        <module>Config</module>
+        <module>Domain</module>
+        <module>Usecase</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <console.controller.version>1.0-SNAPSHOT</console.controller.version>
+        <inmemory.repo.version>1.0-SNAPSHOT</inmemory.repo.version>
+        <dao.version>1.0-SNAPSHOT</dao.version>
+        <console.app.version>1.0-SNAPSHOT</console.app.version>
+        <config.version>1.0-SNAPSHOT</config.version>
+        <domain.version>1.0-SNAPSHOT</domain.version>
+        <usecase.version>1.0-SNAPSHOT</usecase.version>
+
+        <lombok.version>1.18.30</lombok.version>
+        <mockito.junit.jupiter.version>5.9.0</mockito.junit.jupiter.version>
+        <assertj.core.version>3.25.2</assertj.core.version>
+        <liquibase.version>4.8.0</liquibase.version>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
 </project>
