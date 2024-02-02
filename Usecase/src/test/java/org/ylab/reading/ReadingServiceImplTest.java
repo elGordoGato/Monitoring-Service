@@ -64,8 +64,9 @@ class ReadingServiceImplTest {
 
         List<Reading> actual = readingService.getActual(user);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -76,12 +77,14 @@ class ReadingServiceImplTest {
 
         Reading created = readingService.create(user, meter, 100);
 
-        verify(readingRepository, times(1)).save(argThat(r ->
-                r.getReading() == 100 &&
-                        r.getOwner().equals(user) &&
-                        r.getMeter().equals(meter)));
-        assertThat(created).isNotNull();
-        assertThat(created).isEqualTo(reading);
+        verify(readingRepository, times(1))
+                .save(argThat(r ->
+                                r.getReading() == 100 &&
+                                r.getOwner().equals(user) &&
+                                r.getMeter().equals(meter)));
+        assertThat(created)
+                .isNotNull()
+                .isEqualTo(reading);
     }
 
     @Test
@@ -103,8 +106,9 @@ class ReadingServiceImplTest {
 
         List<Reading> actual = readingService.getForMonth(user, date);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -115,7 +119,8 @@ class ReadingServiceImplTest {
 
         List<Reading> actual = readingService.getAllByUser(user);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 }

@@ -25,17 +25,17 @@ class UserRepositoryInMemoryTest {
 
         admin = new User();
         admin.setId(UUID.randomUUID());
-        admin.setEmail("admin@monitoring-service.org");
+        admin.setEmail("admin");
         admin.setPassword("admin");
-        admin.setFirstName("Admin");
-        admin.setLastName("Adminov");
+        admin.setFirstName("Gospodin");
+        admin.setLastName("Intensiv");
         admin.setRole(Role.ADMIN);
 
         user = new User();
         user.setEmail("user@example.com");
         user.setPassword("user");
-        user.setFirstName("User");
-        user.setLastName("Userov");
+        user.setFirstName("Bob");
+        user.setLastName("Examplov");
         user.setRole(Role.USER);
     }
 
@@ -59,8 +59,9 @@ class UserRepositoryInMemoryTest {
 
         Optional<User> actual = userRepository.findByEmail(user.getEmail());
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -70,8 +71,9 @@ class UserRepositoryInMemoryTest {
 
         Optional<User> actual = userRepository.findByEmail("unknown@example.com");
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test

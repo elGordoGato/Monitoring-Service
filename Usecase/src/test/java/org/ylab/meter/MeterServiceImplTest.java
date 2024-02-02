@@ -46,8 +46,9 @@ class MeterServiceImplTest {
 
         List<Meter> actual = meterService.getAll();
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -57,8 +58,9 @@ class MeterServiceImplTest {
 
         Meter actual = meterService.getById(1);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(meter);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(meter);
     }
 
     @Test

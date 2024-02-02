@@ -59,8 +59,9 @@ class ReadingAdminServiceImplTest {
 
         List<Reading> actual = readingService.getActual(user);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -74,8 +75,9 @@ class ReadingAdminServiceImplTest {
 
         List<Reading> actual = readingService.getForMonth(user, date);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -86,7 +88,8 @@ class ReadingAdminServiceImplTest {
 
         List<Reading> actual = readingService.getAllByUser(user);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 }

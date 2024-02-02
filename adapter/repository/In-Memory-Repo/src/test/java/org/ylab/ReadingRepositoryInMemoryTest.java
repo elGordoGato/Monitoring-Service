@@ -51,8 +51,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findActualByUser(user);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -62,8 +63,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findActualByUser(user);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -75,8 +77,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findActualByAdmin();
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -87,8 +90,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findActualByAdmin();
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -100,8 +104,9 @@ class ReadingRepositoryInMemoryTest {
 
         Optional<Reading> actual = readingRepository.findLastByUserAndType(user, meter);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -112,8 +117,9 @@ class ReadingRepositoryInMemoryTest {
 
         Optional<Reading> actual = readingRepository.findLastByUserAndType(user, meter);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -123,8 +129,9 @@ class ReadingRepositoryInMemoryTest {
 
         Reading actual = readingRepository.save(reading);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -140,8 +147,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findAllByOwnerAndDateBetween(user, start, end);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -155,8 +163,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findAllByOwnerAndDateBetween(user, start, end);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -172,8 +181,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findAllByDateBetween(start, end);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -187,8 +197,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findAllByDateBetween(start, end);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -200,8 +211,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findAllByOwner(user);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -211,8 +223,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findAllByOwner(user);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -224,8 +237,9 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findAll();
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 
     @Test
@@ -235,7 +249,8 @@ class ReadingRepositoryInMemoryTest {
 
         List<Reading> actual = readingRepository.findAll();
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 }

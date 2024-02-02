@@ -38,8 +38,9 @@ class MeterRepositoryInMemoryTest {
 
         List<Meter> actual = meterRepository.findAll();
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
+        assertThat(actual)
+                .isNotNull()
+                .containsExactlyInAnyOrderElementsOf(expected);
     }
 
     @Test
@@ -61,7 +62,8 @@ class MeterRepositoryInMemoryTest {
 
         Optional<Meter> actual = meterRepository.getById(3);
 
-        assertThat(actual).isNotNull();
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual)
+                .isNotNull()
+                .isEqualTo(expected);
     }
 }
