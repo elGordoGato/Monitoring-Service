@@ -7,8 +7,8 @@ import org.ylab.port.MeterRepository;
 import java.util.*;
 
 public class MeterRepositoryInMemory implements MeterRepository {
-    Map<Integer, Meter> meterTypes = new HashMap<>();
-    int idCounter = 1;
+    private final Map<Integer, Meter> meterTypes = new HashMap<>();
+    private int idCounter = 1;
 
     public MeterRepositoryInMemory() {
         Meter coldWater = new Meter();
@@ -22,7 +22,7 @@ public class MeterRepositoryInMemory implements MeterRepository {
     }
 
     @Override
-    public List<Meter> getAll() {
+    public List<Meter> findAll() {
         return new ArrayList<>(meterTypes.values());
     }
 

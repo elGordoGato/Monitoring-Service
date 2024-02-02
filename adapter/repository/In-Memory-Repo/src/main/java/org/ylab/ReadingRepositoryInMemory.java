@@ -10,17 +10,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ReadingRepositoryInMemory implements ReadingRepository {
-    Map<User, List<Reading>> readingMap = new HashMap<>();
+    private final Map<User, List<Reading>> readingMap = new HashMap<>();
 
     @Override
     public Reading save(Reading reading) {
         reading.setCollectedDate(Instant.now());
         List<Reading> readings = readingMap.getOrDefault(reading.getOwner(), new ArrayList<>());
-
         readings.add(reading);
-
         readingMap.put(reading.getOwner(), readings);
-
         return reading;
     }
 
@@ -60,7 +57,6 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
         return new ArrayList<>();
     }
 
-
     @Override
     public List<Reading> findAllByDateBetween(Instant start, Instant end) {
         return findAll().stream()
@@ -69,7 +65,6 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
                                 r.getCollectedDate().isBefore(end))
                 .collect(Collectors.toList());
     }
-
 
     @Override
     public List<Reading> findAllByOwner(User currentUser) {
@@ -89,7 +84,8 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
                         Reading::getMeter, Collectors.maxBy(
                                 Comparator.comparing(Reading::getCollectedDate))));
         List<Reading> resultList = new ArrayList<>();
-        readingsByType.values().forEach(o -> o.ifPresent(resultList::add));
+        readingsByType.values().forEach(o ->
+                o.ifPresent(resultList::add));
         return resultList;
     }
 }

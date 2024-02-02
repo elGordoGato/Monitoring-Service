@@ -2,6 +2,7 @@ package org.ylab.reading;
 
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -21,6 +22,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
+@DisplayName("Tests of reading admin service functionality")
 @ExtendWith(MockitoExtension.class)
 class ReadingAdminServiceImplTest {
 
@@ -50,6 +52,7 @@ class ReadingAdminServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test to successfully get all actual readings submitted to db for each type by any user")
     void testGetActualSuccess() {
         List<Reading> expected = Collections.singletonList(reading);
         when(readingRepository.findActualByAdmin()).thenReturn(expected);
@@ -61,6 +64,7 @@ class ReadingAdminServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test to successfully return all readings submitted within selected month by any user")
     void testGetForMonthSuccess() {
         LocalDate date = LocalDate.now();
         Instant start = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
@@ -75,6 +79,7 @@ class ReadingAdminServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test to successfully return all readings submitted to db")
     void testGetAllByUserSuccess() {
         List<Reading> expected = Collections.singletonList(reading);
         when(readingRepository.findAll()).thenReturn(expected);

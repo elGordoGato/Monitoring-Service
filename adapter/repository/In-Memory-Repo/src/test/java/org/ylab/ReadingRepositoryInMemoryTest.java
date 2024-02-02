@@ -1,6 +1,7 @@
 package org.ylab;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Tests for in memory meter readings repository functionality")
 class ReadingRepositoryInMemoryTest {
 
     private ReadingRepositoryInMemory readingRepository;
@@ -41,6 +43,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test to successfully find actual readings submitted bu user")
     void testFindActualByUserSuccess() {
         readingRepository.save(reading);
 
@@ -53,6 +56,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test return empty List of actual readings when no readings were submitted by user before")
     void testFindActualByUserEmpty() {
         List<Reading> expected = List.of();
 
@@ -63,6 +67,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test to successfully find by admin actual readings for each meter type submitted by any user before")
     void testFindActualByAdminSuccess() {
         readingRepository.save(reading);
 
@@ -75,6 +80,8 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test to return empty list when requested by admin to find actual readings and " +
+            "no readings were submitted before by any user")
     void testFindActualByAdminEmpty() {
         List<Reading> expected = List.of();
 
@@ -85,6 +92,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Successfully find last submitted meter reading of selected meter type by user")
     void testGetLastByUserAndTypeSuccess() {
         readingRepository.save(reading);
 
@@ -97,6 +105,8 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test find last submitted meter reading of selected meter type by user " +
+            "return Optional.empty when no readings were submitted by user with selected type")
     void testGetLastByUserAndTypeEmpty() {
         Optional<Reading> expected = Optional.empty();
 
@@ -107,6 +117,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Successfully save new meter reading")
     void testSaveSuccess() {
         Reading expected = reading;
 
@@ -117,6 +128,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Successfully find all readings submitted by user within selected period")
     void testFindAllByOwnerAndDateBetweenSuccess() {
         readingRepository.save(reading);
 
@@ -133,6 +145,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Return optional.empty when no readings were submitted by user within selected period")
     void testFindAllByOwnerAndDateBetweenEmpty() {
         LocalDate date = LocalDate.now();
         Instant start = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
@@ -147,6 +160,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test successfully return list of all readings submitted by anybody within selected period")
     void testFindAllByDateBetweenSuccess() {
         readingRepository.save(reading);
 
@@ -163,6 +177,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test return empty list when no readings were submitted by anybody within selected period")
     void testFindAllByDateBetweenEmpty() {
         LocalDate date = LocalDate.now();
         Instant start = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
@@ -177,6 +192,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test successfully return list of all readings submitted by selected user")
     void testFindAllByOwnerSuccess() {
         readingRepository.save(reading);
 
@@ -189,6 +205,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test return empty list if no readings were submitted before by selected user")
     void testFindAllByOwnerEmpty() {
         List<Reading> expected = List.of();
 
@@ -199,6 +216,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test return list of all readings submitted")
     void testFindAllSuccess() {
         readingRepository.save(reading);
 
@@ -211,6 +229,7 @@ class ReadingRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test return empty list if no readings were submitted")
     void testFindAllEmpty() {
         List<Reading> expected = List.of();
 

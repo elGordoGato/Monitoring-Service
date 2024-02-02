@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class UserRepositoryInMemory implements UserRepository {
-    Map<String, User> userMap = new HashMap<>();
+    private final Map<String, User> userMap = new HashMap<>();
 
     public UserRepositoryInMemory() {
         User admin = new User();

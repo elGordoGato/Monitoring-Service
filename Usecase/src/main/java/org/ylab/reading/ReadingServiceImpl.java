@@ -12,7 +12,7 @@ import java.time.ZoneId;
 import java.util.List;
 
 public class ReadingServiceImpl implements ReadingService {
-    ReadingRepository readingRepository;
+    final ReadingRepository readingRepository;
 
     public ReadingServiceImpl(ReadingRepository readingRepository) {
         this.readingRepository = readingRepository;
@@ -24,8 +24,8 @@ public class ReadingServiceImpl implements ReadingService {
     }
 
     @Override
-    public Reading create(User user, Meter type, long reading) {
-        readingRepository.findLastByUserAndType(user, type)
+    public Reading create(User requestingUser, Meter meterType, long readingValue) {
+        readingRepository.findLastByUserAndType(requestingUser, meterType)
                 .ifPresent(r -> {
                     if (LocalDate.ofInstant(r.getCollectedDate(), ZoneId.systemDefault()).getMonth()
                             .equals(LocalDate.now().getMonth())) {
@@ -33,9 +33,9 @@ public class ReadingServiceImpl implements ReadingService {
                     }
                 });
         Reading meterReading = new Reading();
-        meterReading.setMeter(type);
-        meterReading.setOwner(user);
-        meterReading.setReading(reading);
+        meterReading.setMeter(meterType);
+        meterReading.setOwner(requestingUser);
+        meterReading.setReading(readingValue);
         return readingRepository.save(meterReading);
     }
 

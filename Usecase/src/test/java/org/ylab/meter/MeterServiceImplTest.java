@@ -1,6 +1,7 @@
 package org.ylab.meter;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+@DisplayName("Tests for meter type service functionality")
 @ExtendWith(MockitoExtension.class)
 class MeterServiceImplTest {
 
@@ -37,9 +39,10 @@ class MeterServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test successfully return list of all meter types")
     void testGetAllSuccess() {
         List<Meter> expected = Collections.singletonList(meter);
-        when(typeRepository.getAll()).thenReturn(expected);
+        when(typeRepository.findAll()).thenReturn(expected);
 
         List<Meter> actual = meterService.getAll();
 
@@ -48,6 +51,7 @@ class MeterServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test successfully return meter entity when requested by ID")
     void testGetByIdSuccess() {
         when(typeRepository.getById(1)).thenReturn(Optional.of(meter));
 
@@ -58,6 +62,7 @@ class MeterServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test throw not found exception when requested to find meter by ID and it was not found")
     void testGetByIdFailure() {
         when(typeRepository.getById(1)).thenReturn(Optional.empty());
 

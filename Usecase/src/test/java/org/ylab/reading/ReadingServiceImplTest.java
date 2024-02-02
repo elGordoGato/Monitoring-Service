@@ -1,6 +1,7 @@
 package org.ylab.reading;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,6 +26,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.*;
 
+@DisplayName("Tests for reading service functionality")
 @ExtendWith(MockitoExtension.class)
 class ReadingServiceImplTest {
 
@@ -55,6 +57,7 @@ class ReadingServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test to successfully return actual readings submitted by user")
     void testGetActualSuccess() {
         List<Reading> expected = Collections.singletonList(reading);
         when(readingRepository.findActualByUser(user)).thenReturn(expected);
@@ -66,6 +69,7 @@ class ReadingServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test to successfully create new reading by user")
     void testCreateSuccess() {
         when(readingRepository.findLastByUserAndType(user, meter)).thenReturn(Optional.empty());
         when(readingRepository.save(any(Reading.class))).thenReturn(reading);
@@ -81,6 +85,7 @@ class ReadingServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test to throw conflict exception when trying to save reading of same meter type within same month")
     void testCreateFailure() {
         when(readingRepository.findLastByUserAndType(user, meter)).thenReturn(Optional.of(reading));
 
@@ -88,6 +93,7 @@ class ReadingServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test to successfully get readings submitted by user within selected month")
     void testGetForMonthSuccess() {
         LocalDate date = LocalDate.now();
         Instant start = date.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
@@ -102,6 +108,7 @@ class ReadingServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test successfully get all readings submitted by user for the whole time")
     void testGetAllByUserSuccess() {
         List<Reading> expected = Collections.singletonList(reading);
         when(readingRepository.findAllByOwner(user)).thenReturn(expected);

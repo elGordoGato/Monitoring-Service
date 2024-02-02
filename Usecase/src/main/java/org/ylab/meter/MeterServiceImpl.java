@@ -15,7 +15,7 @@ public class MeterServiceImpl implements MeterService {
 
     @Override
     public List<org.ylab.entity.Meter> getAll() {
-        return typeRepository.getAll();
+        return typeRepository.findAll();
     }
 
     @Override

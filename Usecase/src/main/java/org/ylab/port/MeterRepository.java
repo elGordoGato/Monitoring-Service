@@ -11,7 +11,7 @@ public interface MeterRepository {
     /**
      * @return List of all available types of meter
      */
-    List<Meter> getAll();
+    List<Meter> findAll();
 
     /**
      * @param id ID of meter type

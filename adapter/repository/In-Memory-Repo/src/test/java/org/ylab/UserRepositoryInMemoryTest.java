@@ -1,6 +1,8 @@
 package org.ylab;
 
+import jdk.jfr.Frequency;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.ylab.entity.User;
 import org.ylab.enums.Role;
@@ -10,6 +12,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Tests for in memory repository implementation for work with user entity")
 class UserRepositoryInMemoryTest {
     private UserRepositoryInMemory userRepository;
 
@@ -37,6 +40,7 @@ class UserRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Successfully save new user to db")
     void testSaveSuccess() {
         User expected = user;
 
@@ -47,6 +51,7 @@ class UserRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test successfully find user by email field")
     void testGetByEmailSuccess() {
         userRepository.save(user);
 
@@ -59,6 +64,7 @@ class UserRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test return optional.empty when no user with such email in db")
     void testGetByEmailFailure() {
         Optional<User> expected = Optional.empty();
 
@@ -69,6 +75,7 @@ class UserRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test to successfully return admin by email")
     void testGetAdminByEmailSuccess() {
         Optional<User> expected = Optional.of(admin);
 

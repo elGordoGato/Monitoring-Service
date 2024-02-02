@@ -1,6 +1,7 @@
 package org.ylab.user;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+@DisplayName("Tests for service functionality of work with user entity")
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
 
@@ -37,6 +39,7 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test successfully create new user")
     void testCreateUserSuccess() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
         when(userRepository.save(user)).thenReturn(user);
@@ -49,6 +52,8 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test throw conflict exception when trying to save user with same email " +
+            "that have user already saved in db")
     void testCreateUserFailure() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
 
@@ -56,6 +61,7 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test successfully return user when authenticating by proper email and password")
     void testAuthenticateUserSuccess() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
 
@@ -67,6 +73,7 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test throw not found exception when trying to authenticate by email that no saved user has")
     void testAuthenticateUserNotFound() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
 
@@ -74,6 +81,7 @@ class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("Test throw bad request exception when trying to authenticate by email and wrong password")
     void testAuthenticateUserWrongPassword() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
 

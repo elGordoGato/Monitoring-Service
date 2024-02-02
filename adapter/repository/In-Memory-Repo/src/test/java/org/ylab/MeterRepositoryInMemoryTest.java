@@ -1,6 +1,7 @@
 package org.ylab;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.ylab.entity.Meter;
 
@@ -9,6 +10,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Tests for in-memory meter type repository implementation")
 class MeterRepositoryInMemoryTest {
 
     private MeterRepositoryInMemory meterRepository;
@@ -30,16 +32,18 @@ class MeterRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Successfully find all meter types saved in memory")
     void testGetAllSuccess() {
         List<Meter> expected = List.of(coldWater, hotWater);
 
-        List<Meter> actual = meterRepository.getAll();
+        List<Meter> actual = meterRepository.findAll();
 
         assertThat(actual).isNotNull();
         assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
     @Test
+    @DisplayName("Successfully find Meter type by it's ID")
     void testGetByIdSuccess() {
         Optional<Meter> expected = Optional.of(coldWater);
 
@@ -51,6 +55,7 @@ class MeterRepositoryInMemoryTest {
     }
 
     @Test
+    @DisplayName("Test return Optional.empty when no meter type with such ID stored")
     void testGetByIdFailure() {
         Optional<Meter> expected = Optional.empty();
 
