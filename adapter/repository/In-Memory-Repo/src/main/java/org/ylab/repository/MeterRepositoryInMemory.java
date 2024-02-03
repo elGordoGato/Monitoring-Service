@@ -1,4 +1,4 @@
-package org.ylab;
+package org.ylab.repository;
 
 
 import org.ylab.entity.Meter;

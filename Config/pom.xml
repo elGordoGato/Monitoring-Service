@@ -33,6 +33,12 @@
             <artifactId>In-Memory-Repo</artifactId>
             <version>${inmemory.repo.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.ylab</groupId>
+            <artifactId>JDBC-Repo</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

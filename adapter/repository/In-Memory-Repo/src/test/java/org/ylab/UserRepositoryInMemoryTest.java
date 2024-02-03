@@ -1,11 +1,11 @@
 package org.ylab;
 
-import jdk.jfr.Frequency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.ylab.entity.User;
 import org.ylab.enums.Role;
+import org.ylab.repository.UserRepositoryInMemory;
 
 import java.util.Optional;
 import java.util.UUID;

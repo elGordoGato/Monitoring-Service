@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.ylab.entity.Meter;
+import org.ylab.repository.MeterRepositoryInMemory;
 
 import java.util.List;
 import java.util.Optional;

@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>In-Memory-Repo</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -32,6 +32,7 @@
             <groupId>org.ylab</groupId>
             <artifactId>Usecase</artifactId>
             <version>${usecase.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

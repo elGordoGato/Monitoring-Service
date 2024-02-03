@@ -8,6 +8,7 @@ import org.ylab.port.UserRepository;
 import org.ylab.reading.ReadingAdminServiceImpl;
 import org.ylab.reading.ReadingService;
 import org.ylab.reading.ReadingServiceImpl;
+import org.ylab.repository.*;
 import org.ylab.user.UserService;
 import org.ylab.user.UserServiceImpl;
 
@@ -20,6 +21,12 @@ public class ManualConfig {
         readingRepository = new ReadingRepositoryInMemory();
         userRepository = new UserRepositoryInMemory();
         meterRepository = new MeterRepositoryInMemory();
+    }
+
+    public static void setJdbcRepo() {
+        readingRepository = new ReadingJdbcRepository();
+        userRepository = new UserJdbcRepository();
+        meterRepository = new MeterJdbcRepository();
     }
 
     public static UserService getUserService() {

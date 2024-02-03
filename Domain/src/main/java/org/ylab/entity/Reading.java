@@ -17,7 +17,7 @@ public class Reading {
     /**
      * ID of meter reading
      */
-    private UUID id;
+    private Long id;
     /**
      * User that submitted reading
      */

@@ -1,0 +1,28 @@
+version: '3.1'
+services:
+  console-app:
+    build: ./application/ConsoleApp
+    image: console-monitoring-service
+    container_name: console-app
+    stdin_open: true
+    tty: true
+    ports:
+      - "8080:8080"
+    depends_on:
+      - monitoring-db
+    environment:
+      - POSTGRES_DATASOURCE_URL=jdbc:postgresql://monitoring-db:5432/meterdb
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  database:
+    image: postgres:16-alpine
+    container_name: monitoring-db
+    ports:
+      - "6543:5432"
+    volumes:
+      - /var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=meterdb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
 import org.ylab.entity.User;
+import org.ylab.repository.ReadingRepositoryInMemory;
 
 import java.time.Instant;
 import java.time.LocalDate;

@@ -17,7 +17,7 @@ public class User {
     /**
      * ID of user
      */
-    private UUID id;
+    private Long id;
     /**
      * Email of user
      */
