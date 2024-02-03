@@ -17,7 +17,7 @@ public class User {
     /**
      * ID of user
      */
-    private Long id;
+    private Integer id;
     /**
      * Email of user
      */

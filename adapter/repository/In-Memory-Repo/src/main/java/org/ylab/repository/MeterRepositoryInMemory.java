@@ -7,18 +7,18 @@ import org.ylab.port.MeterRepository;
 import java.util.*;
 
 public class MeterRepositoryInMemory implements MeterRepository {
-    private final Map<Integer, Meter> meterTypes = new HashMap<>();
-    private int idCounter = 1;
+    private final Map<Short, Meter> meterTypes = new HashMap<Short, Meter>();
+    private short idCounter = 1;
 
     public MeterRepositoryInMemory() {
         Meter coldWater = new Meter();
         coldWater.setId(idCounter++);
         coldWater.setType("Cold water");
-        meterTypes.put(1, coldWater);
+        meterTypes.put((short) 1, coldWater);
         Meter hotWater = new Meter();
         hotWater.setId(idCounter++);
         hotWater.setType("Hot water");
-        meterTypes.put(2, hotWater);
+        meterTypes.put((short) 2, hotWater);
     }
 
     @Override

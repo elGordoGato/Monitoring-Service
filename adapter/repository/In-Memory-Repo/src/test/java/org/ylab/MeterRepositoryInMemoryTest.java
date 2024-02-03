@@ -24,11 +24,11 @@ class MeterRepositoryInMemoryTest {
         meterRepository = new MeterRepositoryInMemory();
 
         coldWater = new Meter();
-        coldWater.setId(1);
+        coldWater.setId((short) 1);
         coldWater.setType("Cold water");
 
         hotWater = new Meter();
-        hotWater.setId(2);
+        hotWater.setId((short) 2);
         hotWater.setType("Hot water");
     }
 

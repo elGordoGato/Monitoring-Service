@@ -8,7 +8,6 @@ import org.ylab.enums.Role;
 import org.ylab.repository.UserRepositoryInMemory;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +23,7 @@ class UserRepositoryInMemoryTest {
         userRepository = new UserRepositoryInMemory();
 
         admin = new User();
-        admin.setId(UUID.randomUUID());
+        admin.setId(1);
         admin.setEmail("admin");
         admin.setPassword("admin");
         admin.setFirstName("Gospodin");

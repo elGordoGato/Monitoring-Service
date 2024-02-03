@@ -11,9 +11,11 @@ import java.util.stream.Collectors;
 
 public class ReadingRepositoryInMemory implements ReadingRepository {
     private final Map<User, List<Reading>> readingMap = new HashMap<>();
+    private long id = 1;
 
     @Override
     public Reading save(Reading reading) {
+        reading.setId(id++);
         reading.setCollectedDate(Instant.now());
         List<Reading> readings = readingMap.getOrDefault(reading.getOwner(), new ArrayList<>());
         readings.add(reading);
