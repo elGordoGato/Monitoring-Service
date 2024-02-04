@@ -9,5 +9,6 @@ public class Main {
                 ManualConfig.getReadingServiceByAdmin(),
                 ManualConfig.getMeterService());
         controller.start();
+        ConnectionManager.closeConnection();
     }
 }

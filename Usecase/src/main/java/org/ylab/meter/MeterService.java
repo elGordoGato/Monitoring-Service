@@ -15,7 +15,7 @@ public interface MeterService {
      * @param id ID of meter type to get
      * @return Meter type with id
      */
-    Meter getById(int id);
+    Meter getById(short id);
 
     /**
      * @param meter new type of meter to be created

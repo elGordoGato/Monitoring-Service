@@ -31,8 +31,9 @@ public class ConnectionManager {
 
             MigrationManager.migrateDB(dbConnection);
 
+            dbConnection.setAutoCommit(true);
         } catch (SQLException | ClassNotFoundException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex.getMessage());
         }
         return dbConnection;
     }

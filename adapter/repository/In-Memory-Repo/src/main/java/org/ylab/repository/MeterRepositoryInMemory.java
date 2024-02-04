@@ -27,7 +27,7 @@ public class MeterRepositoryInMemory implements MeterRepository {
     }
 
     @Override
-    public Optional<Meter> getById(int id) {
+    public Optional<Meter> getById(short id) {
         return Optional.ofNullable(meterTypes.get(id));
     }
 

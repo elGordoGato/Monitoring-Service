@@ -9,15 +9,15 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - monitoring-db
+      - meter-db
     environment:
-      - POSTGRES_DATASOURCE_URL=jdbc:postgresql://monitoring-db:5432/meterdb
+      - POSTGRES_DATASOURCE_URL=jdbc:postgresql://meter-db:5432/meterdb
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
 
-  database:
+  meter-db:
     image: postgres:16-alpine
-    container_name: monitoring-db
+    container_name: meter-db
     ports:
       - "6543:5432"
     volumes:

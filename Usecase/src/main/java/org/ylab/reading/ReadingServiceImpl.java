@@ -27,8 +27,10 @@ public class ReadingServiceImpl implements ReadingService {
     public Reading create(User requestingUser, Meter meterType, long readingValue) {
         readingRepository.findLastByUserAndType(requestingUser, meterType)
                 .ifPresent(r -> {
-                    if (LocalDate.ofInstant(r.getCollectedDate(), ZoneId.systemDefault()).getMonth()
-                            .equals(LocalDate.now().getMonth())) {
+                    LocalDate collectedDate = LocalDate.ofInstant(r.getCollectedDate(), ZoneId.systemDefault());
+                    if (collectedDate.getYear() == LocalDate.now().getYear() &&
+                            collectedDate.getMonth().equals(LocalDate.now().getMonth())
+                    ) {
                         throw new ConflictException("Readings fot this meter were already collected in this month");
                     }
                 });

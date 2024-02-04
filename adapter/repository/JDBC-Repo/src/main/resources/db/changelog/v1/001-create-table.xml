@@ -23,7 +23,7 @@
                 <column name="password" type="VARCHAR(255)">
                     <constraints nullable="false"/>
                 </column>
-                <column name="role" type="VARCHAR(50)">
+                <column name="role" type="VARCHAR(50)" defaultValue="USER">
                     <constraints nullable="false" checkConstraint="role IN ('USER', 'ADMIN')"/>
                 </column>
             </createTable>

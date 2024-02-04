@@ -177,7 +177,7 @@ public class ConsoleController {
         List<Meter> availableTypes = typeService.getAll();
         System.out.println("Какой тип счетчика хотите подать?");
         availableTypes.forEach(t -> System.out.printf("%s - %s%n", t.getId(), t.getType()));
-        int typeId = Integer.parseInt(br.readLine());
+        short typeId = Short.parseShort(br.readLine());
         Meter type = typeService.getById(typeId);
         System.out.println("Введите показания для счетчика: " + type.getType());
         long reading = Long.parseLong(br.readLine());
