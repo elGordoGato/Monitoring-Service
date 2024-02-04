@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <databaseChangeLog
-        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
         logicalFilePath="db/changelog.xml">
-        <changeSet id="001-create-table" author="ylab">
+    <changeSet id="001-create-table" author="ylab">
 
-            <createTable tableName="users">
-                <column name="id" type="SERIAL" autoIncrement="true">
-                    <constraints primaryKey="true" nullable="false"/>
-                </column>
-                <column name="email" type="VARCHAR(255)">
-                    <constraints nullable="false" unique="true"/>
-                </column>
-                <column name="first_name" type="VARCHAR(255)">
-                    <constraints nullable="false"/>
-                </column>
-                <column name="last_name" type="VARCHAR(255)">
-                    <constraints nullable="false"/>
-                </column>
-                <column name="password" type="VARCHAR(255)">
-                    <constraints nullable="false"/>
-                </column>
-                <column name="role" type="VARCHAR(50)" defaultValue="USER">
-                    <constraints nullable="false" checkConstraint="role IN ('USER', 'ADMIN')"/>
-                </column>
-            </createTable>
+        <createTable tableName="users">
+            <column name="id" type="SERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(50)" defaultValue="USER">
+                <constraints nullable="false" checkConstraint="role IN ('USER', 'ADMIN')"/>
+            </column>
+        </createTable>
 
-            <createTable tableName="meters">
-                <column name="id" type="SMALLSERIAL" autoIncrement="true">
-                    <constraints primaryKey="true" nullable="false"/>
-                </column>
-                <column name="type" type="VARCHAR(255)">
-                    <constraints nullable="false"/>
-                </column>
-            </createTable>
+        <createTable tableName="meters">
+            <column name="id" type="SMALLSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
 
-            <createTable tableName="readings">
-                <column name="id" type="BIGSERIAL" autoIncrement="true">
-                    <constraints primaryKey="true" nullable="false"/>
-                </column>
-                <column name="owner_id" type="BIGINT">
-                    <constraints nullable="false" foreignKeyName="fk_readings_on_users" references="users(id)"/>
-                </column>
-                <column name="meter_id" type="SMALLINT">
-                    <constraints nullable="false" foreignKeyName="fk_readings_on_meters" references="meters(id)"/>
-                </column>
-                <column name="reading_value" type="BIGINT">
-                    <constraints nullable="false"/>
-                </column>
-                <column name="collected_date" type="TIMESTAMP">
-                    <constraints nullable="false"/>
-                </column>
-            </createTable>
-        </changeSet>
+        <createTable tableName="readings">
+            <column name="id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="owner_id" type="BIGINT">
+                <constraints nullable="false" foreignKeyName="fk_readings_on_users" references="users(id)"/>
+            </column>
+            <column name="meter_id" type="SMALLINT">
+                <constraints nullable="false" foreignKeyName="fk_readings_on_meters" references="meters(id)"/>
+            </column>
+            <column name="reading_value" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="collected_date" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>

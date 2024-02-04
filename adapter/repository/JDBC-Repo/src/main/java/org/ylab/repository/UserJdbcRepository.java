@@ -14,8 +14,8 @@ import java.util.Optional;
 public class UserJdbcRepository implements UserRepository {
     private final Connection connection;
 
-    public UserJdbcRepository() {
-        connection = ConnectionManager.getConnection();
+    public UserJdbcRepository(ConnectionManager connectionManager) {
+        connection = connectionManager.getConnection();
     }
 
     @Override
@@ -33,6 +33,7 @@ public class UserJdbcRepository implements UserRepository {
             rs.next();
             user.setId(rs.getInt("id"));
             user.setRole(Role.USER);
+            connection.commit();
             return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -54,6 +55,7 @@ public class UserJdbcRepository implements UserRepository {
                 Role role = Role.valueOf(rs.getString("role"));
                 foundUser = new User(id, email, firstName, lastName, password, role);
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

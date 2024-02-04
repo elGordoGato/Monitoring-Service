@@ -15,8 +15,8 @@ import java.util.Optional;
 public class ReadingJdbcRepository implements ReadingRepository {
     private final Connection connection;
 
-    public ReadingJdbcRepository() {
-        connection = ConnectionManager.getConnection();
+    public ReadingJdbcRepository(ConnectionManager connectionManager) {
+        connection = connectionManager.getConnection();
     }
 
     @Override
@@ -35,6 +35,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
             rs.next();
             reading.setId(rs.getLong("id"));
             reading.setCollectedDate(now);
+            connection.commit();
             return reading;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -45,15 +46,17 @@ public class ReadingJdbcRepository implements ReadingRepository {
     public Optional<Reading> findLastByUserAndType(User user, Meter type) {
         Reading foundReading = null;
         try (PreparedStatement pstmt = connection.prepareStatement(
-                "SELECT id, collected_date FROM entities.readings WHERE owner_id = ? AND meter_id = ?")) {
+                "SELECT id, collected_date FROM entities.readings WHERE owner_id = ? AND meter_id = ? " +
+                        "ORDER BY collected_date DESC LIMIT 1")) {
             pstmt.setInt(1, user.getId());
             pstmt.setShort(2, type.getId());
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 foundReading = new Reading();
                 foundReading.setId(rs.getLong("id"));
                 foundReading.setCollectedDate(rs.getTimestamp("collected_date").toInstant());
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -69,9 +72,10 @@ public class ReadingJdbcRepository implements ReadingRepository {
                         "SELECT MAX(r2.collected_date) FROM entities.readings r2 WHERE r2.meter_id = r1.meter_id)")) {
             pstmt.setInt(1, user.getId());
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 foundActualReadings.add(parseResultSet(rs));
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -81,13 +85,14 @@ public class ReadingJdbcRepository implements ReadingRepository {
     @Override
     public List<Reading> findActualByAdmin() {
         List<Reading> foundActualReadings = new ArrayList<>();
-        try (Statement stmt = connection.createStatement()){
+        try (Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT r1.*, m.type FROM entities.readings r1 " +
                     "JOIN entities.meters m on m.id = r1.meter_id WHERE r1.collected_date = (" +
                     "SELECT MAX(r2.collected_date) FROM entities.readings r2 WHERE r2.meter_id = r1.meter_id)");
-            while (rs.next()){
+            while (rs.next()) {
                 foundActualReadings.add(parseResultSet(rs));
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -105,9 +110,10 @@ public class ReadingJdbcRepository implements ReadingRepository {
             pstmt.setTimestamp(3, Timestamp.from(end));
 
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -123,9 +129,10 @@ public class ReadingJdbcRepository implements ReadingRepository {
             pstmt.setTimestamp(1, Timestamp.from(start));
             pstmt.setTimestamp(2, Timestamp.from(end));
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -140,9 +147,10 @@ public class ReadingJdbcRepository implements ReadingRepository {
                         "WHERE r.owner_id = ?")) {
             pstmt.setInt(1, currentUser.getId());
             ResultSet rs = pstmt.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -152,12 +160,13 @@ public class ReadingJdbcRepository implements ReadingRepository {
     @Override
     public List<Reading> findAll() {
         List<Reading> readings = new ArrayList<>();
-        try (Statement stmt = connection.createStatement()){
+        try (Statement stmt = connection.createStatement()) {
             ResultSet rs = stmt.executeQuery("SELECT r.*, m.type FROM entities.readings r " +
                     "JOIN entities.meters m on m.id = r.meter_id");
-            while (rs.next()){
+            while (rs.next()) {
                 readings.add(parseResultSet(rs));
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

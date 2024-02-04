@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ylab.enums.Role;
 
-import java.util.UUID;
-
 /**
  * User of app
  */

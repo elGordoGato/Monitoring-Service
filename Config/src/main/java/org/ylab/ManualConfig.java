@@ -24,9 +24,18 @@ public class ManualConfig {
     }
 
     public static void setJdbcRepo() {
-        readingRepository = new ReadingJdbcRepository();
-        userRepository = new UserJdbcRepository();
-        meterRepository = new MeterJdbcRepository();
+        String dbDriver = DatabaseConfig.getDriver();
+        String connectionUrl = DatabaseConfig.getURL();
+        String userName = DatabaseConfig.getUserName();
+        String password = DatabaseConfig.getPassword();
+
+        ConnectionManager connectionManager = new ConnectionManager(
+                dbDriver, connectionUrl, userName, password);
+        MigrationManager.migrateDB(connectionManager.getConnection());
+
+        readingRepository = new ReadingJdbcRepository(connectionManager);
+        userRepository = new UserJdbcRepository(connectionManager);
+        meterRepository = new MeterJdbcRepository(connectionManager);
     }
 
     public static UserService getUserService() {

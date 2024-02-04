@@ -7,7 +7,6 @@ import org.ylab.port.UserRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public class UserRepositoryInMemory implements UserRepository {
     private final Map<String, User> userMap = new HashMap<>();

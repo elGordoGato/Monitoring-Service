@@ -13,14 +13,13 @@ import java.util.Optional;
 public class MeterJdbcRepository implements MeterRepository {
     private final Connection connection;
 
-    public MeterJdbcRepository() {
-        connection = ConnectionManager.getConnection();
+    public MeterJdbcRepository(ConnectionManager connectionManager) {
+        connection = connectionManager.getConnection();
     }
 
     @Override
     public List<Meter> findAll() {
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
                     "SELECT * FROM entities.meters;");
             List<Meter> meters = new ArrayList<>();
@@ -29,6 +28,7 @@ public class MeterJdbcRepository implements MeterRepository {
                 String type = resultSet.getString("type");
                 meters.add(new Meter(id, type));
             }
+            connection.commit();
             return meters;
         } catch (SQLException e) {
             System.out.println("Got SQL Exception " + e.getMessage());
@@ -38,33 +38,33 @@ public class MeterJdbcRepository implements MeterRepository {
 
     @Override
     public Optional<Meter> getById(short id) {
-        try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT * FROM entities.meters WHERE id = ?;");
+        Meter meter = null;
+        try (PreparedStatement statement = connection.prepareStatement(
+                "SELECT * FROM entities.meters WHERE id = ?;")) {
             statement.setShort(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                Meter meter = new Meter(
+                meter = new Meter(
                         resultSet.getShort("id"),
                         resultSet.getString("type"));
-                return Optional.of(meter);
             }
+            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return Optional.empty();
+        return Optional.ofNullable(meter);
     }
 
     @Override
     public Meter save(Meter meter) {
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(
-                    "INSERT INTO entities.meters (type) VALUES (?) RETURNING id");
+        try (PreparedStatement pstmt = connection.prepareStatement(
+                "INSERT INTO entities.meters (type) VALUES (?) RETURNING id")) {
             pstmt.setString(1, meter.getType());
             pstmt.execute();
             ResultSet rs = pstmt.getResultSet();
             rs.next();
             meter.setId(rs.getShort("id"));
+            connection.commit();
             return meter;
         } catch (SQLException e) {
             throw new RuntimeException(e);
