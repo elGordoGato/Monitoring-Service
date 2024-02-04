@@ -44,6 +44,7 @@ public class MigrationManager {
         try (Statement statement = dbConnection.createStatement()) {
             statement.execute("CREATE SCHEMA IF NOT EXISTS entities;" +
                     "CREATE SCHEMA IF NOT EXISTS service;");
+            dbConnection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
