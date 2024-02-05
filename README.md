@@ -39,7 +39,7 @@ Unit-тестирование
 
 ## Стек:
 
-> Java 17, Maven, Lombok, JUnit, Mockito, AssertJ
+> Java 17, Maven, Postgresql, Lombok, JUnit, Mockito, AssertJ, Testcontainers
 
 ---
 
