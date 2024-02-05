@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>Config</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
 
     <properties>

@@ -1,4 +1,4 @@
-package org.ylab;
+package org.ylab.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
 import org.ylab.entity.User;
-import org.ylab.repository.ReadingRepositoryInMemory;
 
 import java.time.Instant;
 import java.time.LocalDate;

@@ -1,10 +1,9 @@
-package org.ylab;
+package org.ylab.repository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.ylab.entity.Meter;
-import org.ylab.repository.MeterRepositoryInMemory;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +48,7 @@ class MeterRepositoryInMemoryTest {
     void testGetByIdSuccess() {
         Optional<Meter> expected = Optional.of(coldWater);
 
-        Optional<Meter> actual = meterRepository.getById(1);
+        Optional<Meter> actual = meterRepository.getById((short) 1);
 
         assertThat(actual).isNotNull();
         assertThat(actual.isPresent()).isTrue();
@@ -61,7 +60,7 @@ class MeterRepositoryInMemoryTest {
     void testGetByIdFailure() {
         Optional<Meter> expected = Optional.empty();
 
-        Optional<Meter> actual = meterRepository.getById(3);
+        Optional<Meter> actual = meterRepository.getById((short) 3);
 
         assertThat(actual)
                 .isNotNull()
