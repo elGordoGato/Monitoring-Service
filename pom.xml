@@ -27,6 +27,7 @@
 
         <console.controller.version>1.0-SNAPSHOT</console.controller.version>
         <inmemory.repo.version>1.0-SNAPSHOT</inmemory.repo.version>
+        <jdbc.repo.version>1.0-SNAPSHOT</jdbc.repo.version>
         <dao.version>1.0-SNAPSHOT</dao.version>
         <console.app.version>1.0-SNAPSHOT</console.app.version>
         <config.version>1.0-SNAPSHOT</config.version>
@@ -34,9 +35,12 @@
         <usecase.version>1.0-SNAPSHOT</usecase.version>
 
         <lombok.version>1.18.30</lombok.version>
+        <postgresql.version>42.7.1</postgresql.version>
+        <liquibase.core.version>4.8.0</liquibase.core.version>
         <mockito.junit.jupiter.version>5.9.0</mockito.junit.jupiter.version>
         <assertj.core.version>3.25.2</assertj.core.version>
-        <liquibase.version>4.8.0</liquibase.version>
+        <testcontainers.postgresql.version>1.19.4</testcontainers.postgresql.version>
+        <log4j.version>2.22.1</log4j.version>
     </properties>
 
     <dependencies>

@@ -1,9 +1,6 @@
 package org.ylab.repository;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.ylab.ConnectionManager;
 import org.ylab.entity.Meter;
@@ -13,6 +10,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Tests for meter jdbc repository using test container")
 class MeterJdbcRepositoryTest {
     private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
             "postgres:16-alpine");
