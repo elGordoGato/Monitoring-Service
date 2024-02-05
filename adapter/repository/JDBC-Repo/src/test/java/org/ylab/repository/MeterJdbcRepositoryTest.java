@@ -41,6 +41,7 @@ class MeterJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test to find all meters saved to db")
     public void testFindAll() {
         // given
 
@@ -54,6 +55,7 @@ class MeterJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Successfully find Meter type by it's ID")
     public void testGetById() {
         // given
         Meter meter = new Meter();
@@ -69,6 +71,7 @@ class MeterJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test save new meter to DB")
     public void testSave() {
         // given
         Meter meter = new Meter();

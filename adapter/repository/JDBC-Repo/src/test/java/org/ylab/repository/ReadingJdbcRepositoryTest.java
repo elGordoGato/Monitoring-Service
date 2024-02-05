@@ -1,9 +1,6 @@
 package org.ylab.repository;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.ylab.ConnectionManager;
 import org.ylab.entity.Meter;
@@ -23,6 +20,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Tests for jdbc meter readings repository functionality using test container")
 class ReadingJdbcRepositoryTest {
     private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
             "postgres:16-alpine");
@@ -57,9 +55,11 @@ class ReadingJdbcRepositoryTest {
 
 
     @Test
+    @DisplayName("Successfully save new meter reading")
     public void testSave() {
         // given
-        User user = new User(1, "test@test.com", "Test", "User", "secret", Role.USER);
+        User user = new User(
+                1, "test@test.com", "Test", "User", "secret", Role.USER);
         Meter meter = new Meter((short) 1, "Cold water");
         Reading reading = new Reading(null, user, meter, 100, Instant.now());
 
@@ -74,6 +74,7 @@ class ReadingJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Successfully find last submitted meter reading of selected meter type by user")
     public void testFindLastByUserAndType() {
         // given
         try (Statement stmt = connection.createStatement()) {
@@ -109,6 +110,7 @@ class ReadingJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test to successfully find actual readings submitted bu user")
     public void testFindActualByUser() {
         // given
         try (Statement stmt = connection.createStatement()) {
@@ -123,7 +125,8 @@ class ReadingJdbcRepositoryTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        User user = new User(123, "test@test.com", "Test", "User", "secret", Role.USER);
+        User user = new User(
+                123, "test@test.com", "Test", "User", "secret", Role.USER);
         Meter meter1 = new Meter((short) 1, "Cold water");
         Meter meter2 = new Meter((short) 2, "Hot water");
         Reading reading1 = new Reading(null, user, meter1, 50, Instant.now());
@@ -143,6 +146,7 @@ class ReadingJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Successfully find all readings submitted by user within selected period")
     public void testFindAllByOwnerAndDateBetween() {
         // given
         try (Statement stmt = connection.createStatement()) {
@@ -161,16 +165,19 @@ class ReadingJdbcRepositoryTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        User user = new User(123, "test@test.com", "Test", "User", "secret", Role.USER);
+        User user = new User(
+                123, "test@test.com", "Test", "User", "secret", Role.USER);
 
         // when
-        List<Reading> readings = readingRepository.findAllByOwnerAndDateBetween(user, Instant.parse("2024-02-01T00:00:00Z"), Instant.parse("2024-02-28T23:59:59Z"));
+        List<Reading> readings = readingRepository.findAllByOwnerAndDateBetween(
+                user, Instant.parse("2024-02-01T00:00:00Z"), Instant.parse("2024-02-28T23:59:59Z"));
 
         // then
         assertThat(readings).hasSize(2);
     }
 
     @Test
+    @DisplayName("Test to successfully find by admin actual readings for each meter type submitted by any user before")
     public void testFindActualByAdmin() {
         // given
         try (Statement stmt = connection.createStatement()) {
@@ -193,9 +200,12 @@ class ReadingJdbcRepositoryTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        User user1 = new User(13, "user1@test.com", "User", "One", "secret", Role.USER);
-        User user2 = new User(14, "user2@test.com", "User", "Two", "secret", Role.USER);
-        User admin = new User(15, "admin@test.com", "Admin", "User", "secret", Role.ADMIN);
+        User user1 = new User(
+                13, "user1@test.com", "User", "One", "secret", Role.USER);
+        User user2 = new User(
+                14, "user2@test.com", "User", "Two", "secret", Role.USER);
+        User admin = new User(
+                15, "admin@test.com", "Admin", "User", "secret", Role.ADMIN);
         Meter meter1 = new Meter((short) 1, "Cold water");
         Meter meter2 = new Meter((short) 2, "Hot water");
         Reading reading1 = new Reading(null, user1, meter1, 100, Instant.now());
@@ -215,7 +225,9 @@ class ReadingJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test successfully return list of all readings submitted by anybody within selected period")
     public void testFindAllByDateBetween() {
+        // given
         try (Statement stmt = connection.createStatement()) {
             stmt.execute("""
                     INSERT INTO entities.users (id, email, first_name, last_name, password, role)
@@ -232,17 +244,19 @@ class ReadingJdbcRepositoryTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        // given
-        User user = new User(13, "test@test.com", "Test", "User", "secret", Role.USER);
+        User user = new User(
+                13, "test@test.com", "Test", "User", "secret", Role.USER);
 
         // when
-        List<Reading> readings = readingRepository.findAllByDateBetween(Instant.parse("2024-02-01T00:00:00Z"), Instant.parse("2024-02-28T23:59:59Z"));
+        List<Reading> readings = readingRepository.findAllByDateBetween(
+                Instant.parse("2024-02-01T00:00:00Z"), Instant.parse("2024-02-28T23:59:59Z"));
 
         // then
         assertThat(readings).hasSize(2);
     }
 
     @Test
+    @DisplayName("Test successfully return list of all readings submitted by selected user")
     public void testFindAllByOwner() {
         // given
         try (Statement stmt = connection.createStatement()) {
@@ -265,9 +279,8 @@ class ReadingJdbcRepositoryTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        User user1 = new User(13, "user1@test.com", "User", "One", "secret", Role.USER);
-        User user2 = new User(14, "user2@test.com", "User", "Two", "secret", Role.USER);
-        Meter meter = new Meter((short) 1, "Cold water");
+        User user1 = new User(
+                13, "user1@test.com", "User", "One", "secret", Role.USER);
 
         // when
         List<Reading> readings = readingRepository.findAllByOwner(user1);
@@ -277,6 +290,7 @@ class ReadingJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test return list of all readings submitted")
     public void testFindAll() {
         // given
         try (Statement stmt = connection.createStatement()) {
@@ -306,6 +320,4 @@ class ReadingJdbcRepositoryTest {
         // then
         assertThat(readings).hasSize(4);
     }
-
-
 }

@@ -1,9 +1,6 @@
 package org.ylab.repository;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.ylab.ConnectionManager;
 import org.ylab.entity.User;
@@ -13,6 +10,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@DisplayName("Tests for jdbc repository implementation for work with user entity using test container")
 public class UserJdbcRepositoryTest {
 
     private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
@@ -44,6 +42,7 @@ public class UserJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Successfully save new user to db")
     public void testSaveUser() {
         // given
         User user = new User();
@@ -61,6 +60,7 @@ public class UserJdbcRepositoryTest {
     }
 
     @Test
+    @DisplayName("Test successfully find user by email field")
     public void testFindByEmail() {
         // given
         User user = new User();
