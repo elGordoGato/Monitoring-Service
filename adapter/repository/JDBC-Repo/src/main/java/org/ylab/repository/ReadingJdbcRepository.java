@@ -13,6 +13,35 @@ import java.util.List;
 import java.util.Optional;
 
 public class ReadingJdbcRepository implements ReadingRepository {
+    private final static String SAVE_QUERY = """
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (?,?,?,?)""";
+    private final static String FIND_LAST_BY_USER_AND_TYPE_QUERY = """
+            SELECT id, collected_date FROM entities.readings WHERE owner_id = ? AND meter_id = ?
+            ORDER BY collected_date DESC LIMIT 1;""";
+    private final static String FIND_ACTUAL_BY_USER_QUERY = """
+            SELECT r1.*, m.type FROM entities.readings r1 JOIN entities.meters m on m.id = r1.meter_id
+            WHERE r1.owner_id = ? AND r1.collected_date = (SELECT MAX(r2.collected_date)
+                                                           FROM entities.readings r2
+                                                           WHERE r2.meter_id = r1.meter_id)""";
+    private final static String FIND_ACTUAL_BY_ADMIN_QUERY = """
+            SELECT r1.*, m.type FROM entities.readings r1
+            JOIN entities.meters m on m.id = r1.meter_id
+            WHERE r1.collected_date = (SELECT MAX(r2.collected_date)
+                                       FROM entities.readings r2
+                                       WHERE r2.meter_id = r1.meter_id)""";
+    private final static String FIND_ALL_BY_OWNER_AND_DATE_BETWEEN_QUERY = """
+            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id
+            WHERE r.owner_id = ? AND r.collected_date BETWEEN ? AND ?""";
+    private final static String FIND_ALL_BY_DATE_BETWEEN_QUERY = """
+            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id
+            WHERE r.collected_date BETWEEN ? AND ?""";
+    private final static String FIND_ALL_BY_OWNER_QUERY = """
+            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id
+            WHERE r.owner_id = ?""";
+    private final static String FIND_ALL_QUERY = """
+            SELECT r.*, m.type FROM entities.readings r
+            JOIN entities.meters m on m.id = r.meter_id""";
     private final Connection connection;
 
     public ReadingJdbcRepository(ConnectionManager connectionManager) {
@@ -22,20 +51,18 @@ public class ReadingJdbcRepository implements ReadingRepository {
     @Override
     public Reading save(Reading reading) {
         try (PreparedStatement pstmt = connection.prepareStatement(
-                "INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date) " +
-                        "VALUES (?,?,?,?) RETURNING id")) {
+                SAVE_QUERY)) {
             Instant now = Instant.now();
             pstmt.setInt(1, reading.getOwner().getId());
             pstmt.setShort(2, reading.getMeter().getId());
             pstmt.setLong(3, reading.getReading());
             pstmt.setTimestamp(4, Timestamp.from(now));
 
-            pstmt.execute();
-            ResultSet rs = pstmt.getResultSet();
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
             rs.next();
             reading.setId(rs.getLong("id"));
             reading.setCollectedDate(now);
-            connection.commit();
             return reading;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -45,9 +72,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
     @Override
     public Optional<Reading> findLastByUserAndType(User user, Meter type) {
         Reading foundReading = null;
-        try (PreparedStatement pstmt = connection.prepareStatement(
-                "SELECT id, collected_date FROM entities.readings WHERE owner_id = ? AND meter_id = ? " +
-                        "ORDER BY collected_date DESC LIMIT 1")) {
+        try (PreparedStatement pstmt = connection.prepareStatement(FIND_LAST_BY_USER_AND_TYPE_QUERY)) {
             pstmt.setInt(1, user.getId());
             pstmt.setShort(2, type.getId());
             ResultSet rs = pstmt.executeQuery();
@@ -56,7 +81,6 @@ public class ReadingJdbcRepository implements ReadingRepository {
                 foundReading.setId(rs.getLong("id"));
                 foundReading.setCollectedDate(rs.getTimestamp("collected_date").toInstant());
             }
-            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -65,46 +89,19 @@ public class ReadingJdbcRepository implements ReadingRepository {
 
     @Override
     public List<Reading> findActualByUser(User user) {
-        List<Reading> foundActualReadings = new ArrayList<>();
-        try (PreparedStatement pstmt = connection.prepareStatement(
-                "SELECT r1.*, m.type FROM entities.readings r1 JOIN entities.meters m on m.id = r1.meter_id " +
-                        "WHERE r1.owner_id = ? AND r1.collected_date = (" +
-                        "SELECT MAX(r2.collected_date) FROM entities.readings r2 WHERE r2.meter_id = r1.meter_id)")) {
-            pstmt.setInt(1, user.getId());
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                foundActualReadings.add(parseResultSet(rs));
-            }
-            connection.commit();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return foundActualReadings;
+        return getReadings(user, FIND_ACTUAL_BY_USER_QUERY);
     }
 
     @Override
     public List<Reading> findActualByAdmin() {
-        List<Reading> foundActualReadings = new ArrayList<>();
-        try (Statement stmt = connection.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT r1.*, m.type FROM entities.readings r1 " +
-                    "JOIN entities.meters m on m.id = r1.meter_id WHERE r1.collected_date = (" +
-                    "SELECT MAX(r2.collected_date) FROM entities.readings r2 WHERE r2.meter_id = r1.meter_id)");
-            while (rs.next()) {
-                foundActualReadings.add(parseResultSet(rs));
-            }
-            connection.commit();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return foundActualReadings;
+        return getReadings(FIND_ACTUAL_BY_ADMIN_QUERY);
     }
 
     @Override
     public List<Reading> findAllByOwnerAndDateBetween(User currentUser, Instant start, Instant end) {
         List<Reading> foundReadings = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(
-                "SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id " +
-                        "WHERE r.owner_id = ? AND r.collected_date BETWEEN ? AND ?")) {
+                FIND_ALL_BY_OWNER_AND_DATE_BETWEEN_QUERY)) {
             pstmt.setInt(1, currentUser.getId());
             pstmt.setTimestamp(2, Timestamp.from(start));
             pstmt.setTimestamp(3, Timestamp.from(end));
@@ -113,7 +110,6 @@ public class ReadingJdbcRepository implements ReadingRepository {
             while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
-            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -124,15 +120,13 @@ public class ReadingJdbcRepository implements ReadingRepository {
     public List<Reading> findAllByDateBetween(Instant start, Instant end) {
         List<Reading> foundReadings = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(
-                "SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id " +
-                        "WHERE r.collected_date BETWEEN ? AND ?")) {
+                FIND_ALL_BY_DATE_BETWEEN_QUERY)) {
             pstmt.setTimestamp(1, Timestamp.from(start));
             pstmt.setTimestamp(2, Timestamp.from(end));
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
-            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -141,32 +135,38 @@ public class ReadingJdbcRepository implements ReadingRepository {
 
     @Override
     public List<Reading> findAllByOwner(User currentUser) {
+        return getReadings(currentUser, FIND_ALL_BY_OWNER_QUERY);
+    }
+
+
+    @Override
+    public List<Reading> findAll() {
+        return getReadings(FIND_ALL_QUERY);
+    }
+
+    private List<Reading> getReadings(User currentUser, String findAllByOwnerQuery) {
         List<Reading> foundReadings = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(
-                "SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id " +
-                        "WHERE r.owner_id = ?")) {
+                findAllByOwnerQuery)) {
             pstmt.setInt(1, currentUser.getId());
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
-            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return foundReadings;
     }
 
-    @Override
-    public List<Reading> findAll() {
+
+    private List<Reading> getReadings(String findAllQuery) {
         List<Reading> readings = new ArrayList<>();
         try (Statement stmt = connection.createStatement()) {
-            ResultSet rs = stmt.executeQuery("SELECT r.*, m.type FROM entities.readings r " +
-                    "JOIN entities.meters m on m.id = r.meter_id");
+            ResultSet rs = stmt.executeQuery(findAllQuery);
             while (rs.next()) {
                 readings.add(parseResultSet(rs));
             }
-            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

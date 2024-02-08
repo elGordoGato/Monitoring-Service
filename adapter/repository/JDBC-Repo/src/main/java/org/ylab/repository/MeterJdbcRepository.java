@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 
 public class MeterJdbcRepository implements MeterRepository {
+    private static final String FIND_ALL_QUERY = "SELECT * FROM entities.meters;";
+    private static final String FIND_BY_ID_QUERY = "SELECT * FROM entities.meters WHERE id = ?;";
+    private static final String SAVE_QUERY = "INSERT INTO entities.meters (type) VALUES (?)";
     private final Connection connection;
 
     public MeterJdbcRepository(ConnectionManager connectionManager) {
@@ -21,14 +24,13 @@ public class MeterJdbcRepository implements MeterRepository {
     public List<Meter> findAll() {
         try (Statement statement = connection.createStatement()) {
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM entities.meters;");
+                    FIND_ALL_QUERY);
             List<Meter> meters = new ArrayList<>();
             while (resultSet.next()) {
                 short id = resultSet.getShort("id");
                 String type = resultSet.getString("type");
                 meters.add(new Meter(id, type));
             }
-            connection.commit();
             return meters;
         } catch (SQLException e) {
             System.out.println("Got SQL Exception " + e.getMessage());
@@ -40,7 +42,7 @@ public class MeterJdbcRepository implements MeterRepository {
     public Optional<Meter> getById(short id) {
         Meter meter = null;
         try (PreparedStatement statement = connection.prepareStatement(
-                "SELECT * FROM entities.meters WHERE id = ?;")) {
+                FIND_BY_ID_QUERY)) {
             statement.setShort(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -48,7 +50,6 @@ public class MeterJdbcRepository implements MeterRepository {
                         resultSet.getShort("id"),
                         resultSet.getString("type"));
             }
-            connection.commit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -58,13 +59,12 @@ public class MeterJdbcRepository implements MeterRepository {
     @Override
     public Meter save(Meter meter) {
         try (PreparedStatement pstmt = connection.prepareStatement(
-                "INSERT INTO entities.meters (type) VALUES (?) RETURNING id")) {
+                SAVE_QUERY)) {
             pstmt.setString(1, meter.getType());
-            pstmt.execute();
-            ResultSet rs = pstmt.getResultSet();
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
             rs.next();
             meter.setId(rs.getShort("id"));
-            connection.commit();
             return meter;
         } catch (SQLException e) {
             throw new RuntimeException(e);

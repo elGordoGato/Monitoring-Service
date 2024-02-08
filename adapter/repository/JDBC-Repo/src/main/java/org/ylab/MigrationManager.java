@@ -7,6 +7,7 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,8 +15,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+@Slf4j
 public class MigrationManager {
-    private static final Logger log = LoggerFactory.getLogger(MigrationManager.class);
     private static final String changelog = "db/changelog/changelog.xml";
 
     public static void migrateDB(Connection connection) {
@@ -44,8 +45,9 @@ public class MigrationManager {
         try (Statement statement = dbConnection.createStatement()) {
             statement.execute("CREATE SCHEMA IF NOT EXISTS entities;" +
                     "CREATE SCHEMA IF NOT EXISTS service;");
-            dbConnection.commit();
+            log.info("Schema initialized");
         } catch (SQLException e) {
+            log.error("SQL exception during initializing schema");
             throw new RuntimeException(e);
         }
     }

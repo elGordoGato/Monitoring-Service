@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class UserJdbcRepository implements UserRepository {
+    private final static String SAVE_QUERY = "INSERT INTO entities.users (email, first_name, last_name, password) " +
+            "VALUES (?,?,?,?) RETURNING id";
+    private final static String FIND_BY_EMAIL_QUERY = "SELECT * FROM entities.users WHERE email = ?";
     private final Connection connection;
 
     public UserJdbcRepository(ConnectionManager connectionManager) {
@@ -22,8 +25,7 @@ public class UserJdbcRepository implements UserRepository {
     public User save(User user) {
 
         try (PreparedStatement pstmt = connection.prepareStatement(
-                "INSERT INTO entities.users (email, first_name, last_name, password) " +
-                        "VALUES (?,?,?,?) RETURNING id")) {
+                SAVE_QUERY)) {
             pstmt.setString(1, user.getEmail());
             pstmt.setString(2, user.getFirstName());
             pstmt.setString(3, user.getLastName());
@@ -44,7 +46,7 @@ public class UserJdbcRepository implements UserRepository {
     public Optional<User> findByEmail(String email) {
         User foundUser = null;
         try (PreparedStatement pstmt = connection.prepareStatement(
-                "SELECT * FROM entities.users WHERE email=?")) {
+                FIND_BY_EMAIL_QUERY)) {
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {

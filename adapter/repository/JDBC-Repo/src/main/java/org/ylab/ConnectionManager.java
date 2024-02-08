@@ -1,5 +1,6 @@
 package org.ylab;
 
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -7,8 +8,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+@Slf4j
 public class ConnectionManager {
-    private static final Logger log = LoggerFactory.getLogger(ConnectionManager.class);
     private static Connection dbConnection = null;
     private final String dbDriver;
     private final String connectionUrl;
@@ -22,17 +23,6 @@ public class ConnectionManager {
         this.password = password;
     }
 
-    public static void closeConnection() {
-        if (dbConnection != null) {
-            try {
-                dbConnection.close();
-                log.info("Connection with db is closed");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
     public Connection getConnection() {
         if (dbConnection != null) {
             return dbConnection;
@@ -43,11 +33,20 @@ public class ConnectionManager {
                     userName, password);
             log.info("Connection with db is open");
 
-            dbConnection.setAutoCommit(false);
-
         } catch (SQLException | ClassNotFoundException ex) {
             throw new RuntimeException(ex.getMessage());
         }
         return dbConnection;
+    }
+
+    public static void closeConnection() {
+        if (dbConnection != null) {
+            try {
+                dbConnection.close();
+                log.info("Connection with db is closed");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
