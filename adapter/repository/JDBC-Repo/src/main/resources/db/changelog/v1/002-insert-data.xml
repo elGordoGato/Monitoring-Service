@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        logicalFilePath="db/changelog.xml">
+    <changeSet id="002-insert-data" author="ylab">
+        <insert tableName="users">
+            <column name="email" value="admin@ylab.com"/>
+            <column name="first_name" value="Gospodin"/>
+            <column name="last_name" value="Intensiv"/>
+            <column name="password" value="admin"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+
+        <insert tableName="meters">
+            <column name="type" value="Cold water"/>
+        </insert>
+        <insert tableName="meters">
+            <column name="type" value="Hot water"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

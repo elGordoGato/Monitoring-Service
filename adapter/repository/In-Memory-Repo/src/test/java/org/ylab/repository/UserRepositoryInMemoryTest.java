@@ -1,6 +1,5 @@
-package org.ylab;
+package org.ylab.repository;
 
-import jdk.jfr.Frequency;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,7 +7,6 @@ import org.ylab.entity.User;
 import org.ylab.enums.Role;
 
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,7 +22,7 @@ class UserRepositoryInMemoryTest {
         userRepository = new UserRepositoryInMemory();
 
         admin = new User();
-        admin.setId(UUID.randomUUID());
+        admin.setId(1);
         admin.setEmail("admin");
         admin.setPassword("admin");
         admin.setFirstName("Gospodin");

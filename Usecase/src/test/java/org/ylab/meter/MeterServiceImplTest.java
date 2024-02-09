@@ -34,7 +34,7 @@ class MeterServiceImplTest {
     @BeforeEach
     void setUp() {
         meter = new Meter();
-        meter.setId(1);
+        meter.setId((short) 1);
         meter.setType("Electricity");
     }
 
@@ -54,9 +54,9 @@ class MeterServiceImplTest {
     @Test
     @DisplayName("Test successfully return meter entity when requested by ID")
     void testGetByIdSuccess() {
-        when(typeRepository.getById(1)).thenReturn(Optional.of(meter));
+        when(typeRepository.getById((short) 1)).thenReturn(Optional.of(meter));
 
-        Meter actual = meterService.getById(1);
+        Meter actual = meterService.getById((short) 1);
 
         assertThat(actual)
                 .isNotNull()
@@ -66,8 +66,8 @@ class MeterServiceImplTest {
     @Test
     @DisplayName("Test throw not found exception when requested to find meter by ID and it was not found")
     void testGetByIdFailure() {
-        when(typeRepository.getById(1)).thenReturn(Optional.empty());
+        when(typeRepository.getById((short) 1)).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> meterService.getById(1));
+        assertThrows(NotFoundException.class, () -> meterService.getById((short) 1));
     }
 }

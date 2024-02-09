@@ -1,0 +1,13 @@
+version: '3.1'
+services:
+  meter-db:
+    image: postgres:16-alpine
+    container_name: meter-db
+    ports:
+      - "6543:5432"
+    volumes:
+      - /var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=meterdb
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin

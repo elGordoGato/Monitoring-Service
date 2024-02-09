@@ -1,11 +1,10 @@
 package org.ylab.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.ylab.enums.Role;
-
-import java.util.UUID;
 
 /**
  * User of app
@@ -13,11 +12,12 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
     /**
      * ID of user
      */
-    private UUID id;
+    private Integer id;
     /**
      * Email of user
      */

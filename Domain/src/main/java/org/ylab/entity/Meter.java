@@ -5,15 +5,17 @@ import lombok.*;
 /**
  * Meter type entity
  */
-@NoArgsConstructor
+
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class Meter {
     /**
      * ID of meter
      */
-    private int id;
+    private Short id;
     /**
      * Name of meter type
      */

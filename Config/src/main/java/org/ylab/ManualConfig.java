@@ -8,6 +8,7 @@ import org.ylab.port.UserRepository;
 import org.ylab.reading.ReadingAdminServiceImpl;
 import org.ylab.reading.ReadingService;
 import org.ylab.reading.ReadingServiceImpl;
+import org.ylab.repository.*;
 import org.ylab.user.UserService;
 import org.ylab.user.UserServiceImpl;
 
@@ -20,6 +21,21 @@ public class ManualConfig {
         readingRepository = new ReadingRepositoryInMemory();
         userRepository = new UserRepositoryInMemory();
         meterRepository = new MeterRepositoryInMemory();
+    }
+
+    public static void setJdbcRepo() {
+        String dbDriver = DatabaseConfig.getDriver();
+        String connectionUrl = DatabaseConfig.getURL();
+        String userName = DatabaseConfig.getUserName();
+        String password = DatabaseConfig.getPassword();
+
+        ConnectionManager connectionManager = new ConnectionManager(
+                dbDriver, connectionUrl, userName, password);
+        MigrationManager.migrateDB(connectionManager.getConnection());
+
+        readingRepository = new ReadingJdbcRepository(connectionManager);
+        userRepository = new UserJdbcRepository(connectionManager);
+        meterRepository = new MeterJdbcRepository(connectionManager);
     }
 
     public static UserService getUserService() {

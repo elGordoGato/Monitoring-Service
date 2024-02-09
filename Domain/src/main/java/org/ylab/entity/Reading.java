@@ -1,23 +1,25 @@
 package org.ylab.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.Instant;
-import java.util.UUID;
 
 /**
  * Meter reading entity
  */
-@NoArgsConstructor
+
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reading {
     /**
      * ID of meter reading
      */
-    private UUID id;
+    private Long id;
     /**
      * User that submitted reading
      */
@@ -35,3 +37,4 @@ public class Reading {
      */
     private Instant collectedDate;
 }
+

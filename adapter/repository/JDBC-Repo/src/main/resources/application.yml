@@ -1,0 +1,4 @@
+DB_DRIVER: org.postgresql.Driver
+DATASOURCE_URL: jdbc:postgresql://localhost:6543/meterdb
+DB_USER: admin
+DB_PASSWORD: admin

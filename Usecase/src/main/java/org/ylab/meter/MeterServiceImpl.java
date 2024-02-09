@@ -19,7 +19,7 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
-    public Meter getById(int id) {
+    public Meter getById(short id) {
         return typeRepository.getById(id).orElseThrow(() ->
                 new NotFoundException("This type is not supported"));
     }

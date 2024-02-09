@@ -17,7 +17,7 @@ public interface MeterRepository {
      * @param id ID of meter type
      * @return Meter with id
      */
-    Optional<Meter> getById(int id);
+    Optional<Meter> getById(short id);
 
     /**
      * @param meter new type of meter to be saved to db

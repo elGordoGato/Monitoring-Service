@@ -11,14 +11,13 @@
     </parent>
 
     <artifactId>Config</artifactId>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <consoleVer>1.0-SNAPSHOT</consoleVer>
     </properties>
 
     <dependencies>
@@ -32,6 +31,12 @@
             <groupId>org.ylab</groupId>
             <artifactId>In-Memory-Repo</artifactId>
             <version>${inmemory.repo.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ylab</groupId>
+            <artifactId>JDBC-Repo</artifactId>
+            <version>${jdbc.repo.version}</version>
         </dependency>
     </dependencies>
 

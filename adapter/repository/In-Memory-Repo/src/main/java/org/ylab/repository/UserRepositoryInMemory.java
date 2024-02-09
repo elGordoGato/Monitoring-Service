@@ -1,4 +1,4 @@
-package org.ylab;
+package org.ylab.repository;
 
 import org.ylab.entity.User;
 import org.ylab.enums.Role;
@@ -7,14 +7,14 @@ import org.ylab.port.UserRepository;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public class UserRepositoryInMemory implements UserRepository {
     private final Map<String, User> userMap = new HashMap<>();
+    private int id = 1;
 
     public UserRepositoryInMemory() {
         User admin = new User();
-        admin.setId(UUID.randomUUID());
+        admin.setId(id++);
         admin.setEmail("admin");
         admin.setPassword("admin");
         admin.setFirstName("Gospodin");
@@ -25,7 +25,7 @@ public class UserRepositoryInMemory implements UserRepository {
 
     @Override
     public User save(User user) {
-        user.setId(UUID.randomUUID());
+        user.setId(id++);
         userMap.put(user.getEmail(), user);
         return user;
     }

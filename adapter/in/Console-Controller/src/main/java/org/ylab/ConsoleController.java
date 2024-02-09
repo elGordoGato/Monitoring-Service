@@ -71,6 +71,7 @@ public class ConsoleController {
      * main method to start the app
      */
     public void start() {
+        String input = null;
         boolean isRunning = true;
         log.add(now() + " - App is started");
         while (isRunning) {
@@ -81,7 +82,7 @@ public class ConsoleController {
                                 1 - Register new user
                                 2 - Login existing user
                                 3 - Exit""");
-                String input = br.readLine();
+                input = br.readLine();
                 int command = Integer.parseInt(input);
                 User currentUser = null;
                 switch (command) {
@@ -105,7 +106,7 @@ public class ConsoleController {
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (NumberFormatException e) {
-                System.out.println("Wrong input");
+                System.out.println("Wrong input: " + e.getMessage());
             } catch (RuntimeException e) {
                 log.add(now() + e.getMessage());
                 System.out.println(e.getMessage());
@@ -149,7 +150,7 @@ public class ConsoleController {
                     default -> System.out.println("This command is not supported");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Wrong input");
+                System.out.println("Wrong input: " + e.getMessage());
             } catch (RuntimeException e) {
                 log.add(now() + e.getMessage());
                 System.out.println(e.getMessage());
@@ -176,7 +177,7 @@ public class ConsoleController {
         List<Meter> availableTypes = typeService.getAll();
         System.out.println("Какой тип счетчика хотите подать?");
         availableTypes.forEach(t -> System.out.printf("%s - %s%n", t.getId(), t.getType()));
-        int typeId = Integer.parseInt(br.readLine());
+        short typeId = Short.parseShort(br.readLine());
         Meter type = typeService.getById(typeId);
         System.out.println("Введите показания для счетчика: " + type.getType());
         long reading = Long.parseLong(br.readLine());
