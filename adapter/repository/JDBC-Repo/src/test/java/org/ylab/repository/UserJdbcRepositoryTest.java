@@ -3,9 +3,12 @@ package org.ylab.repository;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.ylab.ConnectionManager;
+import org.ylab.MigrationManager;
 import org.ylab.entity.User;
 import org.ylab.enums.Role;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -16,21 +19,12 @@ public class UserJdbcRepositoryTest {
     private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
             "postgres:16-alpine");
 
-    private UserJdbcRepository userJdbcRepository;
+    private static UserJdbcRepository userJdbcRepository;
+    private static Connection connection;
 
     @BeforeAll
-    static void beforeAll() {
+    static void setUp() {
         postgres.start();
-
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
-    @BeforeEach
-    void setUp() {
         ConnectionManager connectionProvider = new ConnectionManager(
                 postgres.getDriverClassName(),
                 postgres.getJdbcUrl(),
@@ -38,8 +32,29 @@ public class UserJdbcRepositoryTest {
                 postgres.getPassword()
         );
         userJdbcRepository = new UserJdbcRepository(connectionProvider);
-        DBInitializer.initDB(connectionProvider.getConnection());
+        connection = connectionProvider.getConnection();
+        MigrationManager.migrateDB(connection);
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    @AfterEach
+    void rollback(){
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @AfterAll
+    static void afterAll() {
+        postgres.stop();
+    }
+
 
     @Test
     @DisplayName("Successfully save new user to db")

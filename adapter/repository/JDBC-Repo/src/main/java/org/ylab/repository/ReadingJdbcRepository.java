@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.time.Instant.now;
+
 public class ReadingJdbcRepository implements ReadingRepository {
     private final static String SAVE_QUERY = """
             INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
@@ -31,13 +33,13 @@ public class ReadingJdbcRepository implements ReadingRepository {
                                        FROM entities.readings r2
                                        WHERE r2.meter_id = r1.meter_id)""";
     private final static String FIND_ALL_BY_OWNER_AND_DATE_BETWEEN_QUERY = """
-            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id
+            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m ON m.id = r.meter_id
             WHERE r.owner_id = ? AND r.collected_date BETWEEN ? AND ?""";
     private final static String FIND_ALL_BY_DATE_BETWEEN_QUERY = """
-            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id
+            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m ON m.id = r.meter_id
             WHERE r.collected_date BETWEEN ? AND ?""";
     private final static String FIND_ALL_BY_OWNER_QUERY = """
-            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m on m.id = r.meter_id
+            SELECT r.*, m.type FROM entities.readings r JOIN entities.meters m ON m.id = r.meter_id
             WHERE r.owner_id = ?""";
     private final static String FIND_ALL_QUERY = """
             SELECT r.*, m.type FROM entities.readings r
@@ -51,8 +53,8 @@ public class ReadingJdbcRepository implements ReadingRepository {
     @Override
     public Reading save(Reading reading) {
         try (PreparedStatement pstmt = connection.prepareStatement(
-                SAVE_QUERY)) {
-            Instant now = Instant.now();
+                SAVE_QUERY,Statement.RETURN_GENERATED_KEYS)) {
+            Instant now = now();
             pstmt.setInt(1, reading.getOwner().getId());
             pstmt.setShort(2, reading.getMeter().getId());
             pstmt.setLong(3, reading.getReading());
@@ -61,8 +63,9 @@ public class ReadingJdbcRepository implements ReadingRepository {
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
             rs.next();
-            reading.setId(rs.getLong("id"));
+            reading.setId(rs.getLong(1));
             reading.setCollectedDate(now);
+            rs.close();
             return reading;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -81,6 +84,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
                 foundReading.setId(rs.getLong("id"));
                 foundReading.setCollectedDate(rs.getTimestamp("collected_date").toInstant());
             }
+            rs.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -110,6 +114,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
             while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
+            rs.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -127,6 +132,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
             while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
+            rs.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -153,6 +159,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
             while (rs.next()) {
                 foundReadings.add(parseResultSet(rs));
             }
+            rs.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -167,6 +174,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
             while (rs.next()) {
                 readings.add(parseResultSet(rs));
             }
+            rs.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

@@ -59,12 +59,12 @@ public class MeterJdbcRepository implements MeterRepository {
     @Override
     public Meter save(Meter meter) {
         try (PreparedStatement pstmt = connection.prepareStatement(
-                SAVE_QUERY)) {
+                SAVE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, meter.getType());
             pstmt.executeUpdate();
             ResultSet rs = pstmt.getGeneratedKeys();
             rs.next();
-            meter.setId(rs.getShort("id"));
+            meter.setId(rs.getShort(1));
             return meter;
         } catch (SQLException e) {
             throw new RuntimeException(e);

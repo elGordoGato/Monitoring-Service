@@ -3,8 +3,11 @@ package org.ylab.repository;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.ylab.ConnectionManager;
+import org.ylab.MigrationManager;
 import org.ylab.entity.Meter;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,24 +15,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Tests for meter jdbc repository using test container")
 class MeterJdbcRepositoryTest {
-    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            "postgres:16-alpine");
+    private static final PostgreSQLContainer<?> postgres = TestContainerManager.getContainer();
 
-    private MeterJdbcRepository meterJdbcRepository;
+    private static MeterJdbcRepository meterJdbcRepository;
+    private static Connection connection;
 
     @BeforeAll
     static void beforeAll() {
         postgres.start();
-
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
-    @BeforeEach
-    void setUp() {
         ConnectionManager connectionProvider = new ConnectionManager(
                 postgres.getDriverClassName(),
                 postgres.getJdbcUrl(),
@@ -37,7 +30,27 @@ class MeterJdbcRepositoryTest {
                 postgres.getPassword()
         );
         meterJdbcRepository = new MeterJdbcRepository(connectionProvider);
-        DBInitializer.initDB(connectionProvider.getConnection());
+        connection = connectionProvider.getConnection();
+        MigrationManager.migrateDB(connection);
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @AfterAll
+    static void afterAll() {
+        postgres.stop();
+    }
+
+    @AfterEach
+    void rollback(){
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test

@@ -5,15 +5,13 @@ import org.ylab.entity.User;
 import org.ylab.enums.Role;
 import org.ylab.port.UserRepository;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Optional;
+import java.util.Stack;
 
 public class UserJdbcRepository implements UserRepository {
     private final static String SAVE_QUERY = "INSERT INTO entities.users (email, first_name, last_name, password) " +
-            "VALUES (?,?,?,?) RETURNING id";
+            "VALUES (?,?,?,?)";
     private final static String FIND_BY_EMAIL_QUERY = "SELECT * FROM entities.users WHERE email = ?";
     private final Connection connection;
 
@@ -25,17 +23,17 @@ public class UserJdbcRepository implements UserRepository {
     public User save(User user) {
 
         try (PreparedStatement pstmt = connection.prepareStatement(
-                SAVE_QUERY)) {
+                SAVE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, user.getEmail());
             pstmt.setString(2, user.getFirstName());
             pstmt.setString(3, user.getLastName());
             pstmt.setString(4, user.getPassword());
-            pstmt.execute();
-            ResultSet rs = pstmt.getResultSet();
+            pstmt.executeUpdate();
+            ResultSet rs = pstmt.getGeneratedKeys();
             rs.next();
-            user.setId(rs.getInt("id"));
+            user.setId(rs.getInt(1));
             user.setRole(Role.USER);
-            connection.commit();
+            rs.close();
             return user;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -57,7 +55,7 @@ public class UserJdbcRepository implements UserRepository {
                 Role role = Role.valueOf(rs.getString("role"));
                 foundUser = new User(id, email, firstName, lastName, password, role);
             }
-            connection.commit();
+            rs.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

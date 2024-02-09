@@ -3,6 +3,7 @@ package org.ylab.repository;
 import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.ylab.ConnectionManager;
+import org.ylab.MigrationManager;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
 import org.ylab.entity.User;
@@ -22,26 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Tests for jdbc meter readings repository functionality using test container")
 class ReadingJdbcRepositoryTest {
-    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            "postgres:16-alpine");
+    private static final PostgreSQLContainer<?> postgres = TestContainerManager.getContainer();
 
-    private ReadingJdbcRepository readingRepository;
-    private Connection connection;
+    private static ReadingJdbcRepository readingRepository;
+    private static Connection connection;
 
     @BeforeAll
-    static void beforeAll() {
+    static void setUp() {
         postgres.start();
-
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-
-    }
-
-    @BeforeEach
-    void setUp() {
         ConnectionManager connectionProvider = new ConnectionManager(
                 postgres.getDriverClassName(),
                 postgres.getJdbcUrl(),
@@ -50,7 +39,26 @@ class ReadingJdbcRepositoryTest {
         );
         connection = connectionProvider.getConnection();
         readingRepository = new ReadingJdbcRepository(connectionProvider);
-        DBInitializer.initDB(connection);
+        MigrationManager.migrateDB(connection);
+        try {
+            connection.setAutoCommit(false);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @AfterEach
+    void rollback(){
+        try {
+            connection.rollback();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @AfterAll
+    static void afterAll() {
+        postgres.stop();
     }
 
 
