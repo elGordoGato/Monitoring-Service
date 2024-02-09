@@ -41,20 +41,19 @@ public class UserJdbcRepositoryTest {
         }
     }
 
+    @AfterAll
+    static void afterAll() {
+        postgres.stop();
+    }
+
     @AfterEach
-    void rollback(){
+    void rollback() {
         try {
             connection.rollback();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
 
     @Test
     @DisplayName("Successfully save new user to db")

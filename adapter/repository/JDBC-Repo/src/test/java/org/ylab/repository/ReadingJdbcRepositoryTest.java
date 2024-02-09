@@ -47,20 +47,19 @@ class ReadingJdbcRepositoryTest {
         }
     }
 
+    @AfterAll
+    static void afterAll() {
+        postgres.stop();
+    }
+
     @AfterEach
-    void rollback(){
+    void rollback() {
         try {
             connection.rollback();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
 
     @Test
     @DisplayName("Successfully save new meter reading")
@@ -212,8 +211,6 @@ class ReadingJdbcRepositoryTest {
                 13, "user1@test.com", "User", "One", "secret", Role.USER);
         User user2 = new User(
                 14, "user2@test.com", "User", "Two", "secret", Role.USER);
-        User admin = new User(
-                15, "admin@test.com", "Admin", "User", "secret", Role.ADMIN);
         Meter meter1 = new Meter((short) 1, "Cold water");
         Meter meter2 = new Meter((short) 2, "Hot water");
         Reading reading1 = new Reading(null, user1, meter1, 100, Instant.now());
@@ -252,9 +249,6 @@ class ReadingJdbcRepositoryTest {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        User user = new User(
-                13, "test@test.com", "Test", "User", "secret", Role.USER);
-
         // when
         List<Reading> readings = readingRepository.findAllByDateBetween(
                 Instant.parse("2024-02-01T00:00:00Z"), Instant.parse("2024-02-28T23:59:59Z"));

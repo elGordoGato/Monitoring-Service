@@ -53,7 +53,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
     @Override
     public Reading save(Reading reading) {
         try (PreparedStatement pstmt = connection.prepareStatement(
-                SAVE_QUERY,Statement.RETURN_GENERATED_KEYS)) {
+                SAVE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
             Instant now = now();
             pstmt.setInt(1, reading.getOwner().getId());
             pstmt.setShort(2, reading.getMeter().getId());

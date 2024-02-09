@@ -45,7 +45,7 @@ class MeterJdbcRepositoryTest {
     }
 
     @AfterEach
-    void rollback(){
+    void rollback() {
         try {
             connection.rollback();
         } catch (SQLException e) {

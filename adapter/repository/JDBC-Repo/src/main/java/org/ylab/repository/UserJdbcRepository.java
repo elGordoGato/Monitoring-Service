@@ -7,7 +7,6 @@ import org.ylab.port.UserRepository;
 
 import java.sql.*;
 import java.util.Optional;
-import java.util.Stack;
 
 public class UserJdbcRepository implements UserRepository {
     private final static String SAVE_QUERY = "INSERT INTO entities.users (email, first_name, last_name, password) " +
