@@ -112,7 +112,8 @@ public class ReadingJdbcRepository implements ReadingRepository {
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                foundReadings.add(parseResultSet(rs));
+                Reading foundReading = parseResultSet(rs);
+                foundReadings.add(foundReading);
             }
             rs.close();
         } catch (SQLException e) {
@@ -130,7 +131,8 @@ public class ReadingJdbcRepository implements ReadingRepository {
             pstmt.setTimestamp(2, Timestamp.from(end));
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                foundReadings.add(parseResultSet(rs));
+                Reading foundReading = parseResultSet(rs);
+                foundReadings.add(foundReading);
             }
             rs.close();
         } catch (SQLException e) {
@@ -157,7 +159,8 @@ public class ReadingJdbcRepository implements ReadingRepository {
             pstmt.setInt(1, currentUser.getId());
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                foundReadings.add(parseResultSet(rs));
+                Reading foundReading = parseResultSet(rs);
+                foundReadings.add(foundReading);
             }
             rs.close();
         } catch (SQLException e) {

@@ -42,10 +42,10 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="owner_id" type="BIGINT">
-                <constraints nullable="false" foreignKeyName="fk_readings_on_users" references="users(id)"/>
+                <constraints nullable="false"/>
             </column>
             <column name="meter_id" type="SMALLINT">
-                <constraints nullable="false" foreignKeyName="fk_readings_on_meters" references="meters(id)"/>
+                <constraints nullable="false"/>
             </column>
             <column name="reading_value" type="BIGINT">
                 <constraints nullable="false"/>
@@ -54,5 +54,15 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+        <addForeignKeyConstraint baseColumnNames="owner_id"
+                                 baseTableName="readings"
+                                 constraintName="fk_readings_on_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+        <addForeignKeyConstraint baseColumnNames="meter_id"
+                                 baseTableName="readings"
+                                 constraintName="fk_readings_on_meters"
+                                 referencedColumnNames="id"
+                                 referencedTableName="meters"/>
     </changeSet>
 </databaseChangeLog>
