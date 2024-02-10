@@ -15,17 +15,16 @@
     <packaging>jar</packaging>
 
     <properties>
-        <maven.assembly.plugin.version>2.4</maven.assembly.plugin.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.ylab</groupId>
-            <artifactId>Console-Controller</artifactId>
-            <version>${console.controller.version}</version>
+            <artifactId>Servlet-Controller</artifactId>
+            <version>${servlet.controller.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -42,7 +41,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>${maven.assembly.plugin.version}</version>
+                <version>${plugin.maven.assembly.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -55,7 +54,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>${maven.assembly.plugin.version}</version>
+                    <version>${plugin.maven.assembly.version}</version>
                     <configuration>
                         <descriptorRefs>
                             <descriptorRef>jar-with-dependencies</descriptorRef>
