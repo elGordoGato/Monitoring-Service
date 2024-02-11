@@ -31,7 +31,7 @@ import static java.time.Instant.now;
 import static java.util.Objects.nonNull;
 
 @Loggable
-@WebServlet({"/readings", "/admin/readings"})
+@WebServlet({"/readings/*", "/admin/readings/*"})
 public class ReadingsServlet extends HttpServlet {
     private final ObjectMapper objectMapper;
     private final ReadingMapper readingMapper;
