@@ -36,8 +36,9 @@
         <servlet.controller.version>1.0-SNAPSHOT</servlet.controller.version>
         <inmemory.repo.version>1.0-SNAPSHOT</inmemory.repo.version>
         <jdbc.repo.version>1.0-SNAPSHOT</jdbc.repo.version>
-        <dao.version>1.0-SNAPSHOT</dao.version>
         <console.app.version>1.0-SNAPSHOT</console.app.version>
+        <servlet.app.version>1.0-SNAPSHOT</servlet.app.version>
+        <aop.version>1.0-SNAPSHOT</aop.version>
         <config.version>1.0-SNAPSHOT</config.version>
         <domain.version>1.0-SNAPSHOT</domain.version>
         <usecase.version>1.0-SNAPSHOT</usecase.version>

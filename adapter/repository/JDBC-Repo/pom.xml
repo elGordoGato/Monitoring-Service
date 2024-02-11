@@ -12,7 +12,6 @@
     </parent>
 
     <artifactId>JDBC-Repo</artifactId>
-    <packaging>jar</packaging>
 
     <properties>
         <maven.compiler.source>${java.version}</maven.compiler.source>

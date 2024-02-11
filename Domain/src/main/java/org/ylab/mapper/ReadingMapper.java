@@ -6,14 +6,14 @@ import org.ylab.dto.ReadingDto;
 import org.ylab.entity.Reading;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Utils class for mapping reading entity to it's dto and vice-versa
  */
 @Mapper
 public interface ReadingMapper {
-    @Mapping(target = "meterType", source = "meter.id")
+    @Mapping(target = "meterType", source = "meter.id",
+            dateFormat = "dd-MM-yyyy HH:mm:ss")
     ReadingDto dtoFromEntity(Reading entity);
 
     List<ReadingDto> dtoListFromEntity(List<Reading> entityList);

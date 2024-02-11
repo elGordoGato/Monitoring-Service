@@ -24,97 +24,97 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("Tests for jdbc meter readings repository functionality using test container")
 class ReadingJdbcRepositoryTest {
     private static final PostgreSQLContainer<?> postgres = TestContainerManager.getContainer();
-
+    private static final String FIND_LAST_BY_USER_AND_TYPE_INIT_QUERY = """
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (123, 'test@test.com', 'Test', 'User', 'secret', 'USER');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (123,1,200,'2024-01-25 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (123,1,100,'2024-02-02 16:58:21.872000');
+            """;
+    private static final String FIND_ACTUAL_BY_USER_INIT_QUERY = """
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (123, 'test@test.com', 'Test', 'User', 'secret', 'USER');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (123,1,200,'2024-01-25 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (123,1,100,'2024-02-02 16:58:21.872000');
+            """;
+    private static final String FIND_ALL_BY_OWNER_AND_DATE_BETWEEN_INIT_QUERY = """
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (123, 'test@test.com', 'Test', 'User', 'secret', 'USER');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (123,1,111,'2024-01-25 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (123,1,112,'2024-02-02 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (123,1,113,'2024-02-15 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (123,1,114,'2024-03-15 16:58:21.872000');
+            """;
+    private static final String FIND_ACTUAL_BY_ADMIN_INIT_QUERY = """
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (13, 'test1@test.com', 'Test1', 'User', 'secret', 'USER');
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (14, 'test2@test.com', 'Test2', 'User', 'secret', 'USER');
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (15, 'test3@test.com', 'Test3', 'User', 'secret', 'USER');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,111,'2024-01-25 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (14,1,112,'2024-02-02 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (15,1,113,'2024-02-15 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,114,'2024-03-15 16:58:21.872000');
+            """;
+    private static final String FIND_ALL_BY_DATE_BETWEEN_INIT_QUERY = """
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (13, 'test1@test.com', 'Test1', 'User', 'secret', 'USER');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,111,'2024-01-25 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,112,'2024-02-02 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,113,'2024-02-15 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,114,'2024-03-15 16:58:21.872000');
+            """;
+    private static final String FIND_ALL_BY_OWNER_INIT_QUERY = """
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (13, 'test1@test.com', 'Test1', 'User', 'secret', 'USER');
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (14, 'test2@test.com', 'Test2', 'User', 'secret', 'USER');
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (15, 'test3@test.com', 'Test3', 'User', 'secret', 'USER');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,111,'2024-01-25 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (14,1,112,'2024-02-02 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (15,1,113,'2024-02-15 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,114,'2024-03-15 16:58:21.872000');
+            """;
+    private static final String FIND_ALL_INIT_QUERY = """
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (13, 'test1@test.com', 'Test1', 'User', 'secret', 'USER');
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (14, 'test2@test.com', 'Test2', 'User', 'secret', 'USER');
+            INSERT INTO entities.users (id, email, first_name, last_name, password, role)
+            VALUES (15, 'test3@test.com', 'Test3', 'User', 'secret', 'USER');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,111,'2024-01-25 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (14,1,112,'2024-02-02 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (15,1,113,'2024-02-15 16:58:21.872000');
+            INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
+            VALUES (13,1,114,'2024-03-15 16:58:21.872000');
+            """;
     private static ReadingJdbcRepository readingRepository;
     private static Connection connection;
-    private static final String FIND_LAST_BY_USER_AND_TYPE_INIT_QUERY = """
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (123, 'test@test.com', 'Test', 'User', 'secret', 'USER');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (123,1,200,'2024-01-25 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (123,1,100,'2024-02-02 16:58:21.872000');
-                    """;
-    private static final String FIND_ACTUAL_BY_USER_INIT_QUERY = """
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (123, 'test@test.com', 'Test', 'User', 'secret', 'USER');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (123,1,200,'2024-01-25 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (123,1,100,'2024-02-02 16:58:21.872000');
-                    """;
-    private static final String FIND_ALL_BY_OWNER_AND_DATE_BETWEEN_INIT_QUERY = """
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (123, 'test@test.com', 'Test', 'User', 'secret', 'USER');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (123,1,111,'2024-01-25 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (123,1,112,'2024-02-02 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (123,1,113,'2024-02-15 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (123,1,114,'2024-03-15 16:58:21.872000');
-                    """;
-private static final String FIND_ACTUAL_BY_ADMIN_INIT_QUERY = """
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (13, 'test1@test.com', 'Test1', 'User', 'secret', 'USER');
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (14, 'test2@test.com', 'Test2', 'User', 'secret', 'USER');
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (15, 'test3@test.com', 'Test3', 'User', 'secret', 'USER');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,111,'2024-01-25 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (14,1,112,'2024-02-02 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (15,1,113,'2024-02-15 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,114,'2024-03-15 16:58:21.872000');
-                    """;
-private static final String FIND_ALL_BY_DATE_BETWEEN_INIT_QUERY = """
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (13, 'test1@test.com', 'Test1', 'User', 'secret', 'USER');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,111,'2024-01-25 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,112,'2024-02-02 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,113,'2024-02-15 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,114,'2024-03-15 16:58:21.872000');
-                    """;
-private static final String FIND_ALL_BY_OWNER_INIT_QUERY = """
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (13, 'test1@test.com', 'Test1', 'User', 'secret', 'USER');
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (14, 'test2@test.com', 'Test2', 'User', 'secret', 'USER');
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (15, 'test3@test.com', 'Test3', 'User', 'secret', 'USER');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,111,'2024-01-25 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (14,1,112,'2024-02-02 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (15,1,113,'2024-02-15 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,114,'2024-03-15 16:58:21.872000');
-                    """;
-private static final String FIND_ALL_INIT_QUERY = """
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (13, 'test1@test.com', 'Test1', 'User', 'secret', 'USER');
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (14, 'test2@test.com', 'Test2', 'User', 'secret', 'USER');
-                    INSERT INTO entities.users (id, email, first_name, last_name, password, role)
-                    VALUES (15, 'test3@test.com', 'Test3', 'User', 'secret', 'USER');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,111,'2024-01-25 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (14,1,112,'2024-02-02 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (15,1,113,'2024-02-15 16:58:21.872000');
-                    INSERT INTO entities.readings (owner_id, meter_id, reading_value, collected_date)
-                    VALUES (13,1,114,'2024-03-15 16:58:21.872000');
-                    """;
+
     @BeforeAll
     static void setUp() {
         postgres.start();

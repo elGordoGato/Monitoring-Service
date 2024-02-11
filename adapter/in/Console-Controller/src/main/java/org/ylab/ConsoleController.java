@@ -48,14 +48,14 @@ public class ConsoleController {
      */
     private final MeterService typeService;
     /**
-     * @see ReadingService
-     */
-    private ReadingService readingService;
-    /**
      * Аудит действий пользователя (авторизация, завершение работы, подача показаний, получение истории подачи показаний и тд)
      */
     private final List<String> log = new ArrayList<>();
     private final UserMapper userMapper;
+    /**
+     * @see ReadingService
+     */
+    private ReadingService readingService;
 
     public ConsoleController(InputStream inputStream,
                              UserService userService,
@@ -74,7 +74,7 @@ public class ConsoleController {
      * main method to start the app
      */
     public void start() {
-        String input = null;
+        String input;
         boolean isRunning = true;
         log.add(now() + " - App is started");
         while (isRunning) {

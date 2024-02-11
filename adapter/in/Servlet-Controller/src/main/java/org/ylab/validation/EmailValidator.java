@@ -2,8 +2,6 @@ package org.ylab.validation;
 
 import org.ylab.exception.BadRequestException;
 
-import java.util.regex.Pattern;
-
 public class EmailValidator {
     private static final String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
 

@@ -1,22 +1,24 @@
-package org.ylab.auth;
+package org.ylab.servlets;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.ylab.annotations.Loggable;
 import org.ylab.dto.UserDto;
 import org.ylab.entity.User;
 import org.ylab.mapper.UserMapper;
 import org.ylab.mapper.UserMapperImpl;
 import org.ylab.user.UserService;
-import org.ylab.validation.EmailValidator;
-import org.ylab.validation.PasswordValidator;
 import org.ylab.validation.UserDtoValidator;
 
+import java.io.IOException;
+
+@Loggable
 @WebServlet("/auth/register")
 public class RegisterServlet extends HttpServlet {
     private final ObjectMapper objectMapper;
@@ -30,11 +32,9 @@ public class RegisterServlet extends HttpServlet {
 
     }
 
-    /**
-     * @param config
-     */
     @Override
-    public void init(ServletConfig config) {
+    public void init(ServletConfig config) throws ServletException {
+        super.init(config);
         final Object userServiceFromContext = getServletContext().getAttribute("userService");
 
         if (userServiceFromContext instanceof UserService) {
@@ -45,13 +45,14 @@ public class RegisterServlet extends HttpServlet {
     }
 
     /**
-     * @param req
-     * @param resp
+     * @param req expects userDto json in body
+     * @param resp response status 201 if successful
      */
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws JsonProcessingException {
-        final String userJson = req.getParameter("user");
-        UserDto userToCreate = new ObjectMapper().readValue(userJson, UserDto.class);
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        UserDto userToCreate = objectMapper.readValue(
+                req.getReader(), UserDto.class);
 
         UserDtoValidator.validateUserDto(userToCreate);
 

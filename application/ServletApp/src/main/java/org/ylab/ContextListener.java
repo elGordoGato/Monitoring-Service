@@ -3,14 +3,15 @@ package org.ylab;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 import org.ylab.meter.MeterService;
 import org.ylab.reading.ReadingService;
 import org.ylab.user.UserService;
 
+import java.time.Instant;
+
+@WebListener
 public class ContextListener implements ServletContextListener {
-    /**
-     * @param sce ServletContextEvent
-     */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ManualConfig.setJdbcRepo();
@@ -26,13 +27,12 @@ public class ContextListener implements ServletContextListener {
         servletContext.setAttribute("readingServiceByUser", readingServiceByUser);
         servletContext.setAttribute("readingServiceByAdmin", readingServiceByAdmin);
         servletContext.setAttribute("meterService", meterService);
+        System.out.println(Instant.now() + " - Context initialized");
     }
 
-    /**
-     * @param sce
-     */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         ConnectionManager.closeConnection();
+        System.out.println(Instant.now() + " - Context destroyed");
     }
 }

@@ -12,7 +12,7 @@ public class DatabaseConfig {
 
     static {
         try {
-            String configFilePath = "adapter/repository/JDBC-Repo/src/main/resources/application.yml";
+            String configFilePath = "../webapps/ServletApp/WEB-INF/classes/application.yml";
             FileInputStream propsInput = new FileInputStream(configFilePath);
             Properties prop = new Properties();
             prop.load(propsInput);
@@ -21,8 +21,12 @@ public class DatabaseConfig {
             URL = prop.getProperty("DATASOURCE_URL");
             USER_NAME = prop.getProperty("DB_USER");
             PASSWORD = prop.getProperty("DB_PASSWORD");
+            System.out.println("Retrieved properties from application.yml");
         } catch (IOException e) {
-            e.printStackTrace();
+            DRIVER = "org.postgresql.Driver";
+            URL = "jdbc:postgresql://meter-db:5432/meterdb";
+            USER_NAME = "admin";
+            PASSWORD = "admin";
         }
     }
 

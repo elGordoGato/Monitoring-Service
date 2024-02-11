@@ -1,4 +1,4 @@
-package org.ylab.auth.filter;
+package org.ylab.servlets.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -16,11 +16,8 @@ import java.nio.file.AccessDeniedException;
 @WebFilter("/admin/*")
 public class AdminFilter extends HttpFilter {
     /**
-     * @param req
-     * @param res
-     * @param chain
-     * @throws IOException
-     * @throws ServletException
+     * Checking if the authenticated user has role of admin to access specified resources,
+     * if not throws AccessDeniedException
      */
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain)
