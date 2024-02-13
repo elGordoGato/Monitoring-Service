@@ -61,5 +61,6 @@ public class RegisterServlet extends HttpServlet {
 
         req.getSession().setAttribute("user", createdUser);
         resp.setStatus(HttpServletResponse.SC_CREATED);
+        log("Registered new user: " + createdUser);
     }
 }
