@@ -20,7 +20,7 @@
     <dependencies>
         <dependency>
             <groupId>org.aspectj</groupId>
-            <artifactId>aspectjrt</artifactId>
+            <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
         </dependency>
     </dependencies>
@@ -32,13 +32,13 @@
                 <artifactId>aspectj-maven-plugin</artifactId>
                 <version>${plugin.aspectj.version}</version>
                 <configuration>
-                    <complianceLevel>16</complianceLevel>
-                    <source>16</source>
-                    <target>16</target>
+                    <complianceLevel>1.8</complianceLevel>
+                    <source>1.8</source>
+                    <target>1.8</target>
                     <showWeaveInfo>true</showWeaveInfo>
                     <verbose>true</verbose>
                     <Xlint>ignore</Xlint>
-                    <encoding>UTF-8 </encoding>
+                    <encoding>UTF-8</encoding>
                 </configuration>
                 <executions>
                     <execution>

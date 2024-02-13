@@ -48,7 +48,7 @@
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <jackson.version>2.15.3</jackson.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <aspectj.version>1.9.21</aspectj.version>
+        <aspectj.version>1.9.7</aspectj.version>
         <postgresql.version>42.7.1</postgresql.version>
         <liquibase.core.version>4.8.0</liquibase.core.version>
         <mockito.junit.jupiter.version>5.9.0</mockito.junit.jupiter.version>

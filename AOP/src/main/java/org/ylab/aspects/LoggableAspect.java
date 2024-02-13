@@ -1,13 +1,14 @@
 package org.ylab.aspects;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 
 @Aspect
 public class LoggableAspect {
-    @Pointcut("within(@org.ylab.annotations.Loggable *) && execution(* *(..))")
+    @Pointcut("within(@org.ylab.annotations.Loggable *) && execution(protected * *(..))")
     public void annotatedByLoggable() {
     }
 
@@ -22,4 +23,8 @@ public class LoggableAspect {
         return result;
     }
 
+    @AfterThrowing(value = "annotatedByLoggable()", throwing = "ex")
+    public void executeAfterThrowingLoggable(RuntimeException ex) {
+        System.out.println(ex.getMessage());
+    }
 }
