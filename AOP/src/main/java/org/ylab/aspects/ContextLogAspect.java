@@ -7,12 +7,12 @@ import org.aspectj.lang.annotation.Pointcut;
 
 @Aspect
 public class ContextLogAspect {
-    @Pointcut("execution(void javax.servlet.ServletContext.log(String)) && args(message)")
-    public void contextLogExecution(String message) {
+    @Pointcut("call(void jakarta.servlet.ServletContext.log(String)) && args(message)")
+    public void contextLogCall(String message) {
     }
 
-    @Before(value = "contextLogExecution(message)", argNames = "joinPoint,message")
+    @Before(value = "contextLogCall(message)", argNames = "joinPoint,message")
     public void printMessage(JoinPoint joinPoint, String message) {
-        System.out.println("Context log message: " + message);
+        System.out.println("User audit message: " + message);
     }
 }

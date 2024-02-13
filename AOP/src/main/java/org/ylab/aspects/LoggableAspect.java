@@ -25,6 +25,6 @@ public class LoggableAspect {
 
     @AfterThrowing(value = "annotatedByLoggable()", throwing = "ex")
     public void executeAfterThrowingLoggable(RuntimeException ex) {
-        System.out.println(ex.getMessage());
+        System.out.println("ERROR: " + ex.getMessage());
     }
 }
