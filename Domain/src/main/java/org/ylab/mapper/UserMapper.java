@@ -9,7 +9,7 @@ import org.ylab.entity.User;
  */
 @Mapper
 public interface UserMapper {
-    User dtoToEntity(UserDto userDto);
+    User toUser(UserDto userDto);
 
-    UserDto entityToDto(User entity);
+    UserDto toUserDto(User entity);
 }

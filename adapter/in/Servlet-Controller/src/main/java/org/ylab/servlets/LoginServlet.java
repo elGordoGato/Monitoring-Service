@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.ylab.annotations.Loggable;
 import org.ylab.entity.User;
+import org.ylab.meter.MeterService;
 import org.ylab.user.UserService;
 import org.ylab.validation.EmailValidator;
 import org.ylab.validation.PasswordValidator;
@@ -30,7 +31,9 @@ public class LoginServlet extends HttpServlet {
         if (userServiceFromContext instanceof UserService) {
             this.userService = (UserService) userServiceFromContext;
         } else {
-            throw new IllegalStateException("Repo has not been initialized!");
+            throw new IllegalStateException(
+                    String.format("%s - can't init %s: %s was not found in ServletContext",
+                            Instant.now(), this.getClass().getName(), UserService.class.getName()));
         }
     }
 
@@ -43,7 +46,7 @@ public class LoginServlet extends HttpServlet {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
         context.log(Instant.now() + " - Received request to log in with:" +
-                "\nemail: " + email + "\npassword: " + password);
+                "\nemail: " + email);
 
         validateRequestParams(email, password);
 

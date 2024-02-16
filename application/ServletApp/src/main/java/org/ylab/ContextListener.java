@@ -14,7 +14,7 @@ import java.time.Instant;
 public class ContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ManualConfig.setJdbcRepo();
+        ManualConfig.setJdbcRepository();
         final ServletContext servletContext =
                 sce.getServletContext();
 

@@ -35,12 +35,9 @@ public class AuthFilter extends HttpFilter {
             chain.doFilter(req, res);
             return;
         }
-
         final HttpSession session = req.getSession();
-
         if (nonNull(session)) {
             Object user = session.getAttribute("user");
-
             if (nonNull(user) && user instanceof User) {
                 chain.doFilter(req, res);
                 return;

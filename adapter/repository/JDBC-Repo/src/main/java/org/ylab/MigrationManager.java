@@ -27,7 +27,6 @@ public class MigrationManager {
             Database database =
                     DatabaseFactory.getInstance().findCorrectDatabaseImplementation(
                             new JdbcConnection(connection));
-            //TODO Вопрос к знатокам: После выполнения последней строки autoCommitMode у connection переводится в false, почему?
 
             database.setDefaultSchemaName("entities");
             database.setLiquibaseSchemaName("service");

@@ -19,9 +19,16 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
-        int id = ((User) session.getAttribute("user")).getId();
-        session.invalidate();
-        resp.setStatus(HttpServletResponse.SC_OK);
-        getServletContext().log(Instant.now() + " - User logged out with id: " + id);
+        User userAttribute = ((User) session.getAttribute("user"));
+        if (userAttribute != null){
+            int id = userAttribute.getId();
+            session.invalidate();
+            resp.setStatus(HttpServletResponse.SC_OK);
+            getServletContext().log(Instant.now() + " - User logged out with id: " + id);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            getServletContext().log(Instant.now() + " - Logout request failed: no proper session found");
+        }
+
     }
 }

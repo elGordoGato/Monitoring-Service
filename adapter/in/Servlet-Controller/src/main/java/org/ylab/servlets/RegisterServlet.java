@@ -13,10 +13,12 @@ import org.ylab.dto.UserDto;
 import org.ylab.entity.User;
 import org.ylab.mapper.UserMapper;
 import org.ylab.mapper.UserMapperImpl;
+import org.ylab.meter.MeterService;
 import org.ylab.user.UserService;
 import org.ylab.validation.UserDtoValidator;
 
 import java.io.IOException;
+import java.time.Instant;
 
 @Loggable
 @WebServlet("/auth/register")
@@ -40,7 +42,9 @@ public class RegisterServlet extends HttpServlet {
         if (userServiceFromContext instanceof UserService) {
             this.userService = (UserService) userServiceFromContext;
         } else {
-            throw new IllegalStateException("Repo has not been initialized!");
+            throw new IllegalStateException(
+                    String.format("%s - can't init %s: %s was not found in ServletContext",
+                            Instant.now(), this.getClass().getName(), UserService.class.getName()));
         }
     }
 
@@ -57,7 +61,7 @@ public class RegisterServlet extends HttpServlet {
         UserDtoValidator.validateUserDto(userToCreate);
 
         User createdUser = userService.create(
-                userMapper.dtoToEntity(userToCreate));
+                userMapper.toUser(userToCreate));
 
         req.getSession().setAttribute("user", createdUser);
         resp.setStatus(HttpServletResponse.SC_CREATED);

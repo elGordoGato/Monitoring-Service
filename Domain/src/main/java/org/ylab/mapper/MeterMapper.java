@@ -6,7 +6,7 @@ import org.ylab.entity.Meter;
 
 @Mapper
 public interface MeterMapper {
-    Meter dtoToEntity(MeterDto dto);
+    Meter toMeter(MeterDto dto);
 
-    MeterDto entityToDto(Meter entity);
+    MeterDto toMeterDto(Meter entity);
 }

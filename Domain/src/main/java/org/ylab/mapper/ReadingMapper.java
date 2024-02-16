@@ -14,7 +14,7 @@ import java.util.List;
 public interface ReadingMapper {
     @Mapping(target = "meterType", source = "meter.id",
             dateFormat = "dd-MM-yyyy HH:mm:ss")
-    ReadingDto dtoFromEntity(Reading entity);
+    ReadingDto toReadingDto(Reading entity);
 
-    List<ReadingDto> dtoListFromEntity(List<Reading> entityList);
+    List<ReadingDto> toReadingDtoList(List<Reading> entityList);
 }

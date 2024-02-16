@@ -19,6 +19,7 @@ import java.io.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
+@DisplayName("Tests for admin meter Servlet functionality")
 @ExtendWith(MockitoExtension.class)
 class AdminMeterServletTest {
     @Mock

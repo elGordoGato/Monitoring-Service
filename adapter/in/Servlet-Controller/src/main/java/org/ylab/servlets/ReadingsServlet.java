@@ -24,10 +24,10 @@ import org.ylab.validation.ReadingDtoValidator;
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.time.DateTimeException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 
-import static java.time.Instant.now;
 import static java.util.Objects.nonNull;
 
 @Loggable
@@ -60,7 +60,10 @@ public class ReadingsServlet extends HttpServlet {
             this.readingAdminService = (ReadingService) readingAdminServiceFromContext;
             this.meterService = (MeterService) meterServiceFromContext;
         } else {
-            throw new IllegalStateException("Repo has not been initialized!");
+            throw new IllegalStateException(
+                    String.format("%s - can't init %s: %s or %s was not found in ServletContext",
+                            Instant.now(), this.getClass().getName(),
+                            MeterService.class.getName(), ReadingService.class.getName()));
         }
     }
 
@@ -74,7 +77,9 @@ public class ReadingsServlet extends HttpServlet {
         ReadingService readingServiceWithRights;
         if (path.startsWith("/admin")) {
             readingServiceWithRights = readingAdminService;
-        } else readingServiceWithRights = readingUserService;
+        } else {
+            readingServiceWithRights = readingUserService;
+        }
 
         String monthParam = req.getParameter("month");
         String yearParam = req.getParameter("year");
@@ -111,7 +116,7 @@ public class ReadingsServlet extends HttpServlet {
                 req.getReader(), ReadingDto.class);
 
         log(String.format("%s - Received request to submit readings by user with id: %s\n%s",
-                now(), user.getId(), inputReading));
+                Instant.now(), user.getId(), inputReading));
 
         ReadingDtoValidator.validateReadingDto(inputReading);
 
@@ -119,7 +124,7 @@ public class ReadingsServlet extends HttpServlet {
         Long readingValue = inputReading.getReading();
 
         Reading createdReading = readingUserService.create(user, meter, readingValue);
-        ReadingDto createdReadingDto = readingMapper.dtoFromEntity(createdReading);
+        ReadingDto createdReadingDto = readingMapper.toReadingDto(createdReading);
 
         resp.setStatus(HttpServletResponse.SC_CREATED);
         resp.setContentType("application/json");
@@ -128,15 +133,15 @@ public class ReadingsServlet extends HttpServlet {
     }
 
     private List<ReadingDto> handleActualRequest(User currentUser, ReadingService readingService) {
-        log(now() + " - Received request to get actual readings by user with id: " + currentUser.getId());
+        log(Instant.now() + " - Received request to get actual readings by user with id: " + currentUser.getId());
         List<Reading> readings = readingService.getActual(currentUser);
-        return readingMapper.dtoListFromEntity(readings);
+        return readingMapper.toReadingDtoList(readings);
     }
 
     private List<ReadingDto> handleRequestByDate(
             String monthParam, String yearParam, User currentUser, ReadingService readingService) {
         log(String.format("%s - Received request from user with id: %s to get readings for %s.%s\n",
-                now(), currentUser.getId(), monthParam, yearParam));
+                Instant.now(), currentUser.getId(), monthParam, yearParam));
         int month;
         int year;
         LocalDate date;
@@ -149,12 +154,13 @@ public class ReadingsServlet extends HttpServlet {
             throw new BadRequestException(e.getMessage());
         }
         List<Reading> foundReadings = readingService.getForMonth(currentUser, date);
-        return readingMapper.dtoListFromEntity(foundReadings);
+        return readingMapper.toReadingDtoList(foundReadings);
     }
 
     private List<ReadingDto> handleHistoryRequest(User user, ReadingService readingService) {
-        log(now() + " - Received request to get all history of readings for user with id: " + user.getId());
+        log(Instant.now() + " - Received request to get all history of readings for user with id: " +
+                user.getId());
         List<Reading> readings = readingService.getAllByUser(user);
-        return readingMapper.dtoListFromEntity(readings);
+        return readingMapper.toReadingDtoList(readings);
     }
 }

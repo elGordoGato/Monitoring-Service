@@ -238,7 +238,7 @@ public class ConsoleController {
         userToCreate.setLastName(br.readLine());
         log.add(now() + " - Received request to register new user: " + userToCreate);
         return userService.create(
-                userMapper.dtoToEntity(userToCreate));
+                userMapper.toUser(userToCreate));
     }
 
     /**

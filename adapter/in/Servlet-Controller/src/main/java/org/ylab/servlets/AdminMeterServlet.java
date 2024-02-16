@@ -41,7 +41,9 @@ public class AdminMeterServlet extends HttpServlet {
         if (meterServiceFromContext instanceof MeterService) {
             this.meterService = (MeterService) meterServiceFromContext;
         } else {
-            throw new IllegalStateException("Repo has not been initialized!");
+            throw new IllegalStateException(
+                    String.format("%s - can't init %s: %s was not found in ServletContext",
+                            Instant.now(), this.getClass().getName(), MeterService.class.getName()));
         }
     }
 
@@ -60,8 +62,8 @@ public class AdminMeterServlet extends HttpServlet {
         MeterDtoValidator.validateMeterDto(meterToCreate);
 
         Meter createdMeter = meterService.create(
-                meterMapper.dtoToEntity(meterToCreate));
-        MeterDto createdMeterDto = meterMapper.entityToDto(createdMeter);
+                meterMapper.toMeter(meterToCreate));
+        MeterDto createdMeterDto = meterMapper.toMeterDto(createdMeter);
 
         resp.setStatus(HttpServletResponse.SC_CREATED);
         resp.setContentType("application/json");
