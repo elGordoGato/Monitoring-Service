@@ -31,7 +31,7 @@ class MeterJdbcRepositoryTest {
         );
         meterJdbcRepository = new MeterJdbcRepository(connectionProvider);
         connection = connectionProvider.getConnection();
-        MigrationManager.migrateDB(connection);
+        MigrationManager.migrateDB(connection, "main");
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {

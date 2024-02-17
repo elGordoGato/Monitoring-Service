@@ -31,7 +31,7 @@ public class ManualConfig {
 
         ConnectionManager connectionManager = new ConnectionManager(
                 dbDriver, connectionUrl, userName, password);
-        MigrationManager.migrateDB(connectionManager.getConnection());
+        MigrationManager.migrateDB(connectionManager.getConnection(), "main");
 
         readingRepository = new ReadingJdbcRepository(connectionManager);
         userRepository = new UserJdbcRepository(connectionManager);

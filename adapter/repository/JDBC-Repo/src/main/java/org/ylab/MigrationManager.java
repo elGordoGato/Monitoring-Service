@@ -20,7 +20,7 @@ public class MigrationManager {
             CREATE SCHEMA IF NOT EXISTS service;""";
     private static final String changelog = "db/changelog/changelog.xml";
 
-    public static void migrateDB(Connection connection) {
+    public static void migrateDB(Connection connection, String context) {
         try {
             initSchema(connection);
 
@@ -35,7 +35,7 @@ public class MigrationManager {
                     new Liquibase(changelog,
                             new ClassLoaderResourceAccessor(),
                             database);
-            liquibase.update(new Contexts());
+            liquibase.update(new Contexts(context));
             log.info("Migration is completed successfully");
             connection.setAutoCommit(true);
         } catch (LiquibaseException e) {
