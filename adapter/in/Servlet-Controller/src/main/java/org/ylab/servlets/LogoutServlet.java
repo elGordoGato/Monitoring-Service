@@ -20,7 +20,7 @@ public class LogoutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
         User userAttribute = ((User) session.getAttribute("user"));
-        if (userAttribute != null){
+        if (userAttribute != null) {
             int id = userAttribute.getId();
             session.invalidate();
             resp.setStatus(HttpServletResponse.SC_OK);

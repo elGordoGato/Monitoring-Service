@@ -19,6 +19,8 @@ import static org.mockito.Mockito.when;
 @DisplayName("Tests for Login Servlet functionality")
 @ExtendWith(MockitoExtension.class)
 class LoginServletTest {
+    private final String email = "test@example.com";
+    private final String password = "secret";
     @Mock
     private UserService userService;
     @Mock
@@ -30,8 +32,6 @@ class LoginServletTest {
     @InjectMocks
     private LoginServlet servlet;
     private User user;
-    private final String email = "test@example.com";
-    private final String password = "secret";
 
     @BeforeEach
     void setUp() {

@@ -13,7 +13,6 @@ import org.ylab.dto.UserDto;
 import org.ylab.entity.User;
 import org.ylab.mapper.UserMapper;
 import org.ylab.mapper.UserMapperImpl;
-import org.ylab.meter.MeterService;
 import org.ylab.user.UserService;
 import org.ylab.validation.UserDtoValidator;
 
@@ -49,7 +48,7 @@ public class RegisterServlet extends HttpServlet {
     }
 
     /**
-     * @param req expects userDto json in body
+     * @param req  expects userDto json in body
      * @param resp response status 201 if successful
      */
     @Override
