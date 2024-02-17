@@ -1,9 +1,6 @@
 package org.ylab.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.ylab.enums.Role;
 
 /**
@@ -11,6 +8,7 @@ import org.ylab.enums.Role;
  */
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -33,9 +31,11 @@ public class User {
     /**
      * Password of user
      */
+    @ToString.Exclude
     private String password;
     /**
      * Role of user(USER, ADMIN) depending on what control of rights are implemented
      */
+    @ToString.Exclude
     private Role role = Role.USER;
 }

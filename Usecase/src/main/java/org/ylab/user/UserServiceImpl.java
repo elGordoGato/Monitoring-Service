@@ -24,7 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User authenticate(String email, String password) {
-        User loginUser = userRepository.findByEmail(email).orElseThrow(() -> new NotFoundException(String.format("User with email: %s not found", email)));
+        User loginUser = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new NotFoundException(String.format("User with email: %s not found", email)));
         if (!loginUser.getPassword().equals(password)) {
             throw new BadRequestException("Wrong password");
         }

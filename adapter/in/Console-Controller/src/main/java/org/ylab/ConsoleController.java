@@ -7,6 +7,7 @@ import org.ylab.entity.Reading;
 import org.ylab.entity.User;
 import org.ylab.enums.Role;
 import org.ylab.mapper.UserMapper;
+import org.ylab.mapper.UserMapperImpl;
 import org.ylab.meter.MeterService;
 import org.ylab.reading.ReadingService;
 import org.ylab.user.UserService;
@@ -50,6 +51,7 @@ public class ConsoleController {
      * Аудит действий пользователя (авторизация, завершение работы, подача показаний, получение истории подачи показаний и тд)
      */
     private final List<String> log = new ArrayList<>();
+    private final UserMapper userMapper;
     /**
      * @see ReadingService
      */
@@ -65,13 +67,14 @@ public class ConsoleController {
         this.readingServiceForUser = readingServiceForUser;
         this.readingServiceForAdmin = readingServiceForAdmin;
         this.typeService = typeService;
+        this.userMapper = new UserMapperImpl();
     }
 
     /**
      * main method to start the app
      */
     public void start() {
-        String input = null;
+        String input;
         boolean isRunning = true;
         log.add(now() + " - App is started");
         while (isRunning) {
@@ -235,7 +238,7 @@ public class ConsoleController {
         userToCreate.setLastName(br.readLine());
         log.add(now() + " - Received request to register new user: " + userToCreate);
         return userService.create(
-                UserMapper.dtoToEntity(userToCreate));
+                userMapper.toUser(userToCreate));
     }
 
     /**

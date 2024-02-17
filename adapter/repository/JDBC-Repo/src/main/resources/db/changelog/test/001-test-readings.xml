@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        logicalFilePath="db/changelog.xml">
+    <changeSet id="001-test-readings" author="ylab" context="test">
+        <insert tableName="users">
+            <column name="id" value="13"/>
+            <column name="email" value="test1@test.com"/>
+            <column name="first_name" value="Test1"/>
+            <column name="last_name" value="User"/>
+            <column name="password" value="secret"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="14"/>
+            <column name="email" value="test2@test.com"/>
+            <column name="first_name" value="Test2"/>
+            <column name="last_name" value="User"/>
+            <column name="password" value="secret"/>
+            <column name="role" value="USER"/>
+        </insert>
+        <insert tableName="users">
+            <column name="id" value="15"/>
+            <column name="email" value="test3@test.com"/>
+            <column name="first_name" value="Test3"/>
+            <column name="last_name" value="User"/>
+            <column name="password" value="secret"/>
+            <column name="role" value="USER"/>
+        </insert>
+
+        <insert tableName="readings">
+            <column name="owner_id" value="13"/>
+            <column name="meter_id" value="1"/>
+            <column name="reading_value" value="111"/>
+            <column name="collected_date" value="2024-01-25 16:58:21.872000"/>
+        </insert>
+        <insert tableName="readings">
+            <column name="owner_id" value="14"/>
+            <column name="meter_id" value="1"/>
+            <column name="reading_value" value="112"/>
+            <column name="collected_date" value="2024-02-02 16:58:21.872000"/>
+        </insert>
+        <insert tableName="readings">
+            <column name="owner_id" value="15"/>
+            <column name="meter_id" value="1"/>
+            <column name="reading_value" value="113"/>
+            <column name="collected_date" value="2024-02-15 16:58:21.872000"/>
+        </insert>
+        <insert tableName="readings">
+            <column name="owner_id" value="13"/>
+            <column name="meter_id" value="1"/>
+            <column name="reading_value" value="114"/>
+            <column name="collected_date" value="2024-03-15 16:58:21.872000"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

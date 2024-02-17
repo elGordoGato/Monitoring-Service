@@ -1,0 +1,15 @@
+package org.ylab.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MeterDto {
+    private Short id;
+    private String type;
+}

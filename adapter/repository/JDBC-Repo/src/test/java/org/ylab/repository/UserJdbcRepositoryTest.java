@@ -21,6 +21,7 @@ public class UserJdbcRepositoryTest {
 
     private static UserJdbcRepository userJdbcRepository;
     private static Connection connection;
+    private User user;
 
     @BeforeAll
     static void setUp() {
@@ -33,7 +34,7 @@ public class UserJdbcRepositoryTest {
         );
         userJdbcRepository = new UserJdbcRepository(connectionProvider);
         connection = connectionProvider.getConnection();
-        MigrationManager.migrateDB(connection);
+        MigrationManager.migrateDB(connection, "main");
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
@@ -44,6 +45,15 @@ public class UserJdbcRepositoryTest {
     @AfterAll
     static void afterAll() {
         postgres.stop();
+    }
+
+    @BeforeEach
+    void setUser() {
+        user = new User();
+        user.setEmail("test@test.com");
+        user.setFirstName("Test");
+        user.setLastName("User");
+        user.setPassword("secret");
     }
 
     @AfterEach
@@ -58,13 +68,6 @@ public class UserJdbcRepositoryTest {
     @Test
     @DisplayName("Successfully save new user to db")
     public void testSaveUser() {
-        // given
-        User user = new User();
-        user.setEmail("test@test.com");
-        user.setFirstName("Test");
-        user.setLastName("User");
-        user.setPassword("secret");
-
         // when
         User savedUser = userJdbcRepository.save(user);
 
@@ -77,11 +80,6 @@ public class UserJdbcRepositoryTest {
     @DisplayName("Test successfully find user by email field")
     public void testFindByEmail() {
         // given
-        User user = new User();
-        user.setEmail("test@test.com");
-        user.setFirstName("Test");
-        user.setLastName("User");
-        user.setPassword("secret");
         userJdbcRepository.save(user);
 
         // when
