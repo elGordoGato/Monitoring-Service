@@ -23,14 +23,14 @@
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>Usecase</artifactId>
-            <version>${usecase.version}</version>
+            <version>${monitoring.service.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>Domain</artifactId>
-            <version>${domain.version}</version>
+            <version>${monitoring.service.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

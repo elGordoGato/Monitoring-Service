@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
 
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class AdminFilter extends HttpFilter {
             throws IOException, ServletException {
         final HttpSession session = req.getSession();
 
-        User loggedUser = (User) session.getAttribute("user");
+        UserEntity loggedUser = (UserEntity) session.getAttribute("user");
 
         if (!loggedUser.getRole().equals(Role.ADMIN)) {
             throw new AccessDeniedException("You don't have access to this resource");

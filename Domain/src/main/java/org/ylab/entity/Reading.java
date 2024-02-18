@@ -23,7 +23,7 @@ public class Reading {
     /**
      * User that submitted reading
      */
-    private User owner;
+    private UserEntity owner;
     /**
      * Type of meter for this reading
      */

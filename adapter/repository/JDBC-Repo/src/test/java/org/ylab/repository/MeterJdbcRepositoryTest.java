@@ -29,8 +29,8 @@ class MeterJdbcRepositoryTest {
                 postgres.getUsername(),
                 postgres.getPassword()
         );
-        meterJdbcRepository = new MeterJdbcRepository(connectionProvider);
         connection = connectionProvider.getConnection();
+        meterJdbcRepository = new MeterJdbcRepository(connection);
         MigrationManager.migrateDB(connection, "main");
         try {
             connection.setAutoCommit(false);

@@ -8,10 +8,10 @@
         <groupId>org.ylab</groupId>
         <artifactId>Monitoring-Service</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>Config</artifactId>
-    <packaging>jar</packaging>
+    <artifactId>ManualConfig</artifactId>
 
 
     <properties>
@@ -24,19 +24,19 @@
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>Console-Controller</artifactId>
-            <version>${console.controller.version}</version>
+            <version>${monitoring.service.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>In-Memory-Repo</artifactId>
-            <version>${inmemory.repo.version}</version>
+            <version>${monitoring.service.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>JDBC-Repo</artifactId>
-            <version>${jdbc.repo.version}</version>
+            <version>${monitoring.service.version}</version>
         </dependency>
     </dependencies>
 

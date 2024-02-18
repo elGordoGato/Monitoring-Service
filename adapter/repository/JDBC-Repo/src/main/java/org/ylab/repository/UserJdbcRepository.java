@@ -1,7 +1,6 @@
 package org.ylab.repository;
 
-import org.ylab.ConnectionManager;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
 import org.ylab.port.UserRepository;
 
@@ -14,12 +13,12 @@ public class UserJdbcRepository implements UserRepository {
     private final static String FIND_BY_EMAIL_QUERY = "SELECT * FROM entities.users WHERE email = ?";
     private final Connection connection;
 
-    public UserJdbcRepository(ConnectionManager connectionManager) {
-        connection = connectionManager.getConnection();
+    public UserJdbcRepository(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
-    public User save(User user) {
+    public UserEntity save(UserEntity user) {
 
         try (PreparedStatement pstmt = connection.prepareStatement(
                 SAVE_QUERY, Statement.RETURN_GENERATED_KEYS)) {
@@ -40,8 +39,8 @@ public class UserJdbcRepository implements UserRepository {
     }
 
     @Override
-    public Optional<User> findByEmail(String email) {
-        User foundUser = null;
+    public Optional<UserEntity> findByEmail(String email) {
+        UserEntity foundUser = null;
         try (PreparedStatement pstmt = connection.prepareStatement(
                 FIND_BY_EMAIL_QUERY)) {
             pstmt.setString(1, email);
@@ -52,7 +51,7 @@ public class UserJdbcRepository implements UserRepository {
                 String lastName = rs.getString("last_name");
                 String password = rs.getString("password");
                 Role role = Role.valueOf(rs.getString("role"));
-                foundUser = new User(id, email, firstName, lastName, password, role);
+                foundUser = new UserEntity(id, email, firstName, lastName, password, role);
             }
             rs.close();
         } catch (SQLException e) {

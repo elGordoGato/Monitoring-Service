@@ -6,7 +6,7 @@ import org.ylab.ConnectionManager;
 import org.ylab.MigrationManager;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
 
 import java.sql.Connection;
@@ -36,7 +36,7 @@ class ReadingJdbcRepositoryTest {
                 postgres.getPassword()
         );
         connection = connectionProvider.getConnection();
-        readingRepository = new ReadingJdbcRepository(connectionProvider);
+        readingRepository = new ReadingJdbcRepository(connection);
         MigrationManager.migrateDB(connection, "main, test");
         try {
             connection.setAutoCommit(false);
@@ -63,7 +63,7 @@ class ReadingJdbcRepositoryTest {
     @DisplayName("Successfully save new meter reading")
     public void testSave() {
         // given
-        User user = new User(
+        UserEntity user = new UserEntity(
                 13, "test@test.com", "Test", "User", "secret", Role.USER);
         Meter meter = new Meter((short) 1, "Cold water");
         Reading reading = new Reading(null, user, meter, 100, Instant.now());
@@ -82,7 +82,7 @@ class ReadingJdbcRepositoryTest {
     @DisplayName("Successfully find last submitted meter reading of selected meter type by user")
     public void testFindLastByUserAndType() {
         // given
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setId(13);
         Meter meter = new Meter();
         meter.setId((short) 1);
@@ -105,7 +105,7 @@ class ReadingJdbcRepositoryTest {
     @DisplayName("Test to successfully find actual readings submitted bu user")
     public void testFindActualByUser() {
         // given
-        User user = new User(
+        UserEntity user = new UserEntity(
                 13, "test@test.com", "Test", "User", "secret", Role.USER);
         Meter meter1 = new Meter((short) 1, "Cold water");
         Meter meter2 = new Meter((short) 2, "Hot water");
@@ -129,7 +129,7 @@ class ReadingJdbcRepositoryTest {
     @DisplayName("Successfully find all readings submitted by user within selected period")
     public void testFindAllByOwnerAndDateBetween() {
         // given
-        User user = new User(
+        UserEntity user = new UserEntity(
                 13, "test@test.com", "Test", "User", "secret", Role.USER);
 
         // when
@@ -144,9 +144,9 @@ class ReadingJdbcRepositoryTest {
     @DisplayName("Test to successfully find by admin actual readings for each meter type submitted by any user before")
     public void testFindActualByAdmin() {
         // given
-        User user1 = new User(
+        UserEntity user1 = new UserEntity(
                 13, "user1@test.com", "User", "One", "secret", Role.USER);
-        User user2 = new User(
+        UserEntity user2 = new UserEntity(
                 14, "user2@test.com", "User", "Two", "secret", Role.USER);
         Meter meter1 = new Meter((short) 1, "Cold water");
         Meter meter2 = new Meter((short) 2, "Hot water");
@@ -181,7 +181,7 @@ class ReadingJdbcRepositoryTest {
     @DisplayName("Test successfully return list of all readings submitted by selected user")
     public void testFindAllByOwner() {
         // given
-        User user1 = new User(
+        UserEntity user1 = new UserEntity(
                 13, "user1@test.com", "User", "One", "secret", Role.USER);
 
         // when

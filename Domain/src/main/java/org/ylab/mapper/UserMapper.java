@@ -2,14 +2,14 @@ package org.ylab.mapper;
 
 import org.mapstruct.Mapper;
 import org.ylab.dto.UserDto;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 
 /**
  * Utils class for mapping user entity to it's dto and vice-versa
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface UserMapper {
-    User toUser(UserDto userDto);
+    UserEntity toUser(UserDto userDto);
 
-    UserDto toUserDto(User entity);
+    UserDto toUserDto(UserEntity entity);
 }

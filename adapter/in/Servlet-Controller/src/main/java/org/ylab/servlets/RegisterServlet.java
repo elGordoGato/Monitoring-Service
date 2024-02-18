@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.ylab.annotations.Loggable;
 import org.ylab.dto.UserDto;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.mapper.UserMapper;
 import org.ylab.mapper.UserMapperImpl;
 import org.ylab.user.UserService;
@@ -59,7 +59,7 @@ public class RegisterServlet extends HttpServlet {
 
         UserDtoValidator.validateUserDto(userToCreate);
 
-        User createdUser = userService.create(
+        UserEntity createdUser = userService.create(
                 userMapper.toUser(userToCreate));
 
         req.getSession().setAttribute("user", createdUser);

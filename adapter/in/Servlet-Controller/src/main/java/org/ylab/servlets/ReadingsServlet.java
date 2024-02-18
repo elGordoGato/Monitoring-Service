@@ -12,7 +12,7 @@ import org.ylab.annotations.Loggable;
 import org.ylab.dto.ReadingDto;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
 import org.ylab.exception.BadRequestException;
 import org.ylab.mapper.ReadingMapper;
@@ -83,7 +83,7 @@ public class ReadingsServlet extends HttpServlet {
 
         String monthParam = req.getParameter("month");
         String yearParam = req.getParameter("year");
-        User user = (User) req.getSession().getAttribute("user");
+        UserEntity user = (UserEntity) req.getSession().getAttribute("user");
 
         List<ReadingDto> foundReadings;
 
@@ -106,7 +106,7 @@ public class ReadingsServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        User user = (User) req.getSession().getAttribute("user");
+        UserEntity user = (UserEntity) req.getSession().getAttribute("user");
 
         if (!user.getRole().equals(Role.USER)) {
             throw new AccessDeniedException("Only user can submit readings");
@@ -132,14 +132,14 @@ public class ReadingsServlet extends HttpServlet {
                 objectMapper.writeValueAsString(createdReadingDto));
     }
 
-    private List<ReadingDto> handleActualRequest(User currentUser, ReadingService readingService) {
+    private List<ReadingDto> handleActualRequest(UserEntity currentUser, ReadingService readingService) {
         log(Instant.now() + " - Received request to get actual readings by user with id: " + currentUser.getId());
         List<Reading> readings = readingService.getActual(currentUser);
         return readingMapper.toReadingDtoList(readings);
     }
 
     private List<ReadingDto> handleRequestByDate(
-            String monthParam, String yearParam, User currentUser, ReadingService readingService) {
+            String monthParam, String yearParam, UserEntity currentUser, ReadingService readingService) {
         log(String.format("%s - Received request from user with id: %s to get readings for %s.%s\n",
                 Instant.now(), currentUser.getId(), monthParam, yearParam));
         int month;
@@ -157,7 +157,7 @@ public class ReadingsServlet extends HttpServlet {
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
-    private List<ReadingDto> handleHistoryRequest(User user, ReadingService readingService) {
+    private List<ReadingDto> handleHistoryRequest(UserEntity user, ReadingService readingService) {
         log(Instant.now() + " - Received request to get all history of readings for user with id: " +
                 user.getId());
         List<Reading> readings = readingService.getAllByUser(user);

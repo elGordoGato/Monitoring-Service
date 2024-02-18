@@ -7,7 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.exception.BadRequestException;
 import org.ylab.exception.ConflictException;
 import org.ylab.exception.NotFoundException;
@@ -29,11 +29,11 @@ class UserServiceImplTest {
     @InjectMocks
     private UserServiceImpl userService;
 
-    private User user;
+    private UserEntity user;
 
     @BeforeEach
     void setUp() {
-        user = new User();
+        user = new UserEntity();
         user.setEmail("test@example.com");
         user.setPassword("secret");
     }
@@ -44,7 +44,7 @@ class UserServiceImplTest {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.empty());
         when(userRepository.save(user)).thenReturn(user);
 
-        User createdUser = userService.create(user);
+        UserEntity createdUser = userService.create(user);
 
         assertThat(createdUser).isNotNull();
         assertThat(createdUser.getEmail()).isEqualTo(user.getEmail());
@@ -65,7 +65,7 @@ class UserServiceImplTest {
     void testAuthenticateUserSuccess() {
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.ofNullable(user));
 
-        User authenticatedUser = userService.authenticate(user.getEmail(), user.getPassword());
+        UserEntity authenticatedUser = userService.authenticate(user.getEmail(), user.getPassword());
 
         assertThat(authenticatedUser).isNotNull();
         assertThat(authenticatedUser.getEmail()).isEqualTo(user.getEmail());

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -20,7 +20,7 @@ class ReadingRepositoryInMemoryTest {
 
     private ReadingRepositoryInMemory readingRepository;
 
-    private User user;
+    private UserEntity user;
     private Meter meter;
     private Reading reading;
 
@@ -28,7 +28,7 @@ class ReadingRepositoryInMemoryTest {
     void setUp() {
         readingRepository = new ReadingRepositoryInMemory();
 
-        user = new User();
+        user = new UserEntity();
         user.setEmail("test@example.com");
         user.setPassword("secret");
 

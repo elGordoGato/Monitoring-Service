@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Utils class for mapping reading entity to it's dto and vice-versa
  */
-@Mapper
+@Mapper(componentModel = "spring")
 public interface ReadingMapper {
     @Mapping(target = "meterType", source = "meter.id",
             dateFormat = "dd-MM-yyyy HH:mm:ss")

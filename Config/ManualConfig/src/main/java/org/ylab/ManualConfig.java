@@ -12,6 +12,8 @@ import org.ylab.repository.*;
 import org.ylab.user.UserService;
 import org.ylab.user.UserServiceImpl;
 
+import java.sql.Connection;
+
 public class ManualConfig {
     private static ReadingRepository readingRepository;
     private static UserRepository userRepository;
@@ -31,11 +33,12 @@ public class ManualConfig {
 
         ConnectionManager connectionManager = new ConnectionManager(
                 dbDriver, connectionUrl, userName, password);
-        MigrationManager.migrateDB(connectionManager.getConnection(), "main");
+        Connection connection = connectionManager.getConnection();
+        MigrationManager.migrateDB(connection, "main");
 
-        readingRepository = new ReadingJdbcRepository(connectionManager);
-        userRepository = new UserJdbcRepository(connectionManager);
-        meterRepository = new MeterJdbcRepository(connectionManager);
+        readingRepository = new ReadingJdbcRepository(connection);
+        userRepository = new UserJdbcRepository(connection);
+        meterRepository = new MeterJdbcRepository(connection);
     }
 
     public static UserService getUserService() {

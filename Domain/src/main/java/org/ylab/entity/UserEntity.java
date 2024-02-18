@@ -11,7 +11,7 @@ import org.ylab.enums.Role;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserEntity {
     /**
      * ID of user
      */

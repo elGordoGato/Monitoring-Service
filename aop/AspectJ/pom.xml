@@ -7,9 +7,10 @@
         <groupId>org.ylab</groupId>
         <artifactId>Monitoring-Service</artifactId>
         <version>1.0-SNAPSHOT</version>
+        <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>AOP</artifactId>
+    <artifactId>AspectJ</artifactId>
 
     <properties>
         <maven.compiler.source>${java.version}</maven.compiler.source>

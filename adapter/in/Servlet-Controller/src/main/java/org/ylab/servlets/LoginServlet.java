@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.ylab.annotations.Loggable;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.user.UserService;
 import org.ylab.validation.EmailValidator;
 import org.ylab.validation.PasswordValidator;
@@ -49,7 +49,7 @@ public class LoginServlet extends HttpServlet {
 
         validateRequestParams(email, password);
 
-        User currentUser = userService.authenticate(email, password);
+        UserEntity currentUser = userService.authenticate(email, password);
         req.getSession().setAttribute("user", currentUser);
         resp.setStatus(HttpServletResponse.SC_OK);
         context.log(Instant.now() + " - User logged in with id: " + currentUser.getId());

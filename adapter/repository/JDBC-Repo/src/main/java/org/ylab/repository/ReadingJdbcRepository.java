@@ -1,9 +1,8 @@
 package org.ylab.repository;
 
-import org.ylab.ConnectionManager;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.port.ReadingRepository;
 
 import java.sql.*;
@@ -46,8 +45,8 @@ public class ReadingJdbcRepository implements ReadingRepository {
             JOIN entities.meters m on m.id = r.meter_id""";
     private final Connection connection;
 
-    public ReadingJdbcRepository(ConnectionManager connectionManager) {
-        connection = connectionManager.getConnection();
+    public ReadingJdbcRepository(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
@@ -73,7 +72,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
     }
 
     @Override
-    public Optional<Reading> findLastByUserAndType(User user, Meter type) {
+    public Optional<Reading> findLastByUserAndType(UserEntity user, Meter type) {
         Reading foundReading = null;
         try (PreparedStatement pstmt = connection.prepareStatement(FIND_LAST_BY_USER_AND_TYPE_QUERY)) {
             pstmt.setInt(1, user.getId());
@@ -92,7 +91,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
     }
 
     @Override
-    public List<Reading> findActualByUser(User user) {
+    public List<Reading> findActualByUser(UserEntity user) {
         return getReadings(user, FIND_ACTUAL_BY_USER_QUERY);
     }
 
@@ -102,7 +101,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
     }
 
     @Override
-    public List<Reading> findAllByOwnerAndDateBetween(User currentUser, Instant start, Instant end) {
+    public List<Reading> findAllByOwnerAndDateBetween(UserEntity currentUser, Instant start, Instant end) {
         List<Reading> foundReadings = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(
                 FIND_ALL_BY_OWNER_AND_DATE_BETWEEN_QUERY)) {
@@ -142,7 +141,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
     }
 
     @Override
-    public List<Reading> findAllByOwner(User currentUser) {
+    public List<Reading> findAllByOwner(UserEntity currentUser) {
         return getReadings(currentUser, FIND_ALL_BY_OWNER_QUERY);
     }
 
@@ -152,7 +151,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
         return getReadings(FIND_ALL_QUERY);
     }
 
-    private List<Reading> getReadings(User currentUser, String findAllByOwnerQuery) {
+    private List<Reading> getReadings(UserEntity currentUser, String findAllByOwnerQuery) {
         List<Reading> foundReadings = new ArrayList<>();
         try (PreparedStatement pstmt = connection.prepareStatement(
                 findAllByOwnerQuery)) {
@@ -186,7 +185,7 @@ public class ReadingJdbcRepository implements ReadingRepository {
 
     private Reading parseResultSet(ResultSet rs) throws SQLException {
         long id = rs.getLong("id");
-        User owner = new User();
+        UserEntity owner = new UserEntity();
         owner.setId(rs.getInt("owner_id"));
         Meter meterType = new Meter();
         meterType.setId(rs.getShort("meter_id"));
