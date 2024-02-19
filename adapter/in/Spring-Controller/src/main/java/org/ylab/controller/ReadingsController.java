@@ -5,7 +5,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.ylab.annotations.Loggable;
-import org.ylab.dto.MeterDto;
 import org.ylab.dto.ReadingDto;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
@@ -32,8 +31,8 @@ public class ReadingsController {
     private final MeterMapper meterMapper;
 
     public ReadingsController(@Qualifier("userReadingService") ReadingService readingService,
-                           MeterService meterService,
-                           ReadingMapper readingMapper, MeterMapper meterMapper) {
+                              MeterService meterService,
+                              ReadingMapper readingMapper, MeterMapper meterMapper) {
         this.readingService = readingService;
         this.meterService = meterService;
         this.readingMapper = readingMapper;
@@ -62,7 +61,7 @@ public class ReadingsController {
 
     @PostMapping()
     public ReadingDto createReadings(@AuthenticationPrincipal UserEntity principal,
-                                   @RequestBody @Valid ReadingDto inputReading){
+                                     @RequestBody @Valid ReadingDto inputReading) {
         Meter meter = meterService.getById(inputReading.getMeterType());
         Long readingValue = inputReading.getReading();
 

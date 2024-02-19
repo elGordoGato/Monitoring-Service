@@ -62,7 +62,7 @@ public class AdminController {
     }
 
     @PostMapping("/meter")
-    public MeterDto createMeter(@RequestBody @Valid MeterDto inputMeterDto){
+    public MeterDto createMeter(@RequestBody @Valid MeterDto inputMeterDto) {
         Meter meterToCreate = meterMapper.toMeter(inputMeterDto);
         Meter createdMeter = meterService.create(meterToCreate);
         return meterMapper.toMeterDto(createdMeter);

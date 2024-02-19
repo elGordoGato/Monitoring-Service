@@ -48,7 +48,7 @@ public class AuthController {
     public String login(HttpServletRequest request,
                         @RequestBody @Valid UserDto dtoToLogin,
                         BindingResult bindingResult) {
-        if (bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getGlobalError().getDefaultMessage());
         }
         Authentication authentication = authenticationManager.authenticate(
