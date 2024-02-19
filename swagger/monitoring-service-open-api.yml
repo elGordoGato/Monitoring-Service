@@ -161,6 +161,33 @@ paths:
             '*/*':
               schema:
                 $ref: "#/components/schemas/ReadingDto"
+  /readings?date={date}:
+    get:
+      tags:
+        - Readings
+      summary: Get the readings for the current user by month
+      security:
+        - basicAuth: [ ]
+      parameters:
+        - name: date
+          in: query
+          required: true
+          schema:
+            type: string
+            format: year-month
+      responses:
+        '200':
+          description: A list of readings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReadingDto'
+        '400':
+          description: Invalid date format
+        '401':
+          description: Unauthorized
   /readings/history:
     get:
       tags:

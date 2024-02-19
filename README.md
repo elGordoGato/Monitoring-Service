@@ -31,7 +31,8 @@
 
 ---
 ### Спецификация API
-[Документация OpenAPI (Swagger)](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/elGordoGato/task-management-system/jwt-with-email/swagger/task-management-system-openapi.yml)
+[Документация OpenAPI (Swagger)](https://petstore.swagger.io/?url=https://gist.githubusercontent.com/elGordoGato/4cfb79941db3b8f81913fda7797c63a1/raw/4517fe7e63c3bcfe13b11bfbbb3f979420c36290/monitoring-service-open-api.yml)
+
 
 Файл со спецификацией можно найти по пути: `swagger/monitoring-service-open-api.yml`
 
