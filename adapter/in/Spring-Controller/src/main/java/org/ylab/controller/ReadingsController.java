@@ -2,6 +2,7 @@ package org.ylab.controller;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.ylab.dto.MeterDto;
 import org.ylab.dto.ReadingDto;
@@ -13,9 +14,13 @@ import org.ylab.mapper.ReadingMapper;
 import org.ylab.meter.MeterService;
 import org.ylab.reading.ReadingService;
 
+import javax.validation.Valid;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/readings")
 public class ReadingsController {
@@ -39,11 +44,10 @@ public class ReadingsController {
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
-    @GetMapping(params = {"month", "year"})
+    @GetMapping(params = "date")
     public List<ReadingDto> getByMonth(@AuthenticationPrincipal UserEntity principal,
-                                       @RequestParam("month") Integer month,
-                                       @RequestParam("year") Integer year) {
-        LocalDate requestDate = LocalDate.of(year, month, 1);
+                                       @RequestParam("date") @PastOrPresent YearMonth date) {
+        LocalDate requestDate = date.atDay(1);
         List<Reading> foundReadings = readingService.getForMonth(principal, requestDate);
         return readingMapper.toReadingDtoList(foundReadings);
     }
@@ -56,7 +60,7 @@ public class ReadingsController {
 
     @PostMapping()
     public ReadingDto createReadings(@AuthenticationPrincipal UserEntity principal,
-                                   @RequestBody ReadingDto inputReading){
+                                   @RequestBody @Valid ReadingDto inputReading){
         Meter meter = meterService.getById(inputReading.getMeterType());
         Long readingValue = inputReading.getReading();
 
