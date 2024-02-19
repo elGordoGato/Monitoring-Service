@@ -30,7 +30,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 .password(myUser.getPassword())
                 .roles(String.valueOf(myUser.getRole()))
                 .build();
-        return new UsernamePasswordAuthenticationToken(principal, password, principal.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(myUser, password, principal.getAuthorities());
 
     }
 

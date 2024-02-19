@@ -27,8 +27,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**")
                                 .permitAll()
+                                .requestMatchers("/auth/logout")
+                                .authenticated()
+                                .requestMatchers("/admin**")
+                                .hasRole("ADMIN")
                                 .anyRequest()
-                                .authenticated())
+                                .hasRole("USER"))
                 .authenticationProvider(authenticationProvider);
         return http.getOrBuild();
     }

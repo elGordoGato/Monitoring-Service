@@ -27,13 +27,6 @@
             <artifactId>Spring-Controller</artifactId>
             <version>${monitoring.service.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <version>${jakarta.servlet.version}</version>
-            <scope>provided</scope>
-        </dependency>
     </dependencies>
 
     <build>
