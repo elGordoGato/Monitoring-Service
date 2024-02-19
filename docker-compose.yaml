@@ -15,7 +15,7 @@ services:
   web:
     container_name: tomcat
     image: webapp
-    build: /application/ServletApp/
+    build: /application/SpringFrameworkApp/
     restart: always
     depends_on:
       - meter-db
