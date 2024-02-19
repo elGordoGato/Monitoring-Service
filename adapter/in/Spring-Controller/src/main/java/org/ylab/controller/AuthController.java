@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.ylab.annotations.Loggable;
 import org.ylab.dto.UserDto;
 import org.ylab.entity.UserEntity;
 import org.ylab.exception.BadRequestException;
@@ -25,6 +26,7 @@ import org.ylab.user.UserService;
 
 import javax.validation.Valid;
 
+@Loggable
 @Validated
 @RestController
 @RequestMapping("/auth")

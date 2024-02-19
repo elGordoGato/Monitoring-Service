@@ -21,6 +21,13 @@
     <dependencies>
         <dependency>
             <groupId>org.ylab</groupId>
+            <artifactId>DTO</artifactId>
+            <version>${monitoring.service.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ylab</groupId>
             <artifactId>Authentication</artifactId>
             <version>${monitoring.service.version}</version>
         </dependency>

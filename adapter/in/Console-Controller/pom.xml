@@ -29,9 +29,8 @@
 
         <dependency>
             <groupId>org.ylab</groupId>
-            <artifactId>Domain</artifactId>
+            <artifactId>DTO</artifactId>
             <version>${monitoring.service.version}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

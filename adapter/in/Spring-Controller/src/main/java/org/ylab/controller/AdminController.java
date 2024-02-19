@@ -2,13 +2,10 @@ package org.ylab.controller;
 
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.ylab.annotations.Loggable;
 import org.ylab.dto.MeterDto;
 import org.ylab.dto.ReadingDto;
 import org.ylab.entity.Meter;
@@ -20,15 +17,12 @@ import org.ylab.meter.MeterService;
 import org.ylab.reading.ReadingService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Positive;
-import javax.validation.constraints.Size;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+@Loggable
 @Validated
 @RestController
 @RequestMapping("/admin")

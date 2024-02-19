@@ -35,6 +35,13 @@
 
         <dependency>
             <groupId>org.ylab</groupId>
+            <artifactId>DTO</artifactId>
+            <version>${monitoring.service.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ylab</groupId>
             <artifactId>AspectJ</artifactId>
             <version>${monitoring.service.version}</version>
         </dependency>

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.ylab.annotations.Loggable;
 import org.ylab.dto.MeterDto;
 import org.ylab.dto.ReadingDto;
 import org.ylab.entity.Meter;
@@ -20,6 +21,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+@Loggable
 @Validated
 @RestController
 @RequestMapping("/readings")

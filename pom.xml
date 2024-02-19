@@ -24,6 +24,7 @@
         <module>config/SpringConfig</module>
         <module>Domain</module>
         <module>Usecase</module>
+        <module>adapter/DTO</module>
     </modules>
 
     <properties>
