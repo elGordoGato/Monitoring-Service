@@ -10,48 +10,33 @@
 - Ранее поданные показания редактировать запрещено.
 - Последние поданные показания считаются актуальными.
 - Пользователь может видеть только свои показания, администратор может видеть показания всех пользователей.
-- Реализация соответствует описанным ниже требованиям и ограничениям.
 
 ---
 
-### Требования
+### Pull Requests
 
-Monitoring-Service. Домашнее задание Servlet API и AOP
-Необходимо обновить сервис, который вы разработали в первом задании согласно следующим требованиям и ограничениям
+1) [Pull request "Вводная"](https://github.com/elGordoGato/Monitoring-Service/pull/1)
 
-- Все взаимодействие должно теперь осуществляться через отправку HTTP запросов
+2) [Pull request "JDBC. Миграции БД"](https://github.com/elGordoGato/Monitoring-Service/pull/2)
 
-- Сервлеты должны принимать JSON и отдавать также JSON
+3) [Pull request "Сервлеты. АОП"](https://github.com/elGordoGato/Monitoring-Service/pull/3)
 
-- Для сериализации и десереализации использовать jackson
-
-- Использовать понятное именование эндпоинтов
-
-- Возвращать разные статус-коды
-
-- Добавить DTO (если ранее не было заложено в логике)
-
-- Для маппинга сущностей в дто использовать MapStruct
-
-- Реализовать валидацию входящих ДТО
-
-- Аудит переделать на аспекты через аннотацию
-
-- Также реализовать на аспектах логирование выполнения любого метода (с замером времени выполнения)
-
-### Нефункциональные требования
-
-Unit-тестирование
-
-Доп. материалы: https://drive.google.com/drive/folders/1rZaq58yAAcBKZqBeNSfpc6kb-GkuqHs0?usp=sharing
+4) [Pull request "Знакомство с Spring Framework"](https://github.com/elGordoGato/Monitoring-Service/pull/4)
 
 ---
 
 ## Стек:
 
-> Java 17, Maven, Postgresql, HttpServlet, AspectJ, MapStruct, Jackson, Lombok, JUnit, Mockito, AssertJ, Testcontainers
+> Java 17, Spring Framework, Maven, Postgresql, HttpServlet, AspectJ, MapStruct, Jackson, Lombok, JUnit, Mockito, AssertJ, Testcontainers
 
 ---
+### Спецификация API
+[Документация OpenAPI (Swagger)](https://petstore.swagger.io/?url=https://raw.githubusercontent.com/elGordoGato/task-management-system/jwt-with-email/swagger/task-management-system-openapi.yml)
+
+Файл со спецификацией можно найти по пути: `swagger/monitoring-service-open-api.yml`
+
+---
+
 
 ## Запуск приложения:
 
