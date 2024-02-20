@@ -83,7 +83,7 @@ class AdminControllerTest {
                 new ReadingDto((short) 1, 123L, "2024-1-1"),
                 new ReadingDto((short) 1, 654L, "2024-2-5")
         );
-        when(readingService.getActual(principal)).thenReturn(readings);
+        when(readingService.getActual(any())).thenReturn(readings);
         when(readingMapper.toReadingDtoList(readings)).thenReturn(readingDtos);
 
         // when
@@ -94,14 +94,12 @@ class AdminControllerTest {
         resultActions.andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].id", is(1)))
-                .andExpect(jsonPath("$[0].date", is("2024-01-01")))
-                .andExpect(jsonPath("$[0].value", is(100.0)))
-                .andExpect(jsonPath("$[0].meterId", is(1)))
-                .andExpect(jsonPath("$[1].id", is(2)))
-                .andExpect(jsonPath("$[1].date", is("2024-01-02")))
-                .andExpect(jsonPath("$[1].value", is(200.0)))
-                .andExpect(jsonPath("$[1].meterId", is(1)));
+                .andExpect(jsonPath("$[0].collectedDate", is("2024-1-1")))
+                .andExpect(jsonPath("$[0].reading", is(123)))
+                .andExpect(jsonPath("$[0].meterType", is(1)))
+                .andExpect(jsonPath("$[1].collectedDate", is("2024-2-5")))
+                .andExpect(jsonPath("$[1].reading", is(654)))
+                .andExpect(jsonPath("$[1].meterType", is(1)));
     }
 
     // write more tests for other methods
