@@ -2,6 +2,8 @@ package org.ylab.controller;
 
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -61,7 +63,8 @@ public class AdminController {
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
-    @PostMapping("/meter")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(value = "/meter", produces = MediaType.APPLICATION_JSON_VALUE)
     public MeterDto createMeter(@RequestBody @Valid MeterDto inputMeterDto) {
         Meter meterToCreate = meterMapper.toMeter(inputMeterDto);
         Meter createdMeter = meterService.create(meterToCreate);
