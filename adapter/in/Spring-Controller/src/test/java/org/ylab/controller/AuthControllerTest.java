@@ -31,20 +31,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class AuthControllerTest {
 
+    private final ObjectMapper mapper = new ObjectMapper();
     @Mock
     private UserService userService;
-
     @Mock
     private UserMapper userMapper;
-
     @Mock
     private AuthenticationManager authenticationManager;
-
     @InjectMocks
     private AuthController controller;
-
-    private final ObjectMapper mapper = new ObjectMapper();
-
     private MockMvc mockMvc;
 
     private UserDto userDto;
@@ -88,6 +83,7 @@ class AuthControllerTest {
         // given
         when(authenticationManager.authenticate(any()))
                 .thenReturn(new UsernamePasswordAuthenticationToken(userEntity, null));
+        when(userMapper.toUserDto(userEntity)).thenReturn(userDto);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/auth/login")
@@ -96,6 +92,9 @@ class AuthControllerTest {
 
         // then
         resultActions.andExpect(status().isOk())
-                .andExpect(content().string("Logged in"));
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.email", is("user@example.com")))
+                .andExpect(jsonPath("$.firstName", is("FirstName")))
+                .andExpect(jsonPath("$.lastName", is("LastName")));
     }
 }

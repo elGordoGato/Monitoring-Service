@@ -23,10 +23,10 @@ public class DatabaseConfig {
             PASSWORD = prop.getProperty("DB_PASSWORD");
             System.out.println("Retrieved properties from application.yml");
         } catch (IOException e) {
-        DRIVER = "org.postgresql.Driver";
-        URL = "jdbc:postgresql://meter-db:5432/meterdb";
-        USER_NAME = "admin";
-        PASSWORD = "admin";
+            DRIVER = "org.postgresql.Driver";
+            URL = "jdbc:postgresql://meter-db:5432/meterdb";
+            USER_NAME = "admin";
+            PASSWORD = "admin";
         }
     }
 

@@ -19,7 +19,6 @@ import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
 import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
-import org.ylab.mapper.MeterMapper;
 import org.ylab.mapper.ReadingMapper;
 import org.ylab.meter.MeterService;
 import org.ylab.reading.ReadingService;
@@ -40,19 +39,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class ReadingsControllerTest {
 
+    private final ObjectMapper mapper = new ObjectMapper();
     @Mock
     private ReadingService readingService;
-
     @Mock
     private MeterService meterService;
-
     @Mock
     private ReadingMapper readingMapper;
-
     @InjectMocks
     private ReadingsController controller;
-
-    private final ObjectMapper mapper = new ObjectMapper();
     private MockMvc mockMvc;
     private UserEntity principal;
     private Meter meter;

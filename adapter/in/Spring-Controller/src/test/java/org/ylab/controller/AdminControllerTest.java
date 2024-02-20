@@ -42,23 +42,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class AdminControllerTest {
 
 
+    private final ObjectMapper mapper = new ObjectMapper();
     @Mock
     private ReadingService readingService;
-
     @Mock
     private MeterService meterService;
-
     @Mock
     private ReadingMapper readingMapper;
-
     @Mock
     private MeterMapper meterMapper;
-
     @InjectMocks
     private AdminController controller;
-
-    private final ObjectMapper mapper = new ObjectMapper();
-
     private MockMvc mockMvc;
     private UserEntity principal;
 
