@@ -54,13 +54,4 @@
         <testcontainers.postgresql.version>1.19.4</testcontainers.postgresql.version>
         <log4j.version>2.22.1</log4j.version>
     </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 </project>

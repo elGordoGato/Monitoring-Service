@@ -30,11 +30,16 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
+
+    public AuthController(UserService userService, UserMapper userMapper, AuthenticationManager authenticationManager) {
+        this.userService = userService;
+        this.userMapper = userMapper;
+        this.authenticationManager = authenticationManager;
+    }
 
     @Validated(Marker.OnCreate.class)
     @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)

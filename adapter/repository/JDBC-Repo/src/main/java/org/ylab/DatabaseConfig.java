@@ -1,5 +1,9 @@
 package org.ylab;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class DatabaseConfig {
     private static String DRIVER;
     private static String URL;
@@ -7,7 +11,7 @@ public class DatabaseConfig {
     private static String PASSWORD;
 
     static {
-        /*try {
+        try {
             String configFilePath = "../webapps/ServletApp/WEB-INF/classes/application.yml";
             FileInputStream propsInput = new FileInputStream(configFilePath);
             Properties prop = new Properties();
@@ -18,12 +22,12 @@ public class DatabaseConfig {
             USER_NAME = prop.getProperty("DB_USER");
             PASSWORD = prop.getProperty("DB_PASSWORD");
             System.out.println("Retrieved properties from application.yml");
-        } catch (IOException e) {*/
+        } catch (IOException e) {
         DRIVER = "org.postgresql.Driver";
-        URL = "jdbc:postgresql://localhost:5432/meterdb";
+        URL = "jdbc:postgresql://meter-db:5432/meterdb";
         USER_NAME = "admin";
         PASSWORD = "admin";
-        //}
+        }
     }
 
     public static String getDriver() {
