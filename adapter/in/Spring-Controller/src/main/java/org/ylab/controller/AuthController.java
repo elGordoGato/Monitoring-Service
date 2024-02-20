@@ -23,6 +23,9 @@ import org.ylab.user.UserService;
 
 import javax.validation.Valid;
 
+/**
+ * Authentication controller with public access
+ */
 @Loggable
 @Validated
 @RestController
@@ -38,6 +41,10 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
+    /**
+     * @param dtoToRegister UserDto to be registered
+     * @return Dto of created User
+     */
     @Validated(Marker.OnCreate.class)
     @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public UserDto register(@RequestBody @Valid UserDto dtoToRegister) {
@@ -46,6 +53,11 @@ public class AuthController {
         return userMapper.toUserDto(createdUser);
     }
 
+    /**
+     * @param request HttpServletRequest to get session and set security key after successful authentication
+     * @param dtoToLogin UserDto with email and password to authenticate
+     * @return UserDto of authenticated user
+     */
     @PostMapping(path = "/login")
     public UserDto login(HttpServletRequest request,
                          @RequestBody @Valid UserDto dtoToLogin) {

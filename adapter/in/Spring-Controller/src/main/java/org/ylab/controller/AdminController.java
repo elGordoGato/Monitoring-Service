@@ -24,6 +24,9 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
+/**
+ * Controller class to handle requests from admin
+ */
 @Loggable
 @Validated
 @RestController
@@ -43,12 +46,21 @@ public class AdminController {
         this.meterMapper = meterMapper;
     }
 
+    /**
+     * @param principal Logged admin
+     * @return List of actual readings
+     */
     @GetMapping("/readings")
     public List<ReadingDto> getActual(@AuthenticationPrincipal UserEntity principal) {
         List<Reading> foundReadings = readingService.getActual(principal);
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
+    /**
+     * @param principal Logged admin
+     * @param date YearMonth with format "YYYY-MM" for month to get readings
+     * @return List of readings submitted within month of selected date
+     */
     @GetMapping(value = "/readings", params = "date")
     public List<ReadingDto> getByMonth(@AuthenticationPrincipal UserEntity principal,
                                        @RequestParam("date") @PastOrPresent YearMonth date) {
@@ -57,12 +69,20 @@ public class AdminController {
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
+    /**
+     * @param principal Logged admin
+     * @return List of all readings submitted before
+     */
     @GetMapping("/readings/history")
     public List<ReadingDto> getHistory(@AuthenticationPrincipal UserEntity principal) {
         List<Reading> foundReadings = readingService.getAllByUser(principal);
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
+    /**
+     * @param inputMeterDto MeterDto json to be created
+     * @return Dto of created Meter
+     */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/meter", produces = MediaType.APPLICATION_JSON_VALUE)
     public MeterDto createMeter(@RequestBody @Valid MeterDto inputMeterDto) {
