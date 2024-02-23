@@ -91,7 +91,7 @@
                     <weaveDependencies>
                         <weaveDependency>
                             <groupId>org.ylab</groupId>
-                            <artifactId>AspectJ</artifactId>
+                            <artifactId>AOP</artifactId>
                         </weaveDependency>
                     </weaveDependencies>
                     <complianceLevel>1.8</complianceLevel>

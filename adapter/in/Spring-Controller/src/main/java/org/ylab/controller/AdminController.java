@@ -3,7 +3,6 @@ package org.ylab.controller;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -47,35 +46,35 @@ public class AdminController {
     }
 
     /**
-     * @param principal Logged admin
+     * @param loggedUser Logged admin
      * @return List of actual readings
      */
     @GetMapping("/readings")
-    public List<ReadingDto> getActual(@AuthenticationPrincipal UserEntity principal) {
-        List<Reading> foundReadings = readingService.getActual(principal);
+    public List<ReadingDto> getActual(@AuthenticationPrincipal UserEntity loggedUser) {
+        List<Reading> foundReadings = readingService.getActual(loggedUser);
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
     /**
-     * @param principal Logged admin
-     * @param date YearMonth with format "YYYY-MM" for month to get readings
+     * @param loggedUser Logged admin
+     * @param date       YearMonth with format "YYYY-MM" for month to get readings
      * @return List of readings submitted within month of selected date
      */
     @GetMapping(value = "/readings", params = "date")
-    public List<ReadingDto> getByMonth(@AuthenticationPrincipal UserEntity principal,
+    public List<ReadingDto> getByMonth(@AuthenticationPrincipal UserEntity loggedUser,
                                        @RequestParam("date") @PastOrPresent YearMonth date) {
         LocalDate requestDate = date.atDay(1);
-        List<Reading> foundReadings = readingService.getForMonth(principal, requestDate);
+        List<Reading> foundReadings = readingService.getForMonth(loggedUser, requestDate);
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
     /**
-     * @param principal Logged admin
+     * @param loggedUser Logged admin
      * @return List of all readings submitted before
      */
     @GetMapping("/readings/history")
-    public List<ReadingDto> getHistory(@AuthenticationPrincipal UserEntity principal) {
-        List<Reading> foundReadings = readingService.getAllByUser(principal);
+    public List<ReadingDto> getHistory(@AuthenticationPrincipal UserEntity loggedUser) {
+        List<Reading> foundReadings = readingService.getAllByUser(loggedUser);
         return readingMapper.toReadingDtoList(foundReadings);
     }
 
@@ -84,7 +83,7 @@ public class AdminController {
      * @return Dto of created Meter
      */
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping(value = "/meter", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/meter")
     public MeterDto createMeter(@RequestBody @Valid MeterDto inputMeterDto) {
         Meter meterToCreate = meterMapper.toMeter(inputMeterDto);
         Meter createdMeter = meterService.create(meterToCreate);

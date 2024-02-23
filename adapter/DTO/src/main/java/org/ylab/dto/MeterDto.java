@@ -16,8 +16,8 @@ import javax.validation.constraints.Size;
 public class MeterDto {
     private Short id;
 
-    @NotNull
-    @NotBlank
-    @Size(min = 2, max = 255)
+    @NotNull(message = "Meter type can not be absent")
+    @NotBlank(message = "Meter type can not be blank")
+    @Size(min = 2, max = 255, message = "Meter type length should be in range of 2 - 255 symbols")
     private String type;
 }

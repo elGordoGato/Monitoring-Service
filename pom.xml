@@ -19,7 +19,7 @@
         <module>application/ConsoleApp</module>
         <module>application/ServletApp</module>
         <module>application/SpringFrameworkApp</module>
-        <module>aop/AspectJ</module>
+        <module>AOP</module>
         <module>config/ManualConfig</module>
         <module>config/SpringConfig</module>
         <module>Domain</module>
@@ -43,6 +43,7 @@
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <spring-framework.version>6.1.4</spring-framework.version>
         <spring.security.version>6.2.2</spring.security.version>
+        <spring.data.jdbc.version>3.2.3</spring.data.jdbc.version>
         <javax.validation.version>2.0.1.Final</javax.validation.version>
         <jackson.version>2.15.3</jackson.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>

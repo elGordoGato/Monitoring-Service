@@ -1,5 +1,7 @@
 package org.ylab.reading;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 import org.ylab.entity.Reading;
 import org.ylab.entity.UserEntity;
 import org.ylab.port.ReadingRepository;
@@ -9,6 +11,8 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
+@Service
+@Qualifier("adminReadingService")
 public class ReadingAdminServiceImpl extends ReadingServiceImpl {
     public ReadingAdminServiceImpl(ReadingRepository readingRepository) {
         super(readingRepository);

@@ -1,11 +1,13 @@
 package org.ylab.meter;
 
+import org.springframework.stereotype.Service;
 import org.ylab.entity.Meter;
 import org.ylab.exception.NotFoundException;
 import org.ylab.port.MeterRepository;
 
 import java.util.List;
 
+@Service
 public class MeterServiceImpl implements MeterService {
     private final MeterRepository typeRepository;
 

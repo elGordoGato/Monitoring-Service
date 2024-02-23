@@ -1,11 +1,13 @@
 package org.ylab.user;
 
+import org.springframework.stereotype.Service;
 import org.ylab.entity.UserEntity;
 import org.ylab.exception.BadRequestException;
 import org.ylab.exception.ConflictException;
 import org.ylab.exception.NotFoundException;
 import org.ylab.port.UserRepository;
 
+@Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 

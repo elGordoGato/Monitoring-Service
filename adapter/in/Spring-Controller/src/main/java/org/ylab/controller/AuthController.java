@@ -2,7 +2,6 @@ package org.ylab.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -46,7 +45,7 @@ public class AuthController {
      * @return Dto of created User
      */
     @Validated(Marker.OnCreate.class)
-    @PostMapping(path = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/register")
     public UserDto register(@RequestBody @Valid UserDto dtoToRegister) {
         UserEntity userToRegister = userMapper.toUser(dtoToRegister);
         UserEntity createdUser = userService.create(userToRegister);
@@ -54,7 +53,7 @@ public class AuthController {
     }
 
     /**
-     * @param request HttpServletRequest to get session and set security key after successful authentication
+     * @param request    HttpServletRequest to get session and set security key after successful authentication
      * @param dtoToLogin UserDto with email and password to authenticate
      * @return UserDto of authenticated user
      */

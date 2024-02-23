@@ -17,11 +17,11 @@ import javax.validation.constraints.PositiveOrZero;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReadingDto {
-    @NotNull
+    @NotNull(message = "Meter id can not be absent")
     private Short meterType;
 
-    @NotNull
-    @PositiveOrZero
+    @NotNull(message = "Reading value can not be absent")
+    @PositiveOrZero(message = "Readings value can not be negative")
     private Long reading;
 
     private String collectedDate;
