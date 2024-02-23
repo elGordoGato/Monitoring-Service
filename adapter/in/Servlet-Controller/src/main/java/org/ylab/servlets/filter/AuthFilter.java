@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 
 import java.io.IOException;
 import java.nio.file.AccessDeniedException;
@@ -38,7 +38,7 @@ public class AuthFilter extends HttpFilter {
         final HttpSession session = req.getSession();
         if (nonNull(session)) {
             Object user = session.getAttribute("user");
-            if (nonNull(user) && user instanceof User) {
+            if (nonNull(user) && user instanceof UserEntity) {
                 chain.doFilter(req, res);
                 return;
             }

@@ -6,7 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.ylab.annotations.Loggable;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 
 import java.time.Instant;
 
@@ -19,7 +19,7 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         HttpSession session = req.getSession();
-        User userAttribute = ((User) session.getAttribute("user"));
+        UserEntity userAttribute = ((UserEntity) session.getAttribute("user"));
         if (userAttribute != null) {
             int id = userAttribute.getId();
             session.invalidate();

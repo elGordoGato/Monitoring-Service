@@ -4,7 +4,7 @@ import org.junit.jupiter.api.*;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.ylab.ConnectionManager;
 import org.ylab.MigrationManager;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
 
 import java.sql.Connection;
@@ -21,7 +21,7 @@ public class UserJdbcRepositoryTest {
 
     private static UserJdbcRepository userJdbcRepository;
     private static Connection connection;
-    private User user;
+    private UserEntity user;
 
     @BeforeAll
     static void setUp() {
@@ -32,8 +32,8 @@ public class UserJdbcRepositoryTest {
                 postgres.getUsername(),
                 postgres.getPassword()
         );
-        userJdbcRepository = new UserJdbcRepository(connectionProvider);
         connection = connectionProvider.getConnection();
+        userJdbcRepository = new UserJdbcRepository(connection);
         MigrationManager.migrateDB(connection, "main");
         try {
             connection.setAutoCommit(false);
@@ -49,7 +49,7 @@ public class UserJdbcRepositoryTest {
 
     @BeforeEach
     void setUser() {
-        user = new User();
+        user = new UserEntity();
         user.setEmail("test@test.com");
         user.setFirstName("Test");
         user.setLastName("User");
@@ -69,7 +69,7 @@ public class UserJdbcRepositoryTest {
     @DisplayName("Successfully save new user to db")
     public void testSaveUser() {
         // when
-        User savedUser = userJdbcRepository.save(user);
+        UserEntity savedUser = userJdbcRepository.save(user);
 
         // then
         assertThat(savedUser.getId()).isNotNull();
@@ -83,7 +83,7 @@ public class UserJdbcRepositoryTest {
         userJdbcRepository.save(user);
 
         // when
-        Optional<User> foundUser = userJdbcRepository.findByEmail("test@test.com");
+        Optional<UserEntity> foundUser = userJdbcRepository.findByEmail("test@test.com");
 
         // then
         assertThat(foundUser).isPresent();

@@ -3,7 +3,7 @@ package org.ylab.repository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
 
 import java.util.Optional;
@@ -14,14 +14,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserRepositoryInMemoryTest {
     private UserRepositoryInMemory userRepository;
 
-    private User admin;
-    private User user;
+    private UserEntity admin;
+    private UserEntity user;
 
     @BeforeEach
     void setUp() {
         userRepository = new UserRepositoryInMemory();
 
-        admin = new User();
+        admin = new UserEntity();
         admin.setId(1);
         admin.setEmail("admin");
         admin.setPassword("admin");
@@ -29,7 +29,7 @@ class UserRepositoryInMemoryTest {
         admin.setLastName("Intensiv");
         admin.setRole(Role.ADMIN);
 
-        user = new User();
+        user = new UserEntity();
         user.setEmail("user@example.com");
         user.setPassword("user");
         user.setFirstName("Bob");
@@ -40,9 +40,9 @@ class UserRepositoryInMemoryTest {
     @Test
     @DisplayName("Successfully save new user to db")
     void testSaveSuccess() {
-        User expected = user;
+        UserEntity expected = user;
 
-        User actual = userRepository.save(user);
+        UserEntity actual = userRepository.save(user);
 
         assertThat(actual).isNotNull();
         assertThat(actual).isEqualTo(expected);
@@ -53,9 +53,9 @@ class UserRepositoryInMemoryTest {
     void testGetByEmailSuccess() {
         userRepository.save(user);
 
-        Optional<User> expected = Optional.of(user);
+        Optional<UserEntity> expected = Optional.of(user);
 
-        Optional<User> actual = userRepository.findByEmail(user.getEmail());
+        Optional<UserEntity> actual = userRepository.findByEmail(user.getEmail());
 
         assertThat(actual)
                 .isNotNull()
@@ -65,9 +65,9 @@ class UserRepositoryInMemoryTest {
     @Test
     @DisplayName("Test return optional.empty when no user with such email in db")
     void testGetByEmailFailure() {
-        Optional<User> expected = Optional.empty();
+        Optional<UserEntity> expected = Optional.empty();
 
-        Optional<User> actual = userRepository.findByEmail("unknown@example.com");
+        Optional<UserEntity> actual = userRepository.findByEmail("unknown@example.com");
 
         assertThat(actual)
                 .isNotNull()
@@ -77,9 +77,9 @@ class UserRepositoryInMemoryTest {
     @Test
     @DisplayName("Test to successfully return admin by email")
     void testGetAdminByEmailSuccess() {
-        Optional<User> expected = Optional.of(admin);
+        Optional<UserEntity> expected = Optional.of(admin);
 
-        Optional<User> actual = userRepository.findByEmail(admin.getEmail());
+        Optional<UserEntity> actual = userRepository.findByEmail(admin.getEmail());
 
         assertThat(actual).isNotNull();
         assertThat(actual.isPresent()).isTrue();

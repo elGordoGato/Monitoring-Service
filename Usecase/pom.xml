@@ -23,7 +23,7 @@
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>Domain</artifactId>
-            <version>${domain.version}</version>
+            <version>${monitoring.service.version}</version>
             <scope>compile</scope>
         </dependency>
 

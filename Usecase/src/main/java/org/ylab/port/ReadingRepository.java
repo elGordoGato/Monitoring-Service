@@ -2,7 +2,7 @@ package org.ylab.port;
 
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 
 import java.time.Instant;
 import java.util.List;
@@ -20,13 +20,13 @@ public interface ReadingRepository {
      * @param type Type of meter of which readings should be found
      * @return Optional of last MeterReading submitted by user of type
      */
-    Optional<Reading> findLastByUserAndType(User user, Meter type);
+    Optional<Reading> findLastByUserAndType(UserEntity user, Meter type);
 
     /**
      * @param user User for whom actual readings should be found
      * @return List of actual readings of user
      */
-    List<Reading> findActualByUser(User user);
+    List<Reading> findActualByUser(UserEntity user);
 
     /**
      * @return List of actual (last for each type of meter) readings submitted to db
@@ -39,7 +39,7 @@ public interface ReadingRepository {
      * @param end         last date of month for which need to find readings
      * @return A list of all readings submitted by user within selected month
      */
-    List<Reading> findAllByOwnerAndDateBetween(User currentUser, Instant start, Instant end);
+    List<Reading> findAllByOwnerAndDateBetween(UserEntity currentUser, Instant start, Instant end);
 
     /**
      * @param start first date of month for which need to find readings
@@ -52,7 +52,7 @@ public interface ReadingRepository {
      * @param currentUser User for whom readings to find
      * @return A list of all readings submitted by currentUser
      */
-    List<Reading> findAllByOwner(User currentUser);
+    List<Reading> findAllByOwner(UserEntity currentUser);
 
 
     /**

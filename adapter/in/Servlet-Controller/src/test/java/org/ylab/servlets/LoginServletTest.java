@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.user.UserService;
 
 import static org.mockito.Mockito.verify;
@@ -31,11 +31,11 @@ class LoginServletTest {
     private HttpSession session;
     @InjectMocks
     private LoginServlet servlet;
-    private User user;
+    private UserEntity user;
 
     @BeforeEach
     void setUp() {
-        user = new User();
+        user = new UserEntity();
         user.setEmail(email);
         user.setPassword(password);
         user.setFirstName("Test User");

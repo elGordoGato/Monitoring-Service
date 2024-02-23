@@ -2,7 +2,7 @@ package org.ylab.repository;
 
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.port.ReadingRepository;
 
 import java.time.Instant;
@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ReadingRepositoryInMemory implements ReadingRepository {
-    private final Map<User, List<Reading>> readingMap = new HashMap<>();
+    private final Map<UserEntity, List<Reading>> readingMap = new HashMap<>();
     private long id = 1;
 
     @Override
@@ -24,7 +24,7 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
     }
 
     @Override
-    public Optional<Reading> findLastByUserAndType(User user, Meter type) {
+    public Optional<Reading> findLastByUserAndType(UserEntity user, Meter type) {
         List<Reading> readingsByUser = readingMap.get(user);
         if (readingsByUser != null) {
             return readingsByUser.stream()
@@ -35,7 +35,7 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
     }
 
     @Override
-    public List<Reading> findActualByUser(User user) {
+    public List<Reading> findActualByUser(UserEntity user) {
         List<Reading> readingList = readingMap.getOrDefault(user, new ArrayList<>());
         return findActualForList(readingList);
     }
@@ -47,7 +47,7 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
     }
 
     @Override
-    public List<Reading> findAllByOwnerAndDateBetween(User currentUser, Instant start, Instant end) {
+    public List<Reading> findAllByOwnerAndDateBetween(UserEntity currentUser, Instant start, Instant end) {
         List<Reading> readings = readingMap.get(currentUser);
         if (readings != null) {
             return readings.stream()
@@ -69,7 +69,7 @@ public class ReadingRepositoryInMemory implements ReadingRepository {
     }
 
     @Override
-    public List<Reading> findAllByOwner(User currentUser) {
+    public List<Reading> findAllByOwner(UserEntity currentUser) {
         return readingMap.getOrDefault(currentUser, new ArrayList<>());
     }
 

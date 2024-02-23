@@ -24,7 +24,7 @@ public class DatabaseConfig {
             System.out.println("Retrieved properties from application.yml");
         } catch (IOException e) {
             DRIVER = "org.postgresql.Driver";
-            URL = "jdbc:postgresql://localhost:5432/meterdb";
+            URL = "jdbc:postgresql://meter-db:5432/meterdb";
             USER_NAME = "admin";
             PASSWORD = "admin";
         }

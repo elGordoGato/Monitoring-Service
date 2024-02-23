@@ -12,7 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.ylab.dto.UserDto;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.user.UserService;
 
 import java.io.BufferedReader;
@@ -39,7 +39,7 @@ class RegisterServletTest {
     @InjectMocks
     private RegisterServlet servlet;
     private UserDto userDto;
-    private User user;
+    private UserEntity user;
 
     @BeforeEach
     void setUp() {
@@ -49,7 +49,7 @@ class RegisterServletTest {
         userDto.setFirstName("Test First Name");
         userDto.setLastName("Test Last Name");
 
-        user = new User();
+        user = new UserEntity();
         user.setEmail("test@example.com");
         user.setPassword("secret");
         user.setFirstName("Test First Name");
@@ -64,7 +64,7 @@ class RegisterServletTest {
 
         when(request.getReader()).thenReturn(bufferedReader);
         when(request.getSession()).thenReturn(session);
-        when(userService.create(any(User.class))).thenReturn(user);
+        when(userService.create(any(UserEntity.class))).thenReturn(user);
 
         servlet.doPost(request, response);
 

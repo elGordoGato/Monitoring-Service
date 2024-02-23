@@ -4,7 +4,7 @@ package org.ylab;
 import org.ylab.dto.UserDto;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
 import org.ylab.mapper.UserMapper;
 import org.ylab.mapper.UserMapperImpl;
@@ -87,7 +87,7 @@ public class ConsoleController {
                                 3 - Exit""");
                 input = br.readLine();
                 int command = Integer.parseInt(input);
-                User currentUser = null;
+                UserEntity currentUser = null;
                 switch (command) {
                     case 1 -> {
                         currentUser = registerUser();
@@ -124,7 +124,7 @@ public class ConsoleController {
      * @return boolean value indicating to stop the app or continue working
      * @throws IOException exceptions produced by failed or interrupted I/O operations.
      */
-    private boolean handleAuthorizedUser(User currentUser) throws IOException {
+    private boolean handleAuthorizedUser(UserEntity currentUser) throws IOException {
         boolean isAdmin = currentUser.getRole().equals(Role.ADMIN);
         setToAdmin(isAdmin);
         while (true) {
@@ -165,7 +165,7 @@ public class ConsoleController {
      * @param currentUser user that has been authorized
      * @return String of actual (last for each meter) readings submitted by currentUser
      */
-    private String getActualReadings(User currentUser) {
+    private String getActualReadings(UserEntity currentUser) {
         log.add(now() + " - Received request to get actual readings");
         List<Reading> readings = readingService.getActual(currentUser);
         return convertToString(readings);
@@ -176,7 +176,7 @@ public class ConsoleController {
      * @return String that the reading was successfully sent
      * @throws IOException exception produced by failed or interrupted I/O operations.
      */
-    private String sendReading(User currentUser) throws IOException {
+    private String sendReading(UserEntity currentUser) throws IOException {
         List<Meter> availableTypes = typeService.getAll();
         System.out.println("Какой тип счетчика хотите подать?");
         availableTypes.forEach(t -> System.out.printf("%s - %s%n", t.getId(), t.getType()));
@@ -203,7 +203,7 @@ public class ConsoleController {
      * @return String of all readings submitted by currentUser for selected month
      * @throws IOException exception produced by failed or interrupted I/O operations.
      */
-    private String getReadingsForMonth(User currentUser) throws IOException {
+    private String getReadingsForMonth(UserEntity currentUser) throws IOException {
         System.out.println("Please enter the year:");
         int year = Integer.parseInt(br.readLine());
         System.out.println("Please enter the month number:");
@@ -217,7 +217,7 @@ public class ConsoleController {
      * @param currentUser user that has been authorized
      * @return String of all submitted readings by currentUser
      */
-    private String getHistory(User currentUser) {
+    private String getHistory(UserEntity currentUser) {
         log.add(now() + " - Received request to get all history of readings");
         return convertToString(readingService.getAllByUser(currentUser));
     }
@@ -226,7 +226,7 @@ public class ConsoleController {
      * @return User entity that has been registered
      * @throws IOException exception produced by failed or interrupted I/O operations.
      */
-    private User registerUser() throws IOException {
+    private UserEntity registerUser() throws IOException {
         var userToCreate = new UserDto();
         System.out.println("Please enter your email:");
         userToCreate.setEmail(br.readLine());
@@ -245,7 +245,7 @@ public class ConsoleController {
      * @return User entity that has been authorized
      * @throws IOException exception produced by failed or interrupted I/O operations.
      */
-    private User loginUser() throws IOException {
+    private UserEntity loginUser() throws IOException {
         System.out.println("Please enter your email:");
         String email = br.readLine();
         System.out.println("Please enter your password:");

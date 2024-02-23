@@ -13,7 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.ylab.dto.ReadingDto;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.enums.Role;
 import org.ylab.meter.MeterService;
 import org.ylab.reading.ReadingService;
@@ -42,7 +42,7 @@ class ReadingsServletTest {
     @Mock
     private HttpSession session;
     @Mock
-    private User user;
+    private UserEntity user;
     @InjectMocks
     private ReadingsServlet readingsServlet;
 

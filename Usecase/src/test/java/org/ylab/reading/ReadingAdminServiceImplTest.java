@@ -10,7 +10,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.ylab.entity.Meter;
 import org.ylab.entity.Reading;
-import org.ylab.entity.User;
+import org.ylab.entity.UserEntity;
 import org.ylab.port.ReadingRepository;
 
 import java.time.Instant;
@@ -32,12 +32,12 @@ class ReadingAdminServiceImplTest {
     @InjectMocks
     private ReadingAdminServiceImpl readingService;
 
-    private User user;
+    private UserEntity user;
     private Reading reading;
 
     @BeforeEach
     void setUp() {
-        user = new User();
+        user = new UserEntity();
         user.setEmail("test@example.com");
         user.setPassword("secret");
 

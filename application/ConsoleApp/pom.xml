@@ -24,14 +24,14 @@
         <dependency>
             <groupId>org.ylab</groupId>
             <artifactId>Servlet-Controller</artifactId>
-            <version>${servlet.controller.version}</version>
+            <version>${monitoring.service.version}</version>
             <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>org.ylab</groupId>
-            <artifactId>Config</artifactId>
-            <version>${config.version}</version>
+            <artifactId>ManualConfig</artifactId>
+            <version>${monitoring.service.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

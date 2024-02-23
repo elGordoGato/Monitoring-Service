@@ -1,7 +1,6 @@
 package org.ylab.repository;
 
 
-import org.ylab.ConnectionManager;
 import org.ylab.entity.Meter;
 import org.ylab.port.MeterRepository;
 
@@ -16,8 +15,8 @@ public class MeterJdbcRepository implements MeterRepository {
     private static final String SAVE_QUERY = "INSERT INTO entities.meters (type) VALUES (?)";
     private final Connection connection;
 
-    public MeterJdbcRepository(ConnectionManager connectionManager) {
-        connection = connectionManager.getConnection();
+    public MeterJdbcRepository(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
