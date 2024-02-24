@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    org:
+      springframework:
+        transaction: WARN
+        transaction.interceptor: WARN
+
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: ${POSTGRES_DATASOURCE_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}

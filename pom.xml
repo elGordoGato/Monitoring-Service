@@ -4,27 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+
     <groupId>org.ylab</groupId>
     <artifactId>Monitoring-Service</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>adapter/in/Console-Controller</module>
-        <module>adapter/in/Servlet-Controller</module>
-        <module>adapter/in/Spring-Controller</module>
-        <module>adapter/in/Authentication</module>
-        <module>adapter/repository/In-Memory-Repo</module>
-        <module>adapter/repository/JDBC-Repo</module>
-        <module>application/ConsoleApp</module>
-        <module>application/ServletApp</module>
-        <module>application/SpringFrameworkApp</module>
-        <module>AOP</module>
-        <module>config/ManualConfig</module>
-        <module>config/SpringConfig</module>
-        <module>Domain</module>
-        <module>Usecase</module>
-        <module>adapter/DTO</module>
+        <module>SpringBootApp</module>
+        <module>AuditAspectService</module>
+        <module>LoggingAspectService</module>
     </modules>
 
     <properties>
