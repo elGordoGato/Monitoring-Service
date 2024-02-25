@@ -1,12 +1,13 @@
 package org.ylab.repository;
 
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.ylab.adapter.repository.jdbcImpl.ReadingJdbcRepository;
 import org.ylab.adapter.repository.jdbcImpl.UserJdbcRepository;
 import org.ylab.domain.entity.UserEntity;
 import org.ylab.domain.enums.Role;

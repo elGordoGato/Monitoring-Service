@@ -7,14 +7,15 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
+
 @Aspect
 @Component
-public class LoggableAspect {
+public class AuditableAspect {
     @Pointcut("within(@org.ylab.annotations.Auditable *) && execution(public * *(..))")
-    public void annotatedByLoggable() {
+    public void annotatedByAuditable() {
     }
 
-    @Around("annotatedByLoggable()")
+    @Around("annotatedByAuditable()")
     public Object logging(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         System.out.println("Calling method " + proceedingJoinPoint.getSignature());
         long startTime = System.currentTimeMillis();
@@ -25,7 +26,7 @@ public class LoggableAspect {
         return result;
     }
 
-    @AfterThrowing(value = "annotatedByLoggable()", throwing = "ex")
+    @AfterThrowing(value = "annotatedByAuditable()", throwing = "ex")
     public void executeAfterThrowingLoggable(RuntimeException ex) {
         System.out.println("ERROR: " + ex.getMessage());
     }

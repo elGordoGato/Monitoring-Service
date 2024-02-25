@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import org.ylab.domain.entity.Meter;
 import org.ylab.usecase.port.MeterRepository;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -4,15 +4,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 import org.ylab.adapter.repository.jdbcImpl.ReadingJdbcRepository;
 import org.ylab.domain.entity.Meter;
 import org.ylab.domain.entity.Reading;
@@ -31,11 +27,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Tests for jdbc meter readings repository functionality using test container")
-@RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
 @ActiveProfiles("tc")
 @Import(ContainersConfig.class)
-@Transactional
 class ReadingJdbcRepositoryTest {
     @Autowired
     private Connection connection;

@@ -1,14 +1,9 @@
 spring:
   config:
     activate:
-      on-profile: tc
-  sql:
-    init:
-      mode: always
+      on-profile: local, ci
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/meterdb
     username: admin
     password: admin
-  liquibase:
-    contexts: main, test

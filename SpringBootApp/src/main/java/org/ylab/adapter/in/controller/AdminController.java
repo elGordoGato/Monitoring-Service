@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.ylab.annotations.Loggable;
 import org.ylab.domain.dto.MeterDto;
 import org.ylab.domain.dto.ReadingDto;
 import org.ylab.domain.entity.Meter;
@@ -25,7 +26,7 @@ import java.util.List;
 /**
  * Controller class to handle requests from admin
  */
-//@Loggable
+@Loggable
 @Validated
 @RestController
 @RequestMapping("/admin")

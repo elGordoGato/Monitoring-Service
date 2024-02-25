@@ -6,7 +6,6 @@ import org.ylab.domain.entity.Reading;
 import org.ylab.domain.entity.UserEntity;
 import org.ylab.usecase.port.ReadingRepository;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;

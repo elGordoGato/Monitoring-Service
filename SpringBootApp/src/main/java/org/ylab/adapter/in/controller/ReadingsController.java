@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.ylab.annotations.Loggable;
 import org.ylab.domain.dto.ReadingDto;
 import org.ylab.domain.entity.Meter;
 import org.ylab.domain.entity.Reading;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * Controller to handle requests from user related to reading entity
  */
-//@Loggable
+@Loggable
 @Validated
 @RestController
 @RequestMapping("/readings")
