@@ -1,26 +1,23 @@
-package org.ylab.adapter.repository;
+package org.ylab.adapter.repository.jdbcImpl;
 
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import org.ylab.domain.entity.UserEntity;
 import org.ylab.domain.enums.Role;
 import org.ylab.usecase.port.UserRepository;
 
+import javax.sql.DataSource;
 import java.sql.*;
-import java.util.Objects;
 import java.util.Optional;
 
 @Repository
 public class UserJdbcRepository implements UserRepository {
-    private final JdbcTemplate jdbcTemplate;
     private final static String SAVE_QUERY = "INSERT INTO entities.users (email, first_name, last_name, password) " +
             "VALUES (?,?,?,?)";
     private final static String FIND_BY_EMAIL_QUERY = "SELECT * FROM entities.users WHERE email = ?";
     private final Connection connection;
 
-    public UserJdbcRepository(JdbcTemplate jdbcTemplate) throws SQLException {
-        this.jdbcTemplate = jdbcTemplate;
-        connection = Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
+    public UserJdbcRepository(DataSource dataSource) throws SQLException {
+        connection = dataSource.getConnection();
     }
 
 

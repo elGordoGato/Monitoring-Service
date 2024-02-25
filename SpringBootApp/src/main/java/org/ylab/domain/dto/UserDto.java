@@ -1,4 +1,4 @@
-package org.ylab.adapter.in.dto.model;
+package org.ylab.domain.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,8 +1,8 @@
-package org.ylab.adapter.in.dto.mapper;
+package org.ylab.domain.mapper;
 
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
-import org.ylab.adapter.in.dto.model.UserDto;
+import org.ylab.domain.dto.UserDto;
 import org.ylab.domain.entity.UserEntity;
 
 /**

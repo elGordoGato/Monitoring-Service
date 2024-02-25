@@ -9,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.ylab.domain.entity.UserEntity;
-import org.ylab.usecase.userService.UserService;
+import org.ylab.usecase.service.UserService;
 
 import java.util.Optional;
 

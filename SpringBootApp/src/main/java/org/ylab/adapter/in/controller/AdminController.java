@@ -8,16 +8,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.ylab.adapter.in.dto.model.MeterDto;
-import org.ylab.adapter.in.dto.model.ReadingDto;
-import org.ylab.annotations.Loggable;
+import org.ylab.domain.dto.MeterDto;
+import org.ylab.domain.dto.ReadingDto;
 import org.ylab.domain.entity.Meter;
 import org.ylab.domain.entity.Reading;
 import org.ylab.domain.entity.UserEntity;
-import org.ylab.adapter.in.dto.mapper.MeterMapper;
-import org.ylab.adapter.in.dto.mapper.ReadingMapper;
-import org.ylab.usecase.meterService.MeterService;
-import org.ylab.usecase.readingService.ReadingService;
+import org.ylab.domain.mapper.MeterMapper;
+import org.ylab.domain.mapper.ReadingMapper;
+import org.ylab.usecase.service.MeterService;
+import org.ylab.usecase.service.ReadingService;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -26,7 +25,7 @@ import java.util.List;
 /**
  * Controller class to handle requests from admin
  */
-@Loggable
+//@Loggable
 @Validated
 @RestController
 @RequestMapping("/admin")

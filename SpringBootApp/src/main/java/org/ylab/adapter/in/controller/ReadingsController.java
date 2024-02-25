@@ -6,14 +6,13 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.ylab.annotations.Loggable;
-import org.ylab.adapter.in.dto.model.ReadingDto;
+import org.ylab.domain.dto.ReadingDto;
 import org.ylab.domain.entity.Meter;
 import org.ylab.domain.entity.Reading;
 import org.ylab.domain.entity.UserEntity;
-import org.ylab.adapter.in.dto.mapper.ReadingMapper;
-import org.ylab.usecase.meterService.MeterService;
-import org.ylab.usecase.readingService.ReadingService;
+import org.ylab.domain.mapper.ReadingMapper;
+import org.ylab.usecase.service.MeterService;
+import org.ylab.usecase.service.ReadingService;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -22,7 +21,7 @@ import java.util.List;
 /**
  * Controller to handle requests from user related to reading entity
  */
-@Loggable
+//@Loggable
 @Validated
 @RestController
 @RequestMapping("/readings")
@@ -51,7 +50,7 @@ public class ReadingsController {
 
     /**
      * @param loggedUser User that is logged in
-     * @param date      YearMonth with format "YYYY-MM" for month to get readings
+     * @param date       YearMonth with format "YYYY-MM" for month to get readings
      * @return List of readings submitted within month of selected date by loggedUser
      */
     @GetMapping(params = "date")
@@ -73,7 +72,7 @@ public class ReadingsController {
     }
 
     /**
-     * @param loggedUser    User that is logged in
+     * @param loggedUser   User that is logged in
      * @param inputReading ReadingDto of reading to be saved for this month
      * @return Dto of reading that has been submitted by loggedUser
      */

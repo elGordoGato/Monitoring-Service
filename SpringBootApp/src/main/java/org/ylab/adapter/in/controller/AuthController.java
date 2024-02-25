@@ -14,18 +14,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.ylab.adapter.in.dto.model.UserDto;
-import org.ylab.annotations.Loggable;
+import org.ylab.domain.dto.UserDto;
 import org.ylab.domain.entity.UserEntity;
-import org.ylab.adapter.in.dto.mapper.UserMapper;
+import org.ylab.domain.mapper.UserMapper;
 import org.ylab.domain.marker.Marker;
-import org.ylab.usecase.userService.UserService;
+import org.ylab.usecase.service.UserService;
 
 
 /**
  * Authentication controller with public access
  */
-@Loggable
+//@Loggable
 @Validated
 @RestController
 @RequestMapping("/auth")

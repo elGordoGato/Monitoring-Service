@@ -1,4 +1,4 @@
-package org.ylab.usecase.meterService;
+package org.ylab.usecase.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -6,11 +6,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.ylab.domain.entity.Meter;
 import org.ylab.domain.exception.NotFoundException;
 import org.ylab.usecase.port.MeterRepository;
+import org.ylab.usecase.service.MeterService;
 
 import java.util.List;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MeterServiceImpl implements MeterService {
     private final MeterRepository typeRepository;
@@ -27,6 +28,7 @@ public class MeterServiceImpl implements MeterService {
     }
 
     @Override
+    @Transactional
     public Meter create(Meter meter) {
         return typeRepository.save(meter);
     }

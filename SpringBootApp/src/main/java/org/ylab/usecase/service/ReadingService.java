@@ -1,4 +1,4 @@
-package org.ylab.usecase.readingService;
+package org.ylab.usecase.service;
 
 import org.ylab.domain.entity.Meter;
 import org.ylab.domain.entity.Reading;

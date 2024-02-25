@@ -1,4 +1,4 @@
-package org.ylab.usecase.meterService;
+package org.ylab.usecase.service;
 
 
 import org.ylab.domain.entity.Meter;

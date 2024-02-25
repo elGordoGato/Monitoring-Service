@@ -1,4 +1,4 @@
-package org.ylab.usecase.userService;
+package org.ylab.usecase.service;
 
 import org.ylab.domain.entity.UserEntity;
 

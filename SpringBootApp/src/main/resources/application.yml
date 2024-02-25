@@ -1,6 +1,11 @@
 server:
   port: 8080
 
+db:
+  schema:
+    entities: entities
+    service: service
+
 logging:
   level:
     org:
@@ -9,11 +14,13 @@ logging:
         transaction.interceptor: WARN
 
 spring:
-  sql:
-    init:
-      mode: always
   datasource:
-    driverClassName: org.postgresql.Driver
+    driverClassName: ${DRIVER_NAME}
     url: ${POSTGRES_DATASOURCE_URL}
     username: ${POSTGRES_USER}
     password: ${POSTGRES_PASSWORD}
+  liquibase:
+    change-log: classpath:db/changelog/changelog.xml
+    default-schema: ${db.schema.entities}
+    liquibaseSchema: ${db.schema.service}
+    contexts: main

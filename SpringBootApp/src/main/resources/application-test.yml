@@ -1,0 +1,9 @@
+spring:
+  config:
+    activate:
+      on-profile: ci,test
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/meterdb
+    username: admin
+    password: admin

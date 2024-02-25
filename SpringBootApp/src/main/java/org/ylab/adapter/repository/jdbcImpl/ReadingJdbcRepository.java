@@ -1,4 +1,4 @@
-package org.ylab.adapter.repository;
+package org.ylab.adapter.repository.jdbcImpl;
 
 import org.springframework.stereotype.Repository;
 import org.ylab.domain.entity.Meter;
@@ -6,6 +6,7 @@ import org.ylab.domain.entity.Reading;
 import org.ylab.domain.entity.UserEntity;
 import org.ylab.usecase.port.ReadingRepository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -47,8 +48,8 @@ public class ReadingJdbcRepository implements ReadingRepository {
             JOIN entities.meters m on m.id = r.meter_id""";
     private final Connection connection;
 
-    public ReadingJdbcRepository(Connection connection) {
-        this.connection = connection;
+    public ReadingJdbcRepository(DataSource dataSource) throws SQLException {
+        connection = dataSource.getConnection();
     }
 
     @Override

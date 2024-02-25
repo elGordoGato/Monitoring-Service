@@ -1,10 +1,11 @@
-package org.ylab.adapter.repository;
+package org.ylab.adapter.repository.jdbcImpl;
 
 
 import org.springframework.stereotype.Repository;
 import org.ylab.domain.entity.Meter;
 import org.ylab.usecase.port.MeterRepository;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,8 @@ public class MeterJdbcRepository implements MeterRepository {
     private static final String SAVE_QUERY = "INSERT INTO entities.meters (type) VALUES (?)";
     private final Connection connection;
 
-    public MeterJdbcRepository(Connection connection) {
-        this.connection = connection;
+    public MeterJdbcRepository(DataSource dataSource) throws SQLException {
+        connection = dataSource.getConnection();
     }
 
     @Override

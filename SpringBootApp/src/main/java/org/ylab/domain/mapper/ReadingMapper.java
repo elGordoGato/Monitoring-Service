@@ -1,9 +1,9 @@
-package org.ylab.adapter.in.dto.mapper;
+package org.ylab.domain.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
-import org.ylab.adapter.in.dto.model.ReadingDto;
+import org.ylab.domain.dto.ReadingDto;
 import org.ylab.domain.entity.Reading;
 
 import java.util.List;

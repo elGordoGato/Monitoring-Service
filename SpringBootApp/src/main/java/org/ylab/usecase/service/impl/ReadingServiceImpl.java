@@ -1,12 +1,14 @@
-package org.ylab.usecase.readingService;
+package org.ylab.usecase.service.impl;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.ylab.domain.entity.Meter;
 import org.ylab.domain.entity.Reading;
 import org.ylab.domain.entity.UserEntity;
 import org.ylab.domain.exception.ConflictException;
 import org.ylab.usecase.port.ReadingRepository;
+import org.ylab.usecase.service.ReadingService;
 
 import java.time.Instant;
 import java.time.LocalDate;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @Service
 @Qualifier("userReadingService")
+@Transactional(readOnly = true)
 public class ReadingServiceImpl implements ReadingService {
     final ReadingRepository readingRepository;
 
@@ -28,6 +31,7 @@ public class ReadingServiceImpl implements ReadingService {
     }
 
     @Override
+    @Transactional
     public Reading create(UserEntity requestingUser, Meter meterType, long readingValue) {
         readingRepository.findLastByUserAndType(requestingUser, meterType)
                 .ifPresent(r -> {
