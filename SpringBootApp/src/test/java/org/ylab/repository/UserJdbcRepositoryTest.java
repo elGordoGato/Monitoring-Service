@@ -1,11 +1,15 @@
 package org.ylab.repository;
 
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.ylab.ConnectionManager;
-import org.ylab.MigrationManager;
-import org.ylab.entity.UserEntity;
-import org.ylab.enums.Role;
+import org.ylab.adapter.repository.jdbcImpl.ReadingJdbcRepository;
+import org.ylab.adapter.repository.jdbcImpl.UserJdbcRepository;
+import org.ylab.domain.entity.UserEntity;
+import org.ylab.domain.enums.Role;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -14,41 +18,19 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Tests for jdbc repository implementation for work with user entity using test container")
+@SpringBootTest
+@ActiveProfiles("tc")
+@Import(ContainersConfig.class)
 public class UserJdbcRepositoryTest {
-
-    private static final PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-            "postgres:16-alpine");
-
-    private static UserJdbcRepository userJdbcRepository;
-    private static Connection connection;
+    @Autowired
+    private Connection connection;
+    @Autowired
+    private UserJdbcRepository userJdbcRepository;
     private UserEntity user;
 
-    @BeforeAll
-    static void setUp() {
-        postgres.start();
-        ConnectionManager connectionProvider = new ConnectionManager(
-                postgres.getDriverClassName(),
-                postgres.getJdbcUrl(),
-                postgres.getUsername(),
-                postgres.getPassword()
-        );
-        connection = connectionProvider.getConnection();
-        userJdbcRepository = new UserJdbcRepository(connection);
-        MigrationManager.migrateDB(connection, "main");
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
-    }
-
     @BeforeEach
-    void setUser() {
+    void setUp() throws SQLException {
+        connection.setAutoCommit(false);
         user = new UserEntity();
         user.setEmail("test@test.com");
         user.setFirstName("Test");
@@ -57,12 +39,8 @@ public class UserJdbcRepositoryTest {
     }
 
     @AfterEach
-    void rollback() {
-        try {
-            connection.rollback();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    void tearDown() throws SQLException {
+        connection.rollback();
     }
 
     @Test

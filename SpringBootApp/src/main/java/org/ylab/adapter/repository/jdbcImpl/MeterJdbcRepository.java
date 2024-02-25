@@ -18,8 +18,8 @@ public class MeterJdbcRepository implements MeterRepository {
     private static final String SAVE_QUERY = "INSERT INTO entities.meters (type) VALUES (?)";
     private final Connection connection;
 
-    public MeterJdbcRepository(DataSource dataSource) throws SQLException {
-        connection = dataSource.getConnection();
+    public MeterJdbcRepository(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

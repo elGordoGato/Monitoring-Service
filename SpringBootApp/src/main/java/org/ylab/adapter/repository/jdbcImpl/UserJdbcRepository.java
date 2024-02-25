@@ -5,7 +5,6 @@ import org.ylab.domain.entity.UserEntity;
 import org.ylab.domain.enums.Role;
 import org.ylab.usecase.port.UserRepository;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.Optional;
 
@@ -16,8 +15,8 @@ public class UserJdbcRepository implements UserRepository {
     private final static String FIND_BY_EMAIL_QUERY = "SELECT * FROM entities.users WHERE email = ?";
     private final Connection connection;
 
-    public UserJdbcRepository(DataSource dataSource) throws SQLException {
-        connection = dataSource.getConnection();
+    public UserJdbcRepository(Connection connection) {
+        this.connection = connection;
     }
 
 

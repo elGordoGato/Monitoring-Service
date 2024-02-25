@@ -1,13 +1,23 @@
 package org.ylab.repository;
 
-import org.junit.jupiter.api.*;
-import org.testcontainers.containers.PostgreSQLContainer;
-import org.ylab.ConnectionManager;
-import org.ylab.MigrationManager;
-import org.ylab.entity.Meter;
-import org.ylab.entity.Reading;
-import org.ylab.entity.UserEntity;
-import org.ylab.enums.Role;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
+import org.ylab.adapter.repository.jdbcImpl.ReadingJdbcRepository;
+import org.ylab.domain.entity.Meter;
+import org.ylab.domain.entity.Reading;
+import org.ylab.domain.entity.UserEntity;
+import org.ylab.domain.enums.Role;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,43 +31,27 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Tests for jdbc meter readings repository functionality using test container")
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest
+@ActiveProfiles("tc")
+@Import(ContainersConfig.class)
+@Transactional
 class ReadingJdbcRepositoryTest {
-    private static final PostgreSQLContainer<?> postgres = TestContainerManager.getContainer();
-    private static ReadingJdbcRepository readingRepository;
-    private static Connection connection;
+    @Autowired
+    private Connection connection;
+    @Autowired
+    private ReadingJdbcRepository readingRepository;
 
-    @BeforeAll
-    static void setUp() {
-        postgres.start();
-        ConnectionManager connectionProvider = new ConnectionManager(
-                postgres.getDriverClassName(),
-                postgres.getJdbcUrl(),
-                postgres.getUsername(),
-                postgres.getPassword()
-        );
-        connection = connectionProvider.getConnection();
-        readingRepository = new ReadingJdbcRepository(connection);
-        MigrationManager.migrateDB(connection, "main, test");
-        try {
-            connection.setAutoCommit(false);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
+    @BeforeEach
+    void setUp() throws SQLException {
+        connection.setAutoCommit(false);
     }
 
     @AfterEach
-    void rollback() {
-        try {
-            connection.rollback();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    void tearDown() throws SQLException {
+        connection.rollback();
     }
+
 
     @Test
     @DisplayName("Successfully save new meter reading")
@@ -102,6 +96,7 @@ class ReadingJdbcRepositoryTest {
     }
 
     @Test
+    @Rollback
     @DisplayName("Test to successfully find actual readings submitted bu user")
     public void testFindActualByUser() {
         // given
@@ -141,6 +136,7 @@ class ReadingJdbcRepositoryTest {
     }
 
     @Test
+    @Rollback
     @DisplayName("Test to successfully find by admin actual readings for each meter type submitted by any user before")
     public void testFindActualByAdmin() {
         // given

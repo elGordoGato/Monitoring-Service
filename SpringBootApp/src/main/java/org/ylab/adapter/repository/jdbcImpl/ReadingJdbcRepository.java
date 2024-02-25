@@ -48,8 +48,8 @@ public class ReadingJdbcRepository implements ReadingRepository {
             JOIN entities.meters m on m.id = r.meter_id""";
     private final Connection connection;
 
-    public ReadingJdbcRepository(DataSource dataSource) throws SQLException {
-        connection = dataSource.getConnection();
+    public ReadingJdbcRepository(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

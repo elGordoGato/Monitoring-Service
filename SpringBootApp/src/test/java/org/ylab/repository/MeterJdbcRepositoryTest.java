@@ -1,52 +1,50 @@
 package org.ylab.repository;
 
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.event.RecordApplicationEvents;
 import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.ylab.ConnectionManager;
-import org.ylab.MigrationManager;
 import org.ylab.adapter.repository.jdbcImpl.MeterJdbcRepository;
-import org.ylab.entity.Meter;
+import org.ylab.domain.entity.Meter;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Tests for meter jdbc repository using test container")
+@SpringBootTest
 @ActiveProfiles("tc")
-@RequiredArgsConstructor
+@Import(ContainersConfig.class)
 class MeterJdbcRepositoryTest {
-    private static final PostgreSQLContainer<?> postgres = TestContainerManager.getContainer();
+    @Autowired
+    private Connection connection;
+    @Autowired
+    private MeterJdbcRepository meterJdbcRepository;
 
-    private final MeterJdbcRepository meterJdbcRepository;
-
-    @BeforeAll
-    static void beforeAll() {
-    }
-
-    @AfterAll
-    static void afterAll() {
-        postgres.stop();
+    @BeforeEach
+    void setUp() throws SQLException {
+        connection.setAutoCommit(false);
     }
 
     @AfterEach
-    void rollback() {
-        try {
-            connection.rollback();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    void tearDown() throws SQLException {
+        connection.rollback();
     }
 
     @Test
     @DisplayName("Test to find all meters saved to db")
-@Transactional()
+    @Rollback
     public void testFindAll() {
         // given
 
