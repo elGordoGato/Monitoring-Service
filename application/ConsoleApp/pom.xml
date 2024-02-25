@@ -61,7 +61,7 @@
                         </descriptorRefs>
                         <archive>
                             <manifest>
-                                <mainClass>org.ylab.Main</mainClass>
+                                <mainClass>org.ylab.SpringBootApp</mainClass>
                             </manifest>
                         </archive>
                     </configuration>

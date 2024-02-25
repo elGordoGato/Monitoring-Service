@@ -13,10 +13,9 @@ services:
       - POSTGRES_PASSWORD=admin
 
   web:
-    container_name: tomcat
+    container_name: spring-boot
     image: webapp
-    build: /application/SpringFrameworkApp/
-    restart: always
+    build: /application/SpringBootApp/
     depends_on:
       - meter-db
     ports:
