@@ -1,9 +1,9 @@
 package org.ylab.domain.mapper;
 
-import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 import org.ylab.domain.dto.MeterDto;
 import org.ylab.domain.entity.Meter;
+import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
 /**
  * Utils class for mapping meter entity to it's dto and vice-versa

@@ -20,6 +20,7 @@
         <module>SpringBootApp</module>
         <module>AuditAspectService</module>
         <module>LoggingAspectService</module>
+        <module>Domain</module>
     </modules>
 
     <properties>

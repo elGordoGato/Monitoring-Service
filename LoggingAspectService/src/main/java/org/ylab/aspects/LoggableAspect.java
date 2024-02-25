@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class LoggableAspect {
-    @Pointcut("within(@org.ylab.annotations.Auditable *) && execution(public * *(..))")
+    @Pointcut("within(@org.ylab.annotations.Loggable *) && execution(public * *(..))")
     public void annotatedByLoggable() {
     }
 
