@@ -2,8 +2,6 @@ package org.ylab.aspects;
 
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -13,8 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.ylab.domain.entity.UserEntity;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.Arrays;
 
@@ -29,27 +25,18 @@ public class AuditableLoggingAspect {
     }
 
     /**
-     * the following point cut will scan all the project and catch any errors inside the project files
-     */
-    private final String exceptionPointcut ="execution(* org.ylab.*.*.*(..))";
-
-    /**
-     *
      * @param joinPoint we can find inside it all the details of the method
-     *
      */
     @Before("annotatedByAuditable()")
-    public void logRequest(JoinPoint joinPoint){
-        logger.info(createJoinPointForLogs(joinPoint));
+    public void logRequest(JoinPoint joinPoint) {
+        logger.info(getLogEntryFromJoinPoint(joinPoint));
     }
 
-
     /**
-     *
      * @param joinPoint we need to use it to see attributes in the original method
      * @return will return String after building all the attributes
      */
-    private String createJoinPointForLogs(JoinPoint joinPoint) {
+    private String getLogEntryFromJoinPoint(JoinPoint joinPoint) {
         Object[] obj = joinPoint.getArgs();
         MethodSignature ms = (MethodSignature) joinPoint.getSignature();
         StringBuilder requestValue = new StringBuilder(Instant.now().toString());
@@ -61,7 +48,7 @@ public class AuditableLoggingAspect {
             requestValue.append("\nWithout parameters");
         } else {
             Arrays.stream(obj).forEach(x -> {
-                if (x instanceof UserEntity){
+                if (x instanceof UserEntity) {
                     requestValue.append("\nFrom user with email: ");
                     requestValue.append(((UserEntity) x).getEmail());
                     requestValue.append(" and id: ");
