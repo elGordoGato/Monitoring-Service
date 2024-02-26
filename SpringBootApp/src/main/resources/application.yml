@@ -16,9 +16,9 @@ logging:
 spring:
   datasource:
     driverClassName: ${DRIVER_NAME}
-    url: ${POSTGRES_DATASOURCE_URL}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USER}
+    password: ${DATASOURCE_PASSWORD}
   liquibase:
     change-log: classpath:db/changelog/changelog.xml
     default-schema: ${db.schema.entities}

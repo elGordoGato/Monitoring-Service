@@ -1,4 +1,4 @@
-package org.ylab.domain.mapper;
+package org.ylab.adapter.in.mapper;
 
 import org.ylab.domain.entity.UserEntity;
 import org.mapstruct.Mapper;

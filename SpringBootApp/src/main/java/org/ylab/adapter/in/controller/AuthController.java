@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.ylab.annotations.Loggable;
 import org.ylab.domain.dto.UserDto;
 import org.ylab.domain.entity.UserEntity;
-import org.ylab.domain.mapper.UserMapper;
+import org.ylab.adapter.in.mapper.UserMapper;
 import org.ylab.domain.marker.Marker;
 import org.ylab.usecase.service.UserService;
 

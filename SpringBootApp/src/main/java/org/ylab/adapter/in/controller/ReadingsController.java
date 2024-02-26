@@ -11,7 +11,7 @@ import org.ylab.domain.dto.ReadingDto;
 import org.ylab.domain.entity.Meter;
 import org.ylab.domain.entity.Reading;
 import org.ylab.domain.entity.UserEntity;
-import org.ylab.domain.mapper.ReadingMapper;
+import org.ylab.adapter.in.mapper.ReadingMapper;
 import org.ylab.usecase.service.MeterService;
 import org.ylab.usecase.service.ReadingService;
 

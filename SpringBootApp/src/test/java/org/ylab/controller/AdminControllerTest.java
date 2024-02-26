@@ -25,8 +25,8 @@ import org.ylab.domain.entity.Meter;
 import org.ylab.domain.entity.Reading;
 import org.ylab.domain.entity.UserEntity;
 import org.ylab.domain.enums.Role;
-import org.ylab.domain.mapper.MeterMapper;
-import org.ylab.domain.mapper.ReadingMapper;
+import org.ylab.adapter.in.mapper.MeterMapper;
+import org.ylab.adapter.in.mapper.ReadingMapper;
 import org.ylab.usecase.service.MeterService;
 import org.ylab.usecase.service.ReadingService;
 
