@@ -2,15 +2,21 @@ package org.ylab.aspects;
 
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.ylab.domain.entity.UserEntity;
+
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.time.Instant;
+import java.util.Arrays;
 
 @Aspect
 @Component
@@ -19,22 +25,55 @@ public class AuditableLoggingAspect {
     private final Logger logger = LoggerFactory.getLogger(AuditableLoggingAspect.class);
 
     @Pointcut("within(@org.ylab.annotations.Auditable *) && execution(public * *(..))")
-    public void auditableClass() {}
-
-    @Pointcut("execution(* *(.., org.ylab.domain.entity.UserEntity, ..)) && args(loggedUser, ..) && @annotation(org.springframework.web.bind.annotation.RequestMapping) && @annotation(requestMapping)")
-    public void auditableMethod(UserEntity loggedUser, RequestMapping requestMapping) {}
-
-    @Before("auditableClass() && auditableMethod(loggedUser, requestMapping)")
-    public void logBefore(JoinPoint joinPoint, UserEntity loggedUser, RequestMapping requestMapping) {
-        String methodName = joinPoint.getSignature().getName();
-        String requestUrl = requestMapping.value()[0];
-        logger.info("Entering method {} with loggedUser {} and requestUrl {}", methodName, loggedUser, requestUrl);
+    public void annotatedByAuditable() {
     }
 
-    @After("auditableClass() && auditableMethod(loggedUser, requestMapping)")
-    public void logAfter(JoinPoint joinPoint, UserEntity loggedUser, RequestMapping requestMapping) {
-        String methodName = joinPoint.getSignature().getName();
-        String requestUrl = requestMapping.value()[0];
-        logger.info("Exiting method {} with loggedUser {} and requestUrl {}", methodName, loggedUser, requestUrl);
+    /**
+     * the following point cut will scan all the project and catch any errors inside the project files
+     */
+    private final String exceptionPointcut ="execution(* org.ylab.*.*.*(..))";
+
+    /**
+     *
+     * @param joinPoint we can find inside it all the details of the method
+     *
+     */
+    @Before("annotatedByAuditable()")
+    public void logRequest(JoinPoint joinPoint){
+        logger.info(createJoinPointForLogs(joinPoint));
+    }
+
+
+    /**
+     *
+     * @param joinPoint we need to use it to see attributes in the original method
+     * @return will return String after building all the attributes
+     */
+    private String createJoinPointForLogs(JoinPoint joinPoint) {
+        Object[] obj = joinPoint.getArgs();
+        MethodSignature ms = (MethodSignature) joinPoint.getSignature();
+        StringBuilder requestValue = new StringBuilder(Instant.now().toString());
+        requestValue.append("\n");
+        requestValue.append(ms.getDeclaringTypeName());
+        requestValue.append(" received request to ");
+        requestValue.append(ms.getName());
+        if (obj.length < 1) {
+            requestValue.append("\nWithout parameters");
+        } else {
+            Arrays.stream(obj).forEach(x -> {
+                if (x instanceof UserEntity){
+                    requestValue.append("\nFrom user with email: ");
+                    requestValue.append(((UserEntity) x).getEmail());
+                    requestValue.append(" and id: ");
+                    requestValue.append(((UserEntity) x).getId());
+                } else {
+                    requestValue.append("\nWith parameters: ");
+                    requestValue.append(x.toString());
+                }
+            });
+        }
+        requestValue.append("\nReturning ");
+        requestValue.append(ms.getReturnType().getName());
+        return requestValue.toString();
     }
 }

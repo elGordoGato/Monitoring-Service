@@ -81,12 +81,14 @@ public class AdminController {
     }
 
     /**
+     * @param loggedUser Logged admin
      * @param inputMeterDto MeterDto json to be created
      * @return Dto of created Meter
      */
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(value = "/meter")
-    public MeterDto createMeter(@RequestBody @Valid MeterDto inputMeterDto) {
+    public MeterDto createMeter(@AuthenticationPrincipal UserEntity loggedUser,
+                                @RequestBody @Valid MeterDto inputMeterDto) {
         Meter meterToCreate = meterMapper.toMeter(inputMeterDto);
         Meter createdMeter = meterService.create(meterToCreate);
         return meterMapper.toMeterDto(createdMeter);
