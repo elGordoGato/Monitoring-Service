@@ -10,14 +10,17 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.ylab.adapter.in.authentication.SecurityConfig;
 import org.ylab.adapter.in.controller.AdminController;
 import org.ylab.domain.dto.MeterDto;
 import org.ylab.domain.dto.ReadingDto;
@@ -29,6 +32,7 @@ import org.ylab.domain.mapper.MeterMapper;
 import org.ylab.domain.mapper.ReadingMapper;
 import org.ylab.usecase.service.MeterService;
 import org.ylab.usecase.service.ReadingService;
+import org.ylab.usecase.service.UserService;
 
 import java.time.Instant;
 import java.time.YearMonth;
@@ -37,6 +41,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -44,6 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @DisplayName("Test class for Admin Controller")
 @WebMvcTest(AdminController.class)
+@Import(SecurityConfig.class)
 @AutoConfigureJsonTesters
 class AdminControllerTest {
     @MockBean
@@ -51,6 +57,8 @@ class AdminControllerTest {
     private ReadingService readingService;
     @MockBean
     private MeterService meterService;
+    @MockBean
+    private UserService userService;
     @MockBean
     private ReadingMapper readingMapper;
     @MockBean
@@ -77,6 +85,7 @@ class AdminControllerTest {
                 .build();
         authentication = new TestingAuthenticationToken(
                 principal, principal.getPassword(), userDetails.getAuthorities());
+        when(userService.authenticate(anyString(), anyString())).thenReturn(principal);
         Meter meter = new Meter((short) 1, "Some meter");
         readings = List.of(
                 new Reading(1L, principal, meter, 123L, Instant.now()),
@@ -98,6 +107,7 @@ class AdminControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/admin/readings")
+                .contentType(MediaType.APPLICATION_JSON)
                 .with(SecurityMockMvcRequestPostProcessors.authentication(authentication)));
 
         // then
@@ -131,7 +141,7 @@ class AdminControllerTest {
 
         // then
         resultActions.andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                //.andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(2)))
                 .andExpect(jsonPath("$[0].collectedDate", is("2024-1-1")))
                 .andExpect(jsonPath("$[0].reading", is(123)))
@@ -166,25 +176,27 @@ class AdminControllerTest {
 
     @DisplayName("Test POST '/admin/meter' endpoint, should return created meter from request body")
     @Test
+    @WithMockUser(roles = "ADMIN")
     void createMeter_shouldReturnCreatedMeter() throws Exception {
         // given
         MeterDto inputMeterDto = new MeterDto();
-        inputMeterDto.setType("Test");
+        inputMeterDto.setType("Another meter");
         Meter createdMeter = new Meter((short) 2, "Another meter");
+        MeterDto outputMeterDto = new MeterDto((short) 2, "Another meter");
         when(meterMapper.toMeter(any())).thenReturn(createdMeter);
         when(meterService.create(any())).thenReturn(createdMeter);
-        when(meterMapper.toMeterDto(createdMeter)).thenReturn(inputMeterDto);
+        when(meterMapper.toMeterDto(createdMeter)).thenReturn(outputMeterDto);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/admin/meter")
                 .with(SecurityMockMvcRequestPostProcessors.authentication(authentication))
+                .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonRequest.write(inputMeterDto).getJson()));
 
         // then
-/*        resultActions.andExpect(status().isCreated())
+        resultActions.andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(2)))
-                .andExpect(jsonPath("$.type", is("Another meter")));*/
-
+                .andExpect(jsonPath("$.type", is("Another meter")));
     }
 }

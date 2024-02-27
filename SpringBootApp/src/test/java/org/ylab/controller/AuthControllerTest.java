@@ -4,16 +4,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.ylab.adapter.in.authentication.SecurityConfig;
 import org.ylab.adapter.in.controller.AuthController;
 import org.ylab.domain.dto.UserDto;
 import org.ylab.domain.entity.UserEntity;
@@ -29,18 +29,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @DisplayName("Test class for Auth Controller")
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(AuthController.class)
+@Import(SecurityConfig.class)
 class AuthControllerTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    @Mock
+    @MockBean
     private UserService userService;
-    @Mock
+    @MockBean
     private UserMapper userMapper;
-    @Mock
+    @MockBean
     private AuthenticationManager authenticationManager;
-    @InjectMocks
-    private AuthController controller;
+    @Autowired
     private MockMvc mockMvc;
 
     private UserDto userDto;
@@ -48,9 +48,6 @@ class AuthControllerTest {
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(controller)
-                .build();
         userDto = new UserDto("user@example.com", "password",
                 "FirstName", "LastName");
         userEntity = new UserEntity(1, "user@example.com",

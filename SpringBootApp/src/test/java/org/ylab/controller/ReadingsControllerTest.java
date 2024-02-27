@@ -4,16 +4,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.ylab.adapter.in.authentication.SecurityConfig;
 import org.ylab.adapter.in.controller.ReadingsController;
 import org.ylab.domain.dto.ReadingDto;
 import org.ylab.domain.entity.Meter;
@@ -23,6 +28,7 @@ import org.ylab.domain.enums.Role;
 import org.ylab.domain.mapper.ReadingMapper;
 import org.ylab.usecase.service.MeterService;
 import org.ylab.usecase.service.ReadingService;
+import org.ylab.usecase.service.UserService;
 
 import java.time.Instant;
 import java.time.YearMonth;
@@ -31,38 +37,48 @@ import java.util.List;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("Test class for Reading Controller")
-@ExtendWith(MockitoExtension.class)
+@WebMvcTest(ReadingsController.class)
+@Import(SecurityConfig.class)
 class ReadingsControllerTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
-    @Mock
+    @MockBean
+    @Qualifier("userReadingService")
     private ReadingService readingService;
-    @Mock
+    @MockBean
     private MeterService meterService;
-    @Mock
+    @MockBean
+    private UserService userService;
+    @MockBean
     private ReadingMapper readingMapper;
-    @InjectMocks
-    private ReadingsController controller;
+    @Autowired
     private MockMvc mockMvc;
     private UserEntity principal;
+    private Authentication authentication;
     private Meter meter;
     private List<ReadingDto> readingDtos;
     private List<Reading> readings;
 
     @BeforeEach
     void setUp() {
-        mockMvc = MockMvcBuilders
-                .standaloneSetup(controller)
-                .build();
         principal = new UserEntity(1, "user@example.com",
                 "FirstName", "LastName",
                 "password", Role.USER);
+        UserDetails userDetails = User.builder()
+                .username(principal.getEmail())
+                .password(principal.getPassword())
+                .roles(principal.getRole().toString())
+                .build();
+        authentication = new TestingAuthenticationToken(
+                principal, principal.getPassword(), userDetails.getAuthorities());
+        when(userService.authenticate(anyString(), anyString())).thenReturn(principal);
         meter = new Meter((short) 1, "Some meter");
         readings = List.of(
                 new Reading(1L, principal, meter, 123L, Instant.now()),
@@ -83,7 +99,7 @@ class ReadingsControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/readings")
-                .principal(new TestingAuthenticationToken(principal, null)));
+                .with(SecurityMockMvcRequestPostProcessors.authentication(authentication)));
 
         // then
         resultActions.andExpect(status().isOk())
@@ -109,7 +125,7 @@ class ReadingsControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/readings")
-                .principal(new TestingAuthenticationToken(principal, null))
+                .with(SecurityMockMvcRequestPostProcessors.authentication(authentication))
                 .param("date", date.toString()));
 
         // then
@@ -134,7 +150,7 @@ class ReadingsControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/readings/history")
-                .principal(new TestingAuthenticationToken(principal, null)));
+                .with(SecurityMockMvcRequestPostProcessors.authentication(authentication)));
 
         // then
         resultActions.andExpect(status().isOk())
@@ -166,7 +182,7 @@ class ReadingsControllerTest {
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/readings")
-                .principal(new TestingAuthenticationToken(principal, null))
+                .with(SecurityMockMvcRequestPostProcessors.authentication(authentication))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsString(inputReadingDto)));
 

@@ -1,7 +1,6 @@
 package org.ylab.adapter.in.authentication;
 
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,7 +12,6 @@ import org.ylab.usecase.service.UserService;
 
 @Configuration
 @EnableWebSecurity
-@ComponentScan("org.ylab")
 public class SecurityConfig {
     private final AuthenticationProvider authenticationProvider;
 
