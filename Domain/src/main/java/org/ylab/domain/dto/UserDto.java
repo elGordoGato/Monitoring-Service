@@ -4,10 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.ylab.domain.marker.Marker;
 
 
@@ -23,6 +20,7 @@ public class UserDto {
     @Email(message = "Wrong format for email")
     private String email;
 
+    @ToString.Exclude
     @NotNull(message = "Password must be entered")
     @NotBlank(message = "Password can not be blank")
     @Size(min = 5, max = 16, message = "Password length should be in range of 5 - 16 symbols")
