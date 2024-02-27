@@ -81,7 +81,7 @@ public class AdminController {
     }
 
     /**
-     * @param loggedUser Logged admin
+     * @param loggedUser    Logged admin
      * @param inputMeterDto MeterDto json to be created
      * @return Dto of created Meter
      */

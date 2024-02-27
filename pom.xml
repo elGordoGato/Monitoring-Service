@@ -18,7 +18,7 @@
 
     <modules>
         <module>SpringBootApp</module>
-        <module>AuditAspectService</module>
+        <module>AuditAspectStarter</module>
         <module>LoggingAspectService</module>
         <module>Domain</module>
     </modules>

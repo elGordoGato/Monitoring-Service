@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.CONFLICT)
     public ProblemDetail handleDataIntegrityViolationException(final Exception exception) {
         log.error("An exception occurred!", exception);
-        if (exception instanceof ConflictException){
+        if (exception instanceof ConflictException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, exception.getMessage());
         } else {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT,

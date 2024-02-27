@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>org.ylab</groupId>
-            <artifactId>AuditAspectService</artifactId>
+            <artifactId>AuditAspectStarter</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
 
@@ -129,7 +129,8 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <annotationProcessorPaths><path>
+                    <annotationProcessorPaths>
+                        <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>

@@ -12,6 +12,9 @@ logging:
       springframework:
         transaction: WARN
         transaction.interceptor: WARN
+audit:
+  api:
+    enabled: true
 
 spring:
   datasource:
