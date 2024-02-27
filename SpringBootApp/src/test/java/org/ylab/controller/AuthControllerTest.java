@@ -18,7 +18,7 @@ import org.ylab.adapter.in.controller.AuthController;
 import org.ylab.domain.dto.UserDto;
 import org.ylab.domain.entity.UserEntity;
 import org.ylab.domain.enums.Role;
-import org.ylab.adapter.in.mapper.UserMapper;
+import org.ylab.domain.mapper.UserMapper;
 import org.ylab.usecase.service.UserService;
 
 import static org.hamcrest.Matchers.is;

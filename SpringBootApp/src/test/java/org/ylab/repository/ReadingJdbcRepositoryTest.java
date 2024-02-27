@@ -28,10 +28,9 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("Tests for jdbc meter readings repository functionality using test container")
-@SpringBootTest(useMainMethod = SpringBootTest.UseMainMethod.ALWAYS)
+@SpringBootTest
 @ActiveProfiles("tc")
 @Import(ContainersConfig.class)
-@ComponentScan("org.ylab.*")
 class ReadingJdbcRepositoryTest {
     @Autowired
     private Connection connection;

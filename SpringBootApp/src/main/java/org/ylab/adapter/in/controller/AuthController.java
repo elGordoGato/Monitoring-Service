@@ -3,6 +3,7 @@ package org.ylab.adapter.in.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.ylab.annotations.Loggable;
 import org.ylab.domain.dto.UserDto;
 import org.ylab.domain.entity.UserEntity;
-import org.ylab.adapter.in.mapper.UserMapper;
+import org.ylab.domain.mapper.UserMapper;
 import org.ylab.domain.marker.Marker;
 import org.ylab.usecase.service.UserService;
 
@@ -29,16 +30,11 @@ import org.ylab.usecase.service.UserService;
 @Validated
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
     private final UserService userService;
     private final UserMapper userMapper;
     private final AuthenticationManager authenticationManager;
-
-    public AuthController(UserService userService, UserMapper userMapper, AuthenticationManager authenticationManager) {
-        this.userService = userService;
-        this.userMapper = userMapper;
-        this.authenticationManager = authenticationManager;
-    }
 
     /**
      * @param dtoToRegister UserDto to be registered

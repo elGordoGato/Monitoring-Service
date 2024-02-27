@@ -1,4 +1,4 @@
-package org.ylab.adapter.in.mapper;
+package org.ylab.domain.mapper;
 
 import org.ylab.domain.entity.Reading;
 import org.mapstruct.Mapper;
