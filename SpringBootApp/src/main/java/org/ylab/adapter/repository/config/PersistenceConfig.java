@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 @Configuration
-//@ComponentScan(basePackages = "org.ylab.*")
 public class PersistenceConfig {
     @Bean
     public Connection connection(DataSource dataSource) throws SQLException {
