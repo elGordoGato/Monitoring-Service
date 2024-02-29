@@ -1,22 +1,26 @@
 package org.ylab.aspects;
 
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.ylab.domain.entity.UserEntity;
+import org.ylab.entity.AuditEntry;
+import org.ylab.repository.AuditRepository;
 
-import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+@Slf4j
 @Aspect
+@RequiredArgsConstructor
 public class AuditableLoggingAspect {
-
-    private final Logger logger = LoggerFactory.getLogger(AuditableLoggingAspect.class);
+    private final AuditRepository repository;
 
     @Pointcut("within(@org.ylab.annotations.Auditable *) && execution(public * *(..))")
     public void annotatedByAuditable() {
@@ -27,38 +31,31 @@ public class AuditableLoggingAspect {
      */
     @Before("annotatedByAuditable()")
     public void logRequest(JoinPoint joinPoint) {
-        logger.info(getLogEntryFromJoinPoint(joinPoint));
+        AuditEntry entryToSave = getAuditEntryFromJoinPoint(joinPoint);
+        AuditEntry savedEntry = repository.save(entryToSave);
+        log.info(savedEntry.toString());
     }
 
     /**
      * @param joinPoint we need to use it to see attributes in the original method
-     * @return will return String after building all the attributes
+     * @return will return AuditEntry after building all the attributes
      */
-    private String getLogEntryFromJoinPoint(JoinPoint joinPoint) {
-        Object[] obj = joinPoint.getArgs();
+    private AuditEntry getAuditEntryFromJoinPoint(JoinPoint joinPoint) {
         MethodSignature ms = (MethodSignature) joinPoint.getSignature();
-        StringBuilder requestValue = new StringBuilder(Instant.now().toString());
-        requestValue.append("\n");
-        requestValue.append(ms.getDeclaringTypeName());
-        requestValue.append(" received request to ");
-        requestValue.append(ms.getName());
-        if (obj.length < 1) {
-            requestValue.append("\nWithout parameters");
-        } else {
-            Arrays.stream(obj).forEach(x -> {
-                if (x instanceof UserEntity) {
-                    requestValue.append("\nFrom user with email: ");
-                    requestValue.append(((UserEntity) x).getEmail());
-                    requestValue.append(" and id: ");
-                    requestValue.append(((UserEntity) x).getId());
-                } else {
-                    requestValue.append("\nWith parameters: ");
-                    requestValue.append(x.toString());
-                }
-            });
-        }
-        requestValue.append("\nReturning ");
-        requestValue.append(ms.getReturnType().getName());
-        return requestValue.toString();
+        Object[] obj = joinPoint.getArgs();
+
+        AuditEntry entry = new AuditEntry();
+        entry.setController(ms.getDeclaringTypeName());
+        entry.setMethod(ms.getName());
+        List<String> params = new ArrayList<>();
+        Arrays.stream(obj).forEach(x -> {
+            if (x instanceof UserEntity) {
+                entry.setRequester((UserEntity) x);
+            } else {
+                params.add(x.toString());
+            }
+        });
+        entry.setParams(params);
+        return entry;
     }
 }

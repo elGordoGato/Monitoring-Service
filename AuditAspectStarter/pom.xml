@@ -19,15 +19,20 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.ylab</groupId>
+            <artifactId>Domain</artifactId>
+            <version>${monitoring.service.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.ylab</groupId>
-            <artifactId>Domain</artifactId>
-            <version>${monitoring.service.version}</version>
-            <scope>compile</scope>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jdbc</artifactId>
         </dependency>
 
         <dependency>
@@ -38,6 +43,18 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
     </dependencies>

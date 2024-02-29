@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.ylab.annotations.AuthAudit;
+import org.ylab.annotations.Auditable;
 import org.ylab.annotations.Loggable;
 import org.ylab.domain.dto.UserDto;
 import org.ylab.domain.entity.UserEntity;
@@ -27,8 +27,8 @@ import org.ylab.usecase.service.UserService;
 /**
  * Authentication controller with public access
  */
-@AuthAudit
 @Loggable
+@Auditable
 @Validated
 @RestController
 @RequestMapping("/auth")
