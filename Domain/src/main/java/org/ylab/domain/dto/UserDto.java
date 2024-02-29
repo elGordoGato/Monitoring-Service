@@ -16,6 +16,8 @@ import org.ylab.domain.marker.Marker;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDto {
+    private Integer id;
+
     @NotNull(message = "Email must be entered")
     @Email(message = "Wrong format for email")
     private String email;

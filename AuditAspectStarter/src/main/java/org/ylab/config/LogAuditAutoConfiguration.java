@@ -3,7 +3,8 @@ package org.ylab.config;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.ylab.aspects.AuditableLoggingAspect;
+import org.ylab.aspects.AuditAspect;
+import org.ylab.domain.mapper.UserMapper;
 import org.ylab.repository.AuditRepository;
 
 @Configuration
@@ -11,8 +12,8 @@ import org.ylab.repository.AuditRepository;
 public class LogAuditAutoConfiguration {
 
     @Bean
-    public AuditableLoggingAspect auditableLoggingAspect(AuditRepository auditRepository) {
-        return new AuditableLoggingAspect(auditRepository);
+    public AuditAspect auditAspect(UserMapper userMapper, AuditRepository auditRepository) {
+        return new AuditAspect(userMapper, auditRepository);
     }
 
 }

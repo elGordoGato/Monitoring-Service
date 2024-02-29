@@ -48,7 +48,7 @@ class AuthControllerTest {
 
     @BeforeEach
     void setUp() {
-        userDto = new UserDto("user@example.com", "password",
+        userDto = new UserDto(null, "user@example.com", "password",
                 "FirstName", "LastName");
         userEntity = new UserEntity(1, "user@example.com",
                 "FirstName", "LastName", "password", Role.USER);
