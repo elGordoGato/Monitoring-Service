@@ -1,6 +1,0 @@
-<aspectj>
-    <aspects>
-        <aspect name="org.ylab.aspects.LoggableAspect"/>
-        <aspect name="org.ylab.aspects.ContextLogAspect"/>
-    </aspects>
-</aspectj>

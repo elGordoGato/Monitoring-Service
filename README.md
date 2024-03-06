@@ -21,20 +21,23 @@
 
 3) [Pull request "Сервлеты. АОП"](https://github.com/elGordoGato/Monitoring-Service/pull/3)
 
-4) [Pull request "Знакомство с Spring Framework"](https://github.com/elGordoGato/Monitoring-Service/pull/4)
+4) [Pull request "Spring Framework"](https://github.com/elGordoGato/Monitoring-Service/pull/4)
+
+5) [Pull request "Spring boot"](https://github.com/elGordoGato/Monitoring-Service/pull/5)
 
 ---
 
 ## Стек:
 
-> Java 17, Spring Framework, Maven, Postgresql, HttpServlet, AspectJ, MapStruct, Jackson, Lombok, JUnit, Mockito,
-> AssertJ, Testcontainers
+> Java 17, Spring Boot, Spring Security, Spring AOP, Maven, Postgresql, Liquibase
+> AspectJ, MapStruct, Jackson, Lombok, JUnit, Mockito, AssertJ, Testcontainers
 
 ---
 
 ### Спецификация API
 
-[Документация OpenAPI (Swagger)](https://petstore.swagger.io/?url=https://gist.githubusercontent.com/elGordoGato/4cfb79941db3b8f81913fda7797c63a1/raw/4517fe7e63c3bcfe13b11bfbbb3f979420c36290/monitoring-service-open-api.yml)
+- [Документация OpenAPI](http://localhost:8080/v3/api-docs)
+- [Swagger UI](http://localhost:8080/swagger-ui/index.html)
 
 Файл со спецификацией можно найти по пути: `swagger/monitoring-service-open-api.yml`
 
