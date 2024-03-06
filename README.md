@@ -11,6 +11,13 @@
 - Последние поданные показания считаются актуальными.
 - Пользователь может видеть только свои показания, администратор может видеть показания всех пользователей.
 
+### Особенности:
+
+- Clean Architecture
+- Реализован аудит действий пользователя и бенчмаркинг с помощью Spring AOP в отдельных стартерах
+- Версионирование БД с помощью Liquibase
+- Тесты с использованием Mockito, AssertJ, Testcontainers, WebMVC
+
 ---
 
 ### Pull Requests
@@ -29,7 +36,7 @@
 
 ## Стек:
 
-> Java 17, Spring Boot, Spring Security, Spring AOP, Maven, Postgresql, Liquibase
+> Java 17, Spring Boot, Spring Security, Spring AOP, Maven, Postgresql, Liquibase,
 > AspectJ, MapStruct, Jackson, Lombok, JUnit, Mockito, AssertJ, Testcontainers
 
 ---
