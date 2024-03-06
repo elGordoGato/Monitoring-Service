@@ -21,7 +21,7 @@
 
 3) [Pull request "Сервлеты. АОП"](https://github.com/elGordoGato/Monitoring-Service/pull/3)
 
-4) [Pull request "Знакомство с Spring Framework"](https://github.com/elGordoGato/Monitoring-Service/pull/4)
+4) [Pull request "Spring Framework"](https://github.com/elGordoGato/Monitoring-Service/pull/4)
 
 5) [Pull request "Spring boot"](https://github.com/elGordoGato/Monitoring-Service/pull/5)
 
@@ -29,8 +29,8 @@
 
 ## Стек:
 
-> Java 17, Spring Boot, Spring Security, Maven, Postgresql, AspectJ, MapStruct, Jackson, Lombok, JUnit, Mockito,
-> AssertJ, Testcontainers
+> Java 17, Spring Boot, Spring Security, Spring AOP, Maven, Postgresql, Liquibase
+> AspectJ, MapStruct, Jackson, Lombok, JUnit, Mockito, AssertJ, Testcontainers
 
 ---
 

@@ -3,7 +3,7 @@ services:
   web:
     container_name: monitoring-server
     image: webapp
-    build: /SpringBootApp/
+    build: /MonitoringApplication/
     depends_on:
       - meter-db
     ports:
