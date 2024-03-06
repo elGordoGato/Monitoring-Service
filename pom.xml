@@ -17,10 +17,13 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>SpringBootApp</module>
-        <module>AuditAspectStarter</module>
-        <module>LoggingAspectService</module>
+        <module>MonitoringApplication</module>
         <module>Domain</module>
+        <module>Usecase</module>
+        <module>adapter/in/Controller</module>
+        <module>adapter/repository/JdbcRepository</module>
+        <module>AuditAspectStarter</module>
+        <module>LoggingAspectStarter</module>
     </modules>
 
     <properties>

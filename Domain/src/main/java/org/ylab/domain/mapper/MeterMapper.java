@@ -1,7 +1,6 @@
 package org.ylab.domain.mapper;
 
 import org.mapstruct.Mapper;
-import org.springframework.stereotype.Component;
 import org.ylab.domain.dto.MeterDto;
 import org.ylab.domain.entity.Meter;
 

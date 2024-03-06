@@ -1,0 +1,31 @@
+server:
+  port: 8080
+
+db:
+  schema:
+    entities: entities
+    service: service
+    audit: audit
+
+logging:
+  level:
+    org:
+      springframework:
+        transaction: WARN
+        transaction.interceptor: WARN
+audit:
+  api:
+    enabled: true
+
+spring:
+  datasource:
+    driverClassName: ${DRIVER_NAME}
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USER}
+    password: ${DATASOURCE_PASSWORD}
+  liquibase:
+    change-log: classpath:changelog/changelog.xml
+    default-schema: ${db.schema.entities}
+    liquibaseSchema: ${db.schema.service}
+    contexts: main
+    enabled: true
