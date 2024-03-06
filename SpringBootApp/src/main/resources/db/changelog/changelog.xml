@@ -8,4 +8,5 @@
     <include file="v1/001-create-table.xml" relativeToChangelogFile="true"/>
     <include file="v1/002-insert-data.xml" relativeToChangelogFile="true"/>
     <include file="test/001-test-readings.xml" relativeToChangelogFile="true"/>
+    <include file="audit/001-create-audit.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

@@ -57,14 +57,14 @@ public class AuditAspect {
      * @return will return AuditEntry after building all the attributes
      */
     private AuditEntry getAuditEntryFromJoinPoint(JoinPoint joinPoint) {
-        MethodSignature ms = (MethodSignature) joinPoint.getSignature();
-        Object[] obj = joinPoint.getArgs();
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Object[] joinPointArgs = joinPoint.getArgs();
 
         AuditEntry entry = new AuditEntry();
-        entry.setController(ms.getDeclaringTypeName());
-        entry.setMethod(ms.getName());
+        entry.setController(methodSignature.getDeclaringTypeName());
+        entry.setMethod(methodSignature.getName());
         List<String> params = new ArrayList<>();
-        Arrays.stream(obj).forEach(x -> {
+        Arrays.stream(joinPointArgs).forEach(x -> {
             if (x instanceof UserEntity) {
                 entry.setRequester((UserEntity) x);
             } else {
@@ -76,11 +76,11 @@ public class AuditAspect {
     }
 
     private AuditEntry getAuditEntryFromJoinPoint(JoinPoint joinPoint, UserEntity user) {
-        MethodSignature ms = (MethodSignature) joinPoint.getSignature();
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 
         AuditEntry entry = new AuditEntry();
-        entry.setController(ms.getDeclaringTypeName());
-        entry.setMethod(ms.getName());
+        entry.setController(methodSignature.getDeclaringTypeName());
+        entry.setMethod(methodSignature.getName());
         entry.setRequester(user);
         return entry;
     }

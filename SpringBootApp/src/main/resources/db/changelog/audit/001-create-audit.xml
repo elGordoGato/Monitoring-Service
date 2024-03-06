@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.5.xsd"
+        logicalFilePath="db/changelog.xml">
+    <changeSet id="001-create-audit" author="ylab" context="main">
+        <createTable tableName="entry" schemaName="audit">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="controller" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="method" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="requester" type="INT">
+                <constraints foreignKeyName="fk_requester"/>
+            </column>
+            <column name="params" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="requester"
+                                 baseTableName="entry"
+                                 baseTableSchemaName="audit"
+                                 constraintName="fk_audit_entry_on_users"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"/>
+
+    </changeSet>
+</databaseChangeLog>

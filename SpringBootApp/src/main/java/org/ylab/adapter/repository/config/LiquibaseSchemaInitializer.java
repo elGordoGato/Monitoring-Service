@@ -33,31 +33,35 @@ public class LiquibaseSchemaInitializer {
     @ConditionalOnProperty(prefix = "spring.liquibase", name = "enabled", matchIfMissing = true)
     public static class SchemaInitBean implements InitializingBean {
 
-        private static final String CREATE_SCHEMA_QUERY = """
-                CREATE SCHEMA IF NOT EXISTS %s;
-                CREATE SCHEMA IF NOT EXISTS %s;
-                """;
+        private static final String CREATE_SCHEMA_QUERY =
+                "CREATE SCHEMA IF NOT EXISTS %s;\n";
         private final DataSource dataSource;
         private final String entitiesSchemaName;
         private final String serviceSchemaName;
+        private final String auditSchemaName;
 
 
         @Autowired
         public SchemaInitBean(DataSource dataSource,
                               @Value("${db.schema.entities}") String entitiesSchemaName,
-                              @Value("${db.schema.service}") String serviceSchemaName) {
+                              @Value("${db.schema.service}") String serviceSchemaName,
+                              @Value("${db.schema.audit}") String auditSchemaName) {
             this.dataSource = dataSource;
             this.entitiesSchemaName = entitiesSchemaName;
             this.serviceSchemaName = serviceSchemaName;
+            this.auditSchemaName = auditSchemaName;
         }
 
         @Override
         public void afterPropertiesSet() {
             try (Connection conn = dataSource.getConnection();
                  Statement statement = conn.createStatement()) {
-                statement.execute(String.format(CREATE_SCHEMA_QUERY, entitiesSchemaName, serviceSchemaName));
+                String query = CREATE_SCHEMA_QUERY +
+                        CREATE_SCHEMA_QUERY +
+                        CREATE_SCHEMA_QUERY;
+                statement.execute(String.format(query, entitiesSchemaName, serviceSchemaName, auditSchemaName));
             } catch (SQLException e) {
-                throw new RuntimeException("Failed to create schema '" + entitiesSchemaName + "'", e);
+                throw new RuntimeException("Failed to create schema", e);
             }
         }
     }

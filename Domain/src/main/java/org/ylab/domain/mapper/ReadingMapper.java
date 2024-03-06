@@ -11,7 +11,6 @@ import java.util.List;
 /**
  * Utils class for mapping reading entity to it's dto and vice-versa
  */
-@Component
 @Mapper(componentModel = "spring")
 public interface ReadingMapper {
     @Mapping(target = "meterType", source = "meter.id",

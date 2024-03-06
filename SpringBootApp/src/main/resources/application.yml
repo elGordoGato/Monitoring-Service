@@ -5,6 +5,7 @@ db:
   schema:
     entities: entities
     service: service
+    audit: audit
 
 logging:
   level:
@@ -27,3 +28,4 @@ spring:
     default-schema: ${db.schema.entities}
     liquibaseSchema: ${db.schema.service}
     contexts: main
+    enabled: true
