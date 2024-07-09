@@ -172,6 +172,5 @@ class AdminControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(2)))
                 .andExpect(jsonPath("$.type", is("Another meter")));
-
     }
 }
